@@ -1,0 +1,633 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>小六壬 · 选个时间看结果</title>
+<style>
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+
+  /* ===== 主题变量 ===== */
+  body {
+    /* 金黄（默认） */
+    --bg-rgb: 20,16,12;
+    --bg-top: #2b2117;
+    --accent-rgb: 212,162,78;
+    --gold: #d4a24e;
+    --gold-light: #f0d090;
+    --text: #e8dcc8;
+    --muted-rgb: 154,139,118;
+    --muted: #9a8b76;
+    --ji: #8fe0a8;
+    --xiong: #ef9086;
+    --line: rgba(var(--accent-rgb), .18);
+  }
+  body[data-theme="jade"] {
+    --bg-rgb: 12,20,18;
+    --bg-top: #172824;
+    --accent-rgb: 95,184,160;
+    --gold: #5fb8a0;
+    --gold-light: #a8e0cc;
+    --text: #d8e8e0;
+    --muted-rgb: 122,150,140;
+    --muted: #7a968c;
+  }
+  body[data-theme="blue"] {
+    --bg-rgb: 10,15,24;
+    --bg-top: #16202e;
+    --accent-rgb: 74,127,181;
+    --gold: #4a7fb5;
+    --gold-light: #a8cce8;
+    --text: #dce4ee;
+    --muted-rgb: 122,136,153;
+    --muted: #7a8899;
+  }
+  body[data-theme="purple"] {
+    --bg-rgb: 16,12,20;
+    --bg-top: #201528;
+    --accent-rgb: 155,111,192;
+    --gold: #9b6fc0;
+    --gold-light: #d4b0e8;
+    --text: #e8dce8;
+    --muted-rgb: 148,128,154;
+    --muted: #94809a;
+  }
+  body[data-theme="silver"] {
+    --bg-rgb: 18,20,26;
+    --bg-top: #1c2028;
+    --accent-rgb: 138,148,168;
+    --gold: #8a94a8;
+    --gold-light: #d0d8e4;
+    --text: #e0e4ec;
+    --muted-rgb: 138,144,160;
+    --muted: #8a90a0;
+  }
+
+  html, body { overflow-x: hidden; }
+  body {
+    position: relative;
+    font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", "PingFang SC", "Hiragino Sans GB", "Microsoft YaHei", sans-serif;
+    background-color: rgb(var(--bg-rgb));
+    background-image: radial-gradient(ellipse at 50% 0%, var(--bg-top) 0%, rgb(var(--bg-rgb)) 55%);
+    background-attachment: fixed;
+    color: var(--text);
+    min-height: 100vh;
+    padding: 22px 14px 50px;
+    -webkit-font-smoothing: antialiased;
+    transition: background-color .4s ease, color .4s ease;
+  }
+
+  /* ===== 太极八卦背景 ===== */
+  .bg-symbol {
+    position: fixed;
+    top: 50%; left: 50%;
+    width: min(125vmin, 880px);
+    height: min(125vmin, 880px);
+    transform: translate(-50%, -50%);
+    color: var(--gold);
+    opacity: .065;
+    pointer-events: none;
+    z-index: 0;
+    will-change: transform;
+    transition: color .4s ease;
+  }
+  @media (prefers-reduced-motion: no-preference) {
+    .bg-symbol { animation: taijiSpin 240s linear infinite; }
+    @keyframes taijiSpin {
+      from { transform: translate(-50%, -50%) rotate(0deg); }
+      to   { transform: translate(-50%, -50%) rotate(360deg); }
+    }
+  }
+  .bg-vignette {
+    position: fixed; inset: 0;
+    pointer-events: none;
+    z-index: 0;
+    background: radial-gradient(circle at 50% 45%,
+      rgba(var(--bg-rgb), 0) 0%,
+      rgba(var(--bg-rgb), .55) 62%,
+      rgba(var(--bg-rgb), .9) 100%);
+    transition: background .4s ease;
+  }
+
+  .app { position: relative; z-index: 1; max-width: 560px; margin: 0 auto; }
+  header { text-align: center; margin-bottom: 10px; }
+  h1 {
+    font-size: 26px; letter-spacing: 8px; color: var(--gold-light); font-weight: 600;
+    font-family: "Songti SC", "STSong", "SimSun", serif; text-indent: 8px;
+    transition: color .4s ease;
+  }
+  .sub { font-size: 12.5px; color: var(--muted); letter-spacing: 2px; margin-top: 6px; transition: color .4s ease; }
+
+  /* ===== 换配色小圆点 ===== */
+  .themes {
+    display: flex; justify-content: center; gap: 9px; margin: 12px 0 16px;
+  }
+  .theme-dot {
+    width: 20px; height: 20px; border-radius: 50%; cursor: pointer;
+    border: 2px solid transparent;
+    padding: 0;
+    transition: all .2s ease;
+    box-shadow: 0 0 0 1px rgba(255,255,255,.08);
+  }
+  .theme-dot:hover { transform: scale(1.12); }
+  .theme-dot.active { border-color: rgba(255,255,255,.75); transform: scale(1.12); box-shadow: 0 0 0 3px rgba(255,255,255,.12); }
+  .theme-dot[data-theme="gold"]   { background: #d4a24e; }
+  .theme-dot[data-theme="jade"]   { background: #5fb8a0; }
+  .theme-dot[data-theme="blue"]   { background: #4a7fb5; }
+  .theme-dot[data-theme="purple"] { background: #9b6fc0; }
+  .theme-dot[data-theme="silver"] { background: #8a94a8; }
+
+  .hero {
+    background: linear-gradient(165deg, rgba(var(--accent-rgb), .15), rgba(var(--accent-rgb), .02));
+    border: 1px solid rgba(var(--accent-rgb), .28);
+    border-radius: 20px;
+    padding: 18px 18px 20px;
+    text-align: center;
+    margin-bottom: 14px;
+    box-shadow: 0 10px 34px rgba(0,0,0,.35);
+    backdrop-filter: blur(6px);
+    -webkit-backdrop-filter: blur(6px);
+    transition: border-color .4s ease, background .4s ease;
+  }
+
+  .time-label {
+    font-size: 12px; color: var(--muted);
+    margin-bottom: 8px; letter-spacing: .5px;
+    transition: color .2s;
+  }
+  .time-label b { color: var(--gold); font-weight: 500; transition: color .4s ease; }
+  .time-label.is-picked b { color: var(--gold-light); }
+
+  .time-row {
+    display: flex; align-items: center; justify-content: center;
+    flex-wrap: wrap; gap: 8px;
+  }
+  .time-input {
+    font: inherit; font-size: 14px; letter-spacing: .3px;
+    padding: 9px 12px; border-radius: 10px;
+    background: rgba(0,0,0,.32);
+    border: 1px solid rgba(var(--accent-rgb), .42);
+    color: var(--gold-light);
+    color-scheme: dark;
+    text-align: center; cursor: pointer;
+    transition: border-color .2s, background .2s, box-shadow .2s, color .4s ease;
+    box-shadow: 0 0 0 3px rgba(var(--accent-rgb), .06);
+    max-width: 100%;
+  }
+  .time-input:hover { border-color: rgba(var(--accent-rgb), .68); background: rgba(0,0,0,.42); }
+  .time-input:focus { outline: none; border-color: var(--gold); box-shadow: 0 0 0 3px rgba(var(--accent-rgb), .18); }
+
+  .now-row {
+    max-height: 0; opacity: 0; overflow: hidden;
+    display: flex; justify-content: center;
+    transition: max-height .25s ease, opacity .2s ease, margin .25s ease;
+  }
+  .now-row.show { max-height: 46px; opacity: 1; margin-top: 8px; }
+  .now-btn {
+    font: inherit; font-size: 12.5px; cursor: pointer;
+    padding: 8px 13px; border-radius: 10px;
+    border: 1px solid rgba(var(--accent-rgb), .28);
+    background: rgba(255,255,255,.03);
+    color: var(--text); letter-spacing: 1px;
+    transition: all .18s;
+  }
+  .now-btn:hover { background: rgba(255,255,255,.07); }
+  .now-btn:active { transform: scale(.97); }
+
+  .hero-lunar {
+    font-size: 13.5px; color: var(--gold);
+    margin-top: 12px; letter-spacing: 1px; min-height: 20px;
+    transition: color .4s ease;
+  }
+  .hero-result {
+    margin: 14px 0 4px;
+    display: flex; align-items: center; justify-content: center; gap: 12px; flex-wrap: wrap;
+  }
+  .hero-name {
+    font-size: 56px; font-weight: 700; color: var(--gold-light);
+    letter-spacing: 12px; text-indent: 12px; line-height: 1.08;
+    font-family: "Songti SC", "STSong", "SimSun", serif;
+    text-shadow: 0 0 26px rgba(var(--accent-rgb), .28);
+    transition: color .4s ease, text-shadow .4s ease;
+  }
+  .hero-tag { font-size: 14px; padding: 4px 14px; border-radius: 999px; letter-spacing: 1px; font-weight: 500; }
+  .tag-ji { background: rgba(90,158,111,.22); color: #9cf0b6; border: 1px solid rgba(90,158,111,.6); }
+  .tag-xiong { background: rgba(192,57,43,.2); color: #ffa598; border: 1px solid rgba(192,57,43,.55); }
+
+  .hero-desc {
+    font-size: 13.5px; color: #c9bca6; line-height: 1.75; margin-top: 10px;
+  }
+  .desc-lead {
+    color: var(--gold-light); font-weight: 600; margin-right: 4px;
+    transition: color .4s ease;
+  }
+
+  .fade-anim { animation: fadeIn .3s ease; }
+  @keyframes fadeIn {
+    from { opacity: .25; transform: translateY(3px); }
+    to   { opacity: 1; transform: none; }
+  }
+
+  .card {
+    background: rgba(36,28,22,.72);
+    border: 1px solid var(--line);
+    border-radius: 16px;
+    padding: 16px;
+    margin-bottom: 14px;
+    backdrop-filter: blur(6px);
+    -webkit-backdrop-filter: blur(6px);
+    transition: border-color .4s ease;
+  }
+  .card-label { font-size: 12px; color: var(--gold); letter-spacing: 3px; opacity: .9; transition: color .4s ease; }
+
+  .palms { display: grid; grid-template-columns: repeat(3, 1fr); gap: 10px; margin-top: 12px; }
+  .palm {
+    position: relative; text-align: center; padding: 14px 6px 12px;
+    background: rgba(0,0,0,.22); border: 1px solid rgba(var(--accent-rgb), .12);
+    border-radius: 12px; transition: all .25s ease;
+  }
+  .palm-name {
+    font-size: 17px; letter-spacing: 2px; color: #b8a98e;
+    font-family: "Songti SC", "STSong", "SimSun", serif;
+    transition: color .4s ease;
+  }
+  .palm-luck { font-size: 12px; font-weight: 600; margin-top: 3px; }
+  .palm-luck.ji { color: var(--ji); }
+  .palm-luck.xiong { color: var(--xiong); }
+  .palm.active { border-color: rgba(var(--accent-rgb), .45); background: rgba(var(--accent-rgb), .06); }
+  .palm.active .palm-name { color: var(--gold-light); }
+  .palm.final {
+    background: linear-gradient(160deg, rgba(var(--accent-rgb), .18), rgba(var(--accent-rgb), .04));
+    border-color: var(--gold);
+    box-shadow: 0 0 18px rgba(var(--accent-rgb), .22), inset 0 0 0 1px rgba(var(--accent-rgb), .25);
+  }
+  .marks { position: absolute; top: 5px; right: 5px; display: flex; gap: 2px; }
+  .mk { font-style: normal; font-size: 11px; line-height: 1; padding: 2px 4px; border-radius: 3px; font-weight: 500; }
+  .mk-m { background: rgba(74,127,181,.9); color: #dcebff; }
+  .mk-d { background: rgba(196,122,43,.9); color: #ffe8c8; }
+  .mk-h { background: var(--gold); color: #2a1c08; transition: background .4s ease; }
+
+  .legend {
+    font-size: 11.5px; color: var(--muted);
+    margin-top: 14px; padding-top: 12px;
+    border-top: 1px solid rgba(var(--accent-rgb), .1);
+    display: flex; gap: 14px; flex-wrap: wrap; align-items: center;
+    transition: color .4s ease;
+  }
+  .legend-item { display: inline-flex; align-items: center; gap: 5px; }
+  .legend-mk { font-style: normal; font-size: 10.5px; padding: 2px 5px; border-radius: 3px; }
+  .legend-mk.m { background: rgba(74,127,181,.85); color: #dcebff; }
+  .legend-mk.d { background: rgba(196,122,43,.85); color: #ffe8c8; }
+  .legend-mk.h { background: var(--gold); color: #2a1c08; transition: background .4s ease; }
+
+  .foot {
+    position: relative; z-index: 1;
+    text-align: center; font-size: 11.5px;
+    color: rgba(var(--muted-rgb), .62); margin-top: 20px; letter-spacing: 1px;
+    transition: color .4s ease;
+  }
+
+  @media (max-width: 380px) {
+    .hero-name { font-size: 44px; letter-spacing: 8px; text-indent: 8px; }
+    .palm-name { font-size: 15px; }
+    .time-row { flex-direction: column; }
+    .time-input { width: 100%; font-size: 13px; padding: 9px 10px; }
+  }
+</style>
+</head>
+<body data-theme="gold">
+
+<!-- 太极八卦背景（纯 SVG，无外部图片） -->
+<svg class="bg-symbol" viewBox="0 0 200 200" aria-hidden="true" focusable="false">
+  <g fill="none" stroke="currentColor" stroke-width="1.1">
+    <circle cx="100" cy="100" r="96"/>
+
+    <!-- 乾：阳阳阳 -->
+    <g>
+      <line x1="86" y1="8" x2="114" y2="8"/>
+      <line x1="86" y1="20" x2="114" y2="20"/>
+      <line x1="86" y1="32" x2="114" y2="32"/>
+    </g>
+    <!-- 兑：阳阳阴 -->
+    <g transform="rotate(45 100 100)">
+      <line x1="86" y1="8" x2="114" y2="8"/>
+      <line x1="86" y1="20" x2="114" y2="20"/>
+      <line x1="86" y1="32" x2="97" y2="32"/>
+      <line x1="103" y1="32" x2="114" y2="32"/>
+    </g>
+    <!-- 离：阳阴阳 -->
+    <g transform="rotate(90 100 100)">
+      <line x1="86" y1="8" x2="114" y2="8"/>
+      <line x1="86" y1="20" x2="97" y2="20"/>
+      <line x1="103" y1="20" x2="114" y2="20"/>
+      <line x1="86" y1="32" x2="114" y2="32"/>
+    </g>
+    <!-- 震：阳阴阴 -->
+    <g transform="rotate(135 100 100)">
+      <line x1="86" y1="8" x2="114" y2="8"/>
+      <line x1="86" y1="20" x2="97" y2="20"/>
+      <line x1="103" y1="20" x2="114" y2="20"/>
+      <line x1="86" y1="32" x2="97" y2="32"/>
+      <line x1="103" y1="32" x2="114" y2="32"/>
+    </g>
+    <!-- 巽：阴阳阳 -->
+    <g transform="rotate(180 100 100)">
+      <line x1="86" y1="8" x2="97" y2="8"/>
+      <line x1="103" y1="8" x2="114" y2="8"/>
+      <line x1="86" y1="20" x2="114" y2="20"/>
+      <line x1="86" y1="32" x2="114" y2="32"/>
+    </g>
+    <!-- 坎：阴阳阴 -->
+    <g transform="rotate(225 100 100)">
+      <line x1="86" y1="8" x2="97" y2="8"/>
+      <line x1="103" y1="8" x2="114" y2="8"/>
+      <line x1="86" y1="20" x2="114" y2="20"/>
+      <line x1="86" y1="32" x2="97" y2="32"/>
+      <line x1="103" y1="32" x2="114" y2="32"/>
+    </g>
+    <!-- 艮：阴阴阳 -->
+    <g transform="rotate(270 100 100)">
+      <line x1="86" y1="8" x2="97" y2="8"/>
+      <line x1="103" y1="8" x2="114" y2="8"/>
+      <line x1="86" y1="20" x2="97" y2="20"/>
+      <line x1="103" y1="20" x2="114" y2="20"/>
+      <line x1="86" y1="32" x2="114" y2="32"/>
+    </g>
+    <!-- 坤：阴阴阴 -->
+    <g transform="rotate(315 100 100)">
+      <line x1="86" y1="8" x2="97" y2="8"/>
+      <line x1="103" y1="8" x2="114" y2="8"/>
+      <line x1="86" y1="20" x2="97" y2="20"/>
+      <line x1="103" y1="20" x2="114" y2="20"/>
+      <line x1="86" y1="32" x2="97" y2="32"/>
+      <line x1="103" y1="32" x2="114" y2="32"/>
+    </g>
+
+    <!-- 中心太极 -->
+    <circle cx="100" cy="100" r="56"/>
+    <path d="M100,44 A56,56 0 0 1 100,156 A28,28 0 0 1 100,100 A28,28 0 0 0 100,44 Z"
+          fill="currentColor" stroke="none" opacity=".45"/>
+    <circle cx="100" cy="72" r="9.5"/>
+    <circle cx="100" cy="128" r="9.5"/>
+  </g>
+</svg>
+
+<div class="bg-vignette"></div>
+
+<div class="app">
+  <header>
+    <h1>小六壬</h1>
+    <p class="sub">选个时间 · 看六个结果</p>
+  </header>
+
+  <!-- 换配色 -->
+  <div class="themes" role="group" aria-label="切换配色">
+    <button class="theme-dot active" data-theme="gold" title="金黄" aria-label="金黄"></button>
+    <button class="theme-dot" data-theme="jade" title="青玉" aria-label="青玉"></button>
+    <button class="theme-dot" data-theme="blue" title="青花" aria-label="青花"></button>
+    <button class="theme-dot" data-theme="purple" title="紫檀" aria-label="紫檀"></button>
+    <button class="theme-dot" data-theme="silver" title="银灰" aria-label="银灰"></button>
+  </div>
+
+  <section class="hero">
+    <div class="time-label" id="timeLabel"><b>✎ 点时间可修改</b></div>
+    <div class="time-row">
+      <input type="datetime-local" id="dtInput" class="time-input" />
+    </div>
+    <div class="now-row" id="nowRow">
+      <button class="now-btn" id="btnNow">回到现在</button>
+    </div>
+    <div class="hero-lunar" id="heroLunar"></div>
+    <div class="hero-result" id="heroResult">
+      <span class="hero-name" id="finalName">—</span>
+      <span class="hero-tag" id="luckTag"></span>
+    </div>
+    <div class="hero-desc" id="finalDesc"></div>
+  </section>
+
+  <section class="card">
+    <div class="card-label">六个位置</div>
+    <div class="palms" id="palms"></div>
+    <div class="legend">
+      <span class="legend-item"><i class="legend-mk m">月</i> 月份落位</span>
+      <span class="legend-item"><i class="legend-mk d">日</i> 日期落位</span>
+      <span class="legend-item"><i class="legend-mk h">时</i> 时辰落位（最终）</span>
+    </div>
+  </section>
+
+  <p class="foot">仅供娱乐参考 · 子时（23点后）按第二天算</p>
+</div>
+
+<script>
+(function () {
+  'use strict';
+
+  const POSITIONS = [
+    { name: '大安', luck: '吉', short: '稳', desc: '诸事平顺，宜静守，不宜妄动，谋事多在近处。' },
+    { name: '留连', luck: '凶', short: '拖', desc: '事多反复，进展缓慢。宜耐心等，不宜急进。' },
+    { name: '速喜', luck: '吉', short: '快', desc: '喜讯速至，宜主动出击，多有佳音，成事较快。' },
+    { name: '赤口', luck: '凶', short: '吵', desc: '口舌是非，争执难免。宜少说话，防小人，签约宜缓。' },
+    { name: '小吉', luck: '吉', short: '顺', desc: '小有吉利，凡事可成，多遇贵人，结果不差。' },
+    { name: '空亡', luck: '凶', short: '空', desc: '落空无果，事多不成。宜守不宜进，静待时机。' }
+  ];
+  const SHICHEN = ['子', '丑', '寅', '卯', '辰', '巳', '午', '未', '申', '酉', '戌', '亥'];
+  const SHICHEN_RANGE = [
+    '23:00–01:00', '01:00–03:00', '03:00–05:00', '05:00–07:00',
+    '07:00–09:00', '09:00–11:00', '11:00–13:00', '13:00–15:00',
+    '15:00–17:00', '17:00–19:00', '19:00–21:00', '21:00–23:00'
+  ];
+  const CN_MAP = { '零': 0, '〇': 0, '一': 1, '二': 2, '两': 2, '三': 3, '四': 4, '五': 5, '六': 6, '七': 7, '八': 8, '九': 9 };
+
+  const $ = function (id) { return document.getElementById(id); };
+  const heroLunar = $('heroLunar');
+  const finalName = $('finalName');
+  const luckTag = $('luckTag');
+  const finalDesc = $('finalDesc');
+  const palmsEl = $('palms');
+  const dtInput = $('dtInput');
+  const btnNow = $('btnNow');
+  const nowRow = $('nowRow');
+  const timeLabel = $('timeLabel');
+  const heroResult = $('heroResult');
+
+  function pad(n) { return String(n).padStart(2, '0'); }
+
+  function cnToNum(str) {
+    let s = String(str).replace(/[初闰月日\s]/g, '');
+    s = s.replace('廿', '二十').replace('卅', '三十');
+    if (!s) return NaN;
+    if (/^\d+$/.test(s)) return parseInt(s, 10);
+    if (s === '十') return 10;
+    if (s.indexOf('十') !== -1) {
+      const parts = s.split('十');
+      const a = parts[0], b = parts[1] || '';
+      const tens = a ? (CN_MAP[a] !== undefined ? CN_MAP[a] : NaN) : 1;
+      const ones = b ? (CN_MAP[b] !== undefined ? CN_MAP[b] : NaN) : 0;
+      if (isNaN(tens) || isNaN(ones)) return NaN;
+      return tens * 10 + ones;
+    }
+    if (s.length === 1) return CN_MAP[s] !== undefined ? CN_MAP[s] : NaN;
+    let n = 0;
+    for (const ch of s) {
+      if (CN_MAP[ch] === undefined) return NaN;
+      n = n * 10 + CN_MAP[ch];
+    }
+    return n;
+  }
+
+  function numToCn(n) {
+    const d = ['零', '一', '二', '三', '四', '五', '六', '七', '八', '九'];
+    if (n <= 10) return n === 10 ? '十' : d[n];
+    if (n < 20) return '十' + d[n - 10];
+    const t = Math.floor(n / 10), o = n % 10;
+    return d[t] + '十' + (o ? d[o] : '');
+  }
+
+  function formatLunarDay(n) {
+    if (n === 10) return '初十';
+    if (n < 10) return '初' + numToCn(n);
+    if (n === 20) return '二十';
+    if (n === 30) return '三十';
+    if (n < 20) return '十' + numToCn(n - 10);
+    if (n < 30) return '廿' + numToCn(n - 20);
+    return String(n);
+  }
+
+  function hourToShichen(hour) { return Math.floor((hour + 1) / 2) % 12; }
+
+  function calcLiuRen(month, day, shichenIdx) {
+    const mPos = (month - 1) % 6;
+    const dPos = (mPos + day - 1) % 6;
+    const hPos = (dPos + shichenIdx) % 6;
+    return { mPos: mPos, dPos: dPos, hPos: hPos };
+  }
+
+  function getLunarInfo(date) {
+    try {
+      const fmt = new Intl.DateTimeFormat('zh-CN-u-ca-chinese', { month: 'long', day: 'numeric' });
+      const parts = fmt.formatToParts(date);
+      let ms = '', ds = '';
+      for (const p of parts) {
+        if (p.type === 'month') ms = p.value;
+        if (p.type === 'day') ds = p.value;
+      }
+      const isLeap = ms.indexOf('闰') !== -1;
+      const month = cnToNum(ms);
+      const day = cnToNum(ds);
+      if (!isNaN(month) && !isNaN(day) && month >= 1 && month <= 12 && day >= 1 && day <= 30) {
+        return { month: month, day: day, isLeap: isLeap };
+      }
+    } catch (e) { console.warn('农历读取失败', e); }
+    return null;
+  }
+
+  function lunarText(lunar) {
+    if (!lunar) return '农历读取失败';
+    return '农历' + (lunar.isLeap ? '闰' : '') + numToCn(lunar.month) + '月' + formatLunarDay(lunar.day);
+  }
+
+  function shichenText(si) { return SHICHEN[si] + '时（' + SHICHEN_RANGE[si] + '）'; }
+
+  function toLocalInputValue(d) {
+    return d.getFullYear() + '-' + pad(d.getMonth() + 1) + '-' + pad(d.getDate()) +
+      'T' + pad(d.getHours()) + ':' + pad(d.getMinutes());
+  }
+
+  function renderPalms(mPos, dPos, hPos) {
+    palmsEl.innerHTML = POSITIONS.map(function (p, i) {
+      const marks = [];
+      if (i === mPos) marks.push('<i class="mk mk-m">月</i>');
+      if (i === dPos) marks.push('<i class="mk mk-d">日</i>');
+      if (i === hPos) marks.push('<i class="mk mk-h">时</i>');
+      const active = (i === mPos || i === dPos || i === hPos);
+      const isFinal = (i === hPos);
+      const luckCls = p.luck === '吉' ? 'ji' : 'xiong';
+      return '<div class="palm' + (active ? ' active' : '') + (isFinal ? ' final' : '') + '">' +
+        '<div class="marks">' + marks.join('') + '</div>' +
+        '<div class="palm-name">' + p.name + '</div>' +
+        '<div class="palm-luck ' + luckCls + '">' + p.luck + '</div>' +
+        '</div>';
+    }).join('');
+  }
+
+  function replayFade(el) {
+    el.classList.remove('fade-anim');
+    void el.offsetWidth;
+    el.classList.add('fade-anim');
+  }
+
+  function render(date) {
+    const si = hourToShichen(date.getHours());
+    const lunar = getLunarInfo(date);
+    if (!lunar) {
+      heroLunar.textContent = '农历读取失败，请换一个时间试试';
+      return;
+    }
+
+    heroLunar.textContent = lunarText(lunar) + ' · ' + shichenText(si);
+
+    const r = calcLiuRen(lunar.month, lunar.day, si);
+    const p = POSITIONS[r.hPos];
+
+    finalName.textContent = p.name;
+    luckTag.textContent = p.luck;
+    luckTag.className = 'hero-tag ' + (p.luck === '吉' ? 'tag-ji' : 'tag-xiong');
+    finalDesc.innerHTML = '<span class="desc-lead">' + p.short + '</span>' + '· ' + p.desc;
+
+    replayFade(heroResult);
+    replayFade(finalDesc);
+
+    renderPalms(r.mPos, r.dPos, r.hPos);
+  }
+
+  function isCurrentTime() {
+    return dtInput.value === toLocalInputValue(new Date());
+  }
+
+  function updateState() {
+    if (isCurrentTime()) {
+      nowRow.classList.remove('show');
+      timeLabel.classList.remove('is-picked');
+      timeLabel.innerHTML = '<b>✎ 点时间可修改</b>';
+    } else {
+      nowRow.classList.add('show');
+      timeLabel.classList.add('is-picked');
+      timeLabel.innerHTML = '<b>已选时间</b> · 想回此刻点下面按钮';
+    }
+  }
+
+  function useNow() {
+    const now = new Date();
+    dtInput.value = toLocalInputValue(now);
+    render(now);
+    updateState();
+  }
+
+  function handleChange() {
+    if (!dtInput.value) return;
+    const d = new Date(dtInput.value);
+    if (isNaN(d.getTime())) return;
+    render(d);
+    updateState();
+  }
+
+  btnNow.addEventListener('click', useNow);
+  dtInput.addEventListener('input', handleChange);
+  dtInput.addEventListener('change', handleChange);
+
+  // 换配色
+  const dots = document.querySelectorAll('.theme-dot');
+  dots.forEach(function (dot) {
+    dot.addEventListener('click', function () {
+      const theme = dot.getAttribute('data-theme');
+      document.body.setAttribute('data-theme', theme);
+      dots.forEach(function (d) { d.classList.remove('active'); });
+      dot.classList.add('active');
+    });
+  });
+
+  useNow();
+})();
+</script>
+</body>
+</html>
