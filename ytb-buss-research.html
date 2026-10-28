@@ -96,17 +96,28 @@
   }
   .card:hover { transform: translateY(-3px); border-color: var(--yellow-dim); background: var(--panel2); }
   .card.hidden { display: none; }
-  .rank-box {
-    flex: 0 0 auto; width: 54px; display: flex; flex-direction: column;
-    align-items: center; gap: 5px;
+  .ava-wrap {
+    position: relative; flex: 0 0 auto; width: 58px; height: 64px;
   }
-  .rank {
-    width: 46px; height: 46px; border-radius: 10px;
-    background: rgba(255,212,0,.1); border: 1px solid rgba(255,212,0,.3);
-    color: var(--yellow); font-weight: 800; font-size: 15px;
+  .ava-fb, .ava-img {
+    position: absolute; top: 0; left: 1px;
+    width: 56px; height: 56px; border-radius: 50%;
+    border: 2px solid var(--line); box-sizing: border-box;
+  }
+  .ava-fb {
     display: flex; align-items: center; justify-content: center;
+    background: linear-gradient(135deg, #2e2e2e, #161616);
+    color: var(--yellow); font-weight: 800; font-size: 22px; z-index: 0;
   }
-  .rank-sub { font-size: 10px; color: #6b6b6b; white-space: nowrap; }
+  .ava-img { object-fit: cover; z-index: 1; background: #1c1c1c; }
+  .card:hover .ava-fb, .card:hover .ava-img { border-color: var(--yellow-dim); }
+  .rank-chip {
+    position: absolute; left: 50%; bottom: 0; transform: translateX(-50%);
+    z-index: 2; background: #0a0a0a;
+    border: 1px solid rgba(255,212,0,.55); color: var(--yellow);
+    font-size: 10.5px; font-weight: 800; padding: 1px 8px;
+    border-radius: 999px; white-space: nowrap;
+  }
   .card-body { flex: 1; min-width: 0; }
   .card-name { font-size: 16px; font-weight: 700; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
   .card-handle { font-size: 12px; color: var(--muted); margin-top: 1px; }
@@ -126,11 +137,23 @@
     transition: .18s; pointer-events: none; white-space: nowrap;
   }
   .card:hover .visit, .card:focus-visible .visit { opacity: 1; transform: translateY(0); }
+  .link-row {
+    margin-top: 9px; display: flex; align-items: center; gap: 8px;
+    min-width: 0;
+  }
   .link-line {
-    margin-top: 8px; font-size: 11.5px; color: #7d7d7d;
+    font-size: 11.5px; color: #7d7d7d; flex: 1; min-width: 0;
     white-space: nowrap; overflow: hidden; text-overflow: ellipsis;
   }
   .card:hover .link-line { color: var(--yellow-dim); }
+  .copy {
+    flex: 0 0 auto; font-size: 11.5px; font-weight: 700; color: #cfcfcf;
+    background: rgba(255,255,255,.06); border: 1px solid var(--line);
+    padding: 5px 11px; border-radius: 8px; cursor: pointer; user-select: none;
+    transition: .15s; white-space: nowrap;
+  }
+  .copy:hover { border-color: var(--yellow-dim); color: var(--yellow); }
+  .copy.copied { color: #4ade80; border-color: rgba(74,222,128,.6); background: rgba(74,222,128,.12); }
 
   .empty { text-align: center; color: var(--muted); padding: 60px 0; display: none; font-size: 15px; }
   footer { margin-top: 60px; padding-top: 24px; border-top: 1px solid var(--line); color: #777; font-size: 12.5px; line-height: 1.9; }
@@ -173,379 +196,463 @@
       <div class="grid">
       <a class="card" href="https://www.youtube.com/@RajShamani" target="_blank" rel="noopener" title="点击打开 Raj Shamani 的 YouTube 频道"
          data-name="raj shamani" data-handle="@rajshamani" data-niche="创业商业访谈">
-        <div class="rank-box">
-          <div class="rank">#1</div>
-          <div class="rank-sub">总榜 #2</div>
+        <div class="ava-wrap">
+          <span class="ava-fb">R</span>
+          <img class="ava-img" src="https://yt3.googleusercontent.com/qSVJkhoSs6lw5cNMsZAJ8ZAk1pxiewDb_gLtnzOsyM5TWQ6YggQj0eBetOLSxFuJqgxsyQ73NA=s176-c-k-c0x00ffffff-no-rj" alt="" loading="lazy" onerror="this.style.display='none'">
+          <span class="rank-chip">#1</span>
         </div>
         <div class="card-body">
           <div class="card-name">Raj Shamani</div>
-          <div class="card-handle">@RajShamani</div>
+          <div class="card-handle">@RajShamani · 总榜 #2</div>
           <div class="stats">
             <div class="stat"><span class="stat-val">20.4M</span><span class="stat-label">粉丝</span></div>
             <div class="stat"><span class="stat-val">2.6K</span><span class="stat-label">视频</span></div>
             <div class="stat niche"><span class="stat-label niche-label">创业商业访谈</span></div>
           </div>
-          <div class="link-line">🔗 youtube.com/@RajShamani</div>
+          <div class="link-row">
+            <span class="link-line">🔗 youtube.com/@RajShamani</span>
+            <span class="copy" role="button" tabindex="0" data-url="https://www.youtube.com/@RajShamani" title="复制频道链接">📋 复制链接</span>
+          </div>
         </div>
         <span class="visit">访问频道 ↗</span>
       </a>
       <a class="card" href="https://www.youtube.com/@ThinkSchool" target="_blank" rel="noopener" title="点击打开 Think School 的 YouTube 频道"
          data-name="think school" data-handle="@thinkschool" data-niche="商业案例拆解">
-        <div class="rank-box">
-          <div class="rank">#2</div>
-          <div class="rank-sub">总榜 #5</div>
+        <div class="ava-wrap">
+          <span class="ava-fb">T</span>
+          <img class="ava-img" src="https://yt3.googleusercontent.com/9BhJtkvh3GjjLqtve2o-CKZJPb79ZEwjoqag9JznlIywBimKTeIfpVQMyrnTIYoXXQOm2hY9nA=s176-c-k-c0x00ffffff-no-rj" alt="" loading="lazy" onerror="this.style.display='none'">
+          <span class="rank-chip">#2</span>
         </div>
         <div class="card-body">
           <div class="card-name">Think School</div>
-          <div class="card-handle">@ThinkSchool</div>
+          <div class="card-handle">@ThinkSchool · 总榜 #5</div>
           <div class="stats">
             <div class="stat"><span class="stat-val">6.60M</span><span class="stat-label">粉丝</span></div>
             <div class="stat"><span class="stat-val">1K</span><span class="stat-label">视频</span></div>
             <div class="stat niche"><span class="stat-label niche-label">商业案例拆解</span></div>
           </div>
-          <div class="link-line">🔗 youtube.com/@ThinkSchool</div>
+          <div class="link-row">
+            <span class="link-line">🔗 youtube.com/@ThinkSchool</span>
+            <span class="copy" role="button" tabindex="0" data-url="https://www.youtube.com/@ThinkSchool" title="复制频道链接">📋 复制链接</span>
+          </div>
         </div>
         <span class="visit">访问频道 ↗</span>
       </a>
       <a class="card" href="https://www.youtube.com/@garyvee" target="_blank" rel="noopener" title="点击打开 GaryVee 的 YouTube 频道"
          data-name="garyvee" data-handle="@garyvee" data-niche="创业营销">
-        <div class="rank-box">
-          <div class="rank">#3</div>
-          <div class="rank-sub">总榜 #11</div>
+        <div class="ava-wrap">
+          <span class="ava-fb">G</span>
+          <img class="ava-img" src="https://yt3.googleusercontent.com/zKI3aWmfoKkn1zZhwHAxp9KruXKFYKFuzW3jzQInHD34d15RaCZq-JMdjcP5dj9j3MW2horc=s176-c-k-c0x00ffffff-no-rj" alt="" loading="lazy" onerror="this.style.display='none'">
+          <span class="rank-chip">#3</span>
         </div>
         <div class="card-body">
           <div class="card-name">GaryVee</div>
-          <div class="card-handle">@garyvee</div>
+          <div class="card-handle">@garyvee · 总榜 #11</div>
           <div class="stats">
             <div class="stat"><span class="stat-val">4.90M</span><span class="stat-label">粉丝</span></div>
             <div class="stat"><span class="stat-val">7.5K</span><span class="stat-label">视频</span></div>
             <div class="stat niche"><span class="stat-label niche-label">创业营销</span></div>
           </div>
-          <div class="link-line">🔗 youtube.com/@garyvee</div>
+          <div class="link-row">
+            <span class="link-line">🔗 youtube.com/@garyvee</span>
+            <span class="copy" role="button" tabindex="0" data-url="https://www.youtube.com/@garyvee" title="复制频道链接">📋 复制链接</span>
+          </div>
         </div>
         <span class="visit">访问频道 ↗</span>
       </a>
       <a class="card" href="https://www.youtube.com/@TomBilyeu" target="_blank" rel="noopener" title="点击打开 Tom Bilyeu 的 YouTube 频道"
          data-name="tom bilyeu" data-handle="@tombilyeu" data-niche="创业心态访谈">
-        <div class="rank-box">
-          <div class="rank">#4</div>
-          <div class="rank-sub">总榜 #14</div>
+        <div class="ava-wrap">
+          <span class="ava-fb">T</span>
+          <img class="ava-img" src="https://yt3.googleusercontent.com/s4n3ghQlJU7t5jBU9PnWhx1cp48e8mpZM_8ZGi7y8SorqqN3es6snyp-WZPOX64lzvjHhTHp=s176-c-k-c0x00ffffff-no-rj" alt="" loading="lazy" onerror="this.style.display='none'">
+          <span class="rank-chip">#4</span>
         </div>
         <div class="card-body">
           <div class="card-name">Tom Bilyeu</div>
-          <div class="card-handle">@TomBilyeu</div>
+          <div class="card-handle">@TomBilyeu · 总榜 #14</div>
           <div class="stats">
             <div class="stat"><span class="stat-val">4.64M</span><span class="stat-label">粉丝</span></div>
             <div class="stat"><span class="stat-val">1.9K</span><span class="stat-label">视频</span></div>
             <div class="stat niche"><span class="stat-label niche-label">创业心态访谈</span></div>
           </div>
-          <div class="link-line">🔗 youtube.com/@TomBilyeu</div>
+          <div class="link-row">
+            <span class="link-line">🔗 youtube.com/@TomBilyeu</span>
+            <span class="copy" role="button" tabindex="0" data-url="https://www.youtube.com/@TomBilyeu" title="复制频道链接">📋 复制链接</span>
+          </div>
         </div>
         <span class="visit">访问频道 ↗</span>
       </a>
       <a class="card" href="https://www.youtube.com/@AlexHormozi" target="_blank" rel="noopener" title="点击打开 Alex Hormozi 的 YouTube 频道"
          data-name="alex hormozi" data-handle="@alexhormozi" data-niche="商业财富教育">
-        <div class="rank-box">
-          <div class="rank">#5</div>
-          <div class="rank-sub">总榜 #16</div>
+        <div class="ava-wrap">
+          <span class="ava-fb">A</span>
+          <img class="ava-img" src="https://yt3.googleusercontent.com/4To_zqG1x2hAszdNGNtYaNGxDOPoPA77fDlQTnLZ7ehDBCH0piv5XetKK_DAe7Uk3PY8odSCI98=s176-c-k-c0x00ffffff-no-rj" alt="" loading="lazy" onerror="this.style.display='none'">
+          <span class="rank-chip">#5</span>
         </div>
         <div class="card-body">
           <div class="card-name">Alex Hormozi</div>
-          <div class="card-handle">@AlexHormozi</div>
+          <div class="card-handle">@AlexHormozi · 总榜 #16</div>
           <div class="stats">
             <div class="stat"><span class="stat-val">4.59M</span><span class="stat-label">粉丝</span></div>
             <div class="stat"><span class="stat-val">5.8K</span><span class="stat-label">视频</span></div>
             <div class="stat niche"><span class="stat-label niche-label">商业财富教育</span></div>
           </div>
-          <div class="link-line">🔗 youtube.com/@AlexHormozi</div>
+          <div class="link-row">
+            <span class="link-line">🔗 youtube.com/@AlexHormozi</span>
+            <span class="copy" role="button" tabindex="0" data-url="https://www.youtube.com/@AlexHormozi" title="复制频道链接">📋 复制链接</span>
+          </div>
         </div>
         <span class="visit">访问频道 ↗</span>
       </a>
       <a class="card" href="https://www.youtube.com/@danmartell" target="_blank" rel="noopener" title="点击打开 Dan Martell 的 YouTube 频道"
          data-name="dan martell" data-handle="@danmartell" data-niche="创业商业">
-        <div class="rank-box">
-          <div class="rank">#6</div>
-          <div class="rank-sub">总榜 #24</div>
+        <div class="ava-wrap">
+          <span class="ava-fb">D</span>
+          <img class="ava-img" src="https://yt3.googleusercontent.com/0EEjg1FatDs8_2tFmzmGEP6dRlQygfqN6uCV17iwl-AymS0OSdWrtDeKq8ZIMZeTWRJO_cTT=s176-c-k-c0x00ffffff-no-rj" alt="" loading="lazy" onerror="this.style.display='none'">
+          <span class="rank-chip">#6</span>
         </div>
         <div class="card-body">
           <div class="card-name">Dan Martell</div>
-          <div class="card-handle">@danmartell</div>
+          <div class="card-handle">@danmartell · 总榜 #24</div>
           <div class="stats">
             <div class="stat"><span class="stat-val">3.14M</span><span class="stat-label">粉丝</span></div>
             <div class="stat"><span class="stat-val">3.8K</span><span class="stat-label">视频</span></div>
             <div class="stat niche"><span class="stat-label niche-label">创业商业</span></div>
           </div>
-          <div class="link-line">🔗 youtube.com/@danmartell</div>
+          <div class="link-row">
+            <span class="link-line">🔗 youtube.com/@danmartell</span>
+            <span class="copy" role="button" tabindex="0" data-url="https://www.youtube.com/@danmartell" title="复制频道链接">📋 复制链接</span>
+          </div>
         </div>
         <span class="visit">访问频道 ↗</span>
       </a>
       <a class="card" href="https://www.youtube.com/@VALUETAINMENT" target="_blank" rel="noopener" title="点击打开 PBD Podcast 的 YouTube 频道"
          data-name="pbd podcast" data-handle="@valuetainment" data-niche="创业商业访谈">
-        <div class="rank-box">
-          <div class="rank">#7</div>
-          <div class="rank-sub">总榜 #27</div>
+        <div class="ava-wrap">
+          <span class="ava-fb">P</span>
+          <img class="ava-img" src="https://yt3.googleusercontent.com/d2IID2loX1_ET_6U5qMAap97jQfBjAz9qXXRRDBclOsll4Fqm88MQQFNoUEas8kSdwLZlk32=s176-c-k-c0x00ffffff-no-rj" alt="" loading="lazy" onerror="this.style.display='none'">
+          <span class="rank-chip">#7</span>
         </div>
         <div class="card-body">
           <div class="card-name">PBD Podcast</div>
-          <div class="card-handle">@VALUETAINMENT</div>
+          <div class="card-handle">@VALUETAINMENT · 总榜 #27</div>
           <div class="stats">
             <div class="stat"><span class="stat-val">2.99M</span><span class="stat-label">粉丝</span></div>
             <div class="stat"><span class="stat-val">5.6K</span><span class="stat-label">视频</span></div>
             <div class="stat niche"><span class="stat-label niche-label">创业商业访谈</span></div>
           </div>
-          <div class="link-line">🔗 youtube.com/@VALUETAINMENT</div>
+          <div class="link-row">
+            <span class="link-line">🔗 youtube.com/@VALUETAINMENT</span>
+            <span class="copy" role="button" tabindex="0" data-url="https://www.youtube.com/@VALUETAINMENT" title="复制频道链接">📋 复制链接</span>
+          </div>
         </div>
         <span class="visit">访问频道 ↗</span>
       </a>
       <a class="card" href="https://www.youtube.com/@TheFutur" target="_blank" rel="noopener" title="点击打开 The Futur 的 YouTube 频道"
          data-name="the futur" data-handle="@thefutur" data-niche="设计创业商业">
-        <div class="rank-box">
-          <div class="rank">#8</div>
-          <div class="rank-sub">总榜 #28</div>
+        <div class="ava-wrap">
+          <span class="ava-fb">T</span>
+          <img class="ava-img" src="https://yt3.googleusercontent.com/ytc/AIdro_nMoHSipNGFS_Uw9P3Rp69VUaDKBIqPY3-rmCJdHQwXTpw=s176-c-k-c0x00ffffff-no-rj" alt="" loading="lazy" onerror="this.style.display='none'">
+          <span class="rank-chip">#8</span>
         </div>
         <div class="card-body">
           <div class="card-name">The Futur</div>
-          <div class="card-handle">@TheFutur</div>
+          <div class="card-handle">@TheFutur · 总榜 #28</div>
           <div class="stats">
             <div class="stat"><span class="stat-val">2.83M</span><span class="stat-label">粉丝</span></div>
             <div class="stat"><span class="stat-val">2.2K</span><span class="stat-label">视频</span></div>
             <div class="stat niche"><span class="stat-label niche-label">设计创业商业</span></div>
           </div>
-          <div class="link-line">🔗 youtube.com/@TheFutur</div>
+          <div class="link-row">
+            <span class="link-line">🔗 youtube.com/@TheFutur</span>
+            <span class="copy" role="button" tabindex="0" data-url="https://www.youtube.com/@TheFutur" title="复制频道链接">📋 复制链接</span>
+          </div>
         </div>
         <span class="visit">访问频道 ↗</span>
       </a>
       <a class="card" href="https://www.youtube.com/@SimonSquibb" target="_blank" rel="noopener" title="点击打开 Simon Squibb 的 YouTube 频道"
          data-name="simon squibb" data-handle="@simonsquibb" data-niche="创业辅导">
-        <div class="rank-box">
-          <div class="rank">#9</div>
-          <div class="rank-sub">总榜 #31</div>
+        <div class="ava-wrap">
+          <span class="ava-fb">S</span>
+          <img class="ava-img" src="https://yt3.googleusercontent.com/P8IYVJC3neabqmVMHYq2uwaV7C-oCgsycY_mht8qYNNAMJc_8GycT8fJ8Vglrtlp51vpSJzeNQ=s176-c-k-c0x00ffffff-no-rj" alt="" loading="lazy" onerror="this.style.display='none'">
+          <span class="rank-chip">#9</span>
         </div>
         <div class="card-body">
           <div class="card-name">Simon Squibb</div>
-          <div class="card-handle">@SimonSquibb</div>
+          <div class="card-handle">@SimonSquibb · 总榜 #31</div>
           <div class="stats">
             <div class="stat"><span class="stat-val">2.48M</span><span class="stat-label">粉丝</span></div>
             <div class="stat"><span class="stat-val">1.8K</span><span class="stat-label">视频</span></div>
             <div class="stat niche"><span class="stat-label niche-label">创业辅导</span></div>
           </div>
-          <div class="link-line">🔗 youtube.com/@SimonSquibb</div>
+          <div class="link-row">
+            <span class="link-line">🔗 youtube.com/@SimonSquibb</span>
+            <span class="copy" role="button" tabindex="0" data-url="https://www.youtube.com/@SimonSquibb" title="复制频道链接">📋 复制链接</span>
+          </div>
         </div>
         <span class="visit">访问频道 ↗</span>
       </a>
       <a class="card" href="https://www.youtube.com/@CodieSanchezCT" target="_blank" rel="noopener" title="点击打开 Codie Sanchez 的 YouTube 频道"
          data-name="codie sanchez" data-handle="@codiesanchezct" data-niche="小企业投资">
-        <div class="rank-box">
-          <div class="rank">#10</div>
-          <div class="rank-sub">总榜 #33</div>
+        <div class="ava-wrap">
+          <span class="ava-fb">C</span>
+          <img class="ava-img" src="https://yt3.googleusercontent.com/yFw8DI2FmldbPj4_RJy15oPzxI7oos16H2LLJ62Ow9EtdjwXpSgFbhrFLq5VcBWvTUWTf-ac=s176-c-k-c0x00ffffff-no-rj" alt="" loading="lazy" onerror="this.style.display='none'">
+          <span class="rank-chip">#10</span>
         </div>
         <div class="card-body">
           <div class="card-name">Codie Sanchez</div>
-          <div class="card-handle">@CodieSanchezCT</div>
+          <div class="card-handle">@CodieSanchezCT · 总榜 #33</div>
           <div class="stats">
             <div class="stat"><span class="stat-val">2.27M</span><span class="stat-label">粉丝</span></div>
             <div class="stat"><span class="stat-val">1.1K</span><span class="stat-label">视频</span></div>
             <div class="stat niche"><span class="stat-label niche-label">小企业投资</span></div>
           </div>
-          <div class="link-line">🔗 youtube.com/@CodieSanchezCT</div>
+          <div class="link-row">
+            <span class="link-line">🔗 youtube.com/@CodieSanchezCT</span>
+            <span class="copy" role="button" tabindex="0" data-url="https://www.youtube.com/@CodieSanchezCT" title="复制频道链接">📋 复制链接</span>
+          </div>
         </div>
         <span class="visit">访问频道 ↗</span>
       </a>
       <a class="card" href="https://www.youtube.com/@leilahormozi" target="_blank" rel="noopener" title="点击打开 Leila Hormozi 的 YouTube 频道"
          data-name="leila hormozi" data-handle="@leilahormozi" data-niche="创业心态">
-        <div class="rank-box">
-          <div class="rank">#11</div>
-          <div class="rank-sub">总榜 #41</div>
+        <div class="ava-wrap">
+          <span class="ava-fb">L</span>
+          <img class="ava-img" src="https://yt3.googleusercontent.com/kW3IBBCqYDJwnML9rubaYEZZsxQ0SFmSXPNj5lHyHbQ8IYuRyevOwVXvVAfoq71FdI7HTHicxA=s176-c-k-c0x00ffffff-no-rj" alt="" loading="lazy" onerror="this.style.display='none'">
+          <span class="rank-chip">#11</span>
         </div>
         <div class="card-body">
           <div class="card-name">Leila Hormozi</div>
-          <div class="card-handle">@leilahormozi</div>
+          <div class="card-handle">@leilahormozi · 总榜 #41</div>
           <div class="stats">
             <div class="stat"><span class="stat-val">1.76M</span><span class="stat-label">粉丝</span></div>
             <div class="stat"><span class="stat-val">4K</span><span class="stat-label">视频</span></div>
             <div class="stat niche"><span class="stat-label niche-label">创业心态</span></div>
           </div>
-          <div class="link-line">🔗 youtube.com/@leilahormozi</div>
+          <div class="link-row">
+            <span class="link-line">🔗 youtube.com/@leilahormozi</span>
+            <span class="copy" role="button" tabindex="0" data-url="https://www.youtube.com/@leilahormozi" title="复制频道链接">📋 复制链接</span>
+          </div>
         </div>
         <span class="visit">访问频道 ↗</span>
       </a>
       <a class="card" href="https://www.youtube.com/@NoahKagan" target="_blank" rel="noopener" title="点击打开 Noah Kagan 的 YouTube 频道"
          data-name="noah kagan" data-handle="@noahkagan" data-niche="创业副业">
-        <div class="rank-box">
-          <div class="rank">#12</div>
-          <div class="rank-sub">总榜 #58</div>
+        <div class="ava-wrap">
+          <span class="ava-fb">N</span>
+          <img class="ava-img" src="https://yt3.googleusercontent.com/ytc/AIdro_lEFPqTwyBwOrggOCPOGGnEyJ6s_SwGRPS150L8ZniCl1M=s176-c-k-c0x00ffffff-no-rj" alt="" loading="lazy" onerror="this.style.display='none'">
+          <span class="rank-chip">#12</span>
         </div>
         <div class="card-body">
           <div class="card-name">Noah Kagan</div>
-          <div class="card-handle">@NoahKagan</div>
+          <div class="card-handle">@NoahKagan · 总榜 #58</div>
           <div class="stats">
             <div class="stat"><span class="stat-val">1.17M</span><span class="stat-label">粉丝</span></div>
             <div class="stat"><span class="stat-val">562</span><span class="stat-label">视频</span></div>
             <div class="stat niche"><span class="stat-label niche-label">创业副业</span></div>
           </div>
-          <div class="link-line">🔗 youtube.com/@NoahKagan</div>
+          <div class="link-row">
+            <span class="link-line">🔗 youtube.com/@NoahKagan</span>
+            <span class="copy" role="button" tabindex="0" data-url="https://www.youtube.com/@NoahKagan" title="复制频道链接">📋 复制链接</span>
+          </div>
         </div>
         <span class="visit">访问频道 ↗</span>
       </a>
       <a class="card" href="https://www.youtube.com/@SantrelMedia" target="_blank" rel="noopener" title="点击打开 Santrel Media 的 YouTube 频道"
          data-name="santrel media" data-handle="@santrelmedia" data-niche="商业案例">
-        <div class="rank-box">
-          <div class="rank">#13</div>
-          <div class="rank-sub">总榜 #62</div>
+        <div class="ava-wrap">
+          <span class="ava-fb">S</span>
+          <img class="ava-img" src="https://yt3.googleusercontent.com/ytc/AIdro_lchM7UK8VsnqAa3kbVlLd9QKQaKsPEexf7HMA3SLDsNxs=s176-c-k-c0x00ffffff-no-rj" alt="" loading="lazy" onerror="this.style.display='none'">
+          <span class="rank-chip">#13</span>
         </div>
         <div class="card-body">
           <div class="card-name">Santrel Media</div>
-          <div class="card-handle">@SantrelMedia</div>
+          <div class="card-handle">@SantrelMedia · 总榜 #62</div>
           <div class="stats">
             <div class="stat"><span class="stat-val">1.13M</span><span class="stat-label">粉丝</span></div>
             <div class="stat"><span class="stat-val">323</span><span class="stat-label">视频</span></div>
             <div class="stat niche"><span class="stat-label niche-label">商业案例</span></div>
           </div>
-          <div class="link-line">🔗 youtube.com/@SantrelMedia</div>
+          <div class="link-row">
+            <span class="link-line">🔗 youtube.com/@SantrelMedia</span>
+            <span class="copy" role="button" tabindex="0" data-url="https://www.youtube.com/@SantrelMedia" title="复制频道链接">📋 复制链接</span>
+          </div>
         </div>
         <span class="visit">访问频道 ↗</span>
       </a>
       <a class="card" href="https://www.youtube.com/@Youngentrepreneursforum" target="_blank" rel="noopener" title="点击打开 Young Entrepreneurs Forum 的 YouTube 频道"
          data-name="young entrepreneurs forum" data-handle="@youngentrepreneursforum" data-niche="创业商业">
-        <div class="rank-box">
-          <div class="rank">#14</div>
-          <div class="rank-sub">总榜 #71</div>
+        <div class="ava-wrap">
+          <span class="ava-fb">Y</span>
+          <img class="ava-img" src="https://yt3.googleusercontent.com/ytc/AIdro_lPuJqBQtbeS5VWbvb05Qini8kyTrW3QTYEF8vFfXwwiM0=s176-c-k-c0x00ffffff-no-rj" alt="" loading="lazy" onerror="this.style.display='none'">
+          <span class="rank-chip">#14</span>
         </div>
         <div class="card-body">
           <div class="card-name">Young Entrepreneurs Forum</div>
-          <div class="card-handle">@Youngentrepreneursforum</div>
+          <div class="card-handle">@Youngentrepreneursforum · 总榜 #71</div>
           <div class="stats">
             <div class="stat"><span class="stat-val">907.0K</span><span class="stat-label">粉丝</span></div>
             <div class="stat"><span class="stat-val">1.1K</span><span class="stat-label">视频</span></div>
             <div class="stat niche"><span class="stat-label niche-label">创业商业</span></div>
           </div>
-          <div class="link-line">🔗 youtube.com/@Youngentrepreneursforum</div>
+          <div class="link-row">
+            <span class="link-line">🔗 youtube.com/@Youngentrepreneursforum</span>
+            <span class="copy" role="button" tabindex="0" data-url="https://www.youtube.com/@Youngentrepreneursforum" title="复制频道链接">📋 复制链接</span>
+          </div>
         </div>
         <span class="visit">访问频道 ↗</span>
       </a>
       <a class="card" href="https://www.youtube.com/@StarterStory" target="_blank" rel="noopener" title="点击打开 Starter Story 的 YouTube 频道"
          data-name="starter story" data-handle="@starterstory" data-niche="创业案例">
-        <div class="rank-box">
-          <div class="rank">#15</div>
-          <div class="rank-sub">总榜 #73</div>
+        <div class="ava-wrap">
+          <span class="ava-fb">S</span>
+          <img class="ava-img" src="https://yt3.googleusercontent.com/FbXXhP5yCeqnwGyq6X10dcS7I-_C2BHslNRpLSIRZ5RqzvNdG9X7l8znHQ7fKcXxfGkjpzDMlg=s176-c-k-c0x00ffffff-no-rj" alt="" loading="lazy" onerror="this.style.display='none'">
+          <span class="rank-chip">#15</span>
         </div>
         <div class="card-body">
           <div class="card-name">Starter Story</div>
-          <div class="card-handle">@StarterStory</div>
+          <div class="card-handle">@StarterStory · 总榜 #73</div>
           <div class="stats">
             <div class="stat"><span class="stat-val">891.0K</span><span class="stat-label">粉丝</span></div>
             <div class="stat"><span class="stat-val">561</span><span class="stat-label">视频</span></div>
             <div class="stat niche"><span class="stat-label niche-label">创业案例</span></div>
           </div>
-          <div class="link-line">🔗 youtube.com/@StarterStory</div>
+          <div class="link-row">
+            <span class="link-line">🔗 youtube.com/@StarterStory</span>
+            <span class="copy" role="button" tabindex="0" data-url="https://www.youtube.com/@StarterStory" title="复制频道链接">📋 复制链接</span>
+          </div>
         </div>
         <span class="visit">访问频道 ↗</span>
       </a>
       <a class="card" href="https://www.youtube.com/@GregIsenberg" target="_blank" rel="noopener" title="点击打开 Greg Isenberg 的 YouTube 频道"
          data-name="greg isenberg" data-handle="@gregisenberg" data-niche="互联网创业">
-        <div class="rank-box">
-          <div class="rank">#16</div>
-          <div class="rank-sub">总榜 #77</div>
+        <div class="ava-wrap">
+          <span class="ava-fb">G</span>
+          <img class="ava-img" src="https://yt3.googleusercontent.com/5wiiTxMamM0NnCmGOt0iJ6eoVRmFLNIGF-BEiTZ_AVqaS02YIxAsB-2XY6xwLCUWQfoENG1MHKo=s176-c-k-c0x00ffffff-no-rj" alt="" loading="lazy" onerror="this.style.display='none'">
+          <span class="rank-chip">#16</span>
         </div>
         <div class="card-body">
           <div class="card-name">Greg Isenberg</div>
-          <div class="card-handle">@GregIsenberg</div>
+          <div class="card-handle">@GregIsenberg · 总榜 #77</div>
           <div class="stats">
             <div class="stat"><span class="stat-val">735.0K</span><span class="stat-label">粉丝</span></div>
             <div class="stat"><span class="stat-val">830</span><span class="stat-label">视频</span></div>
             <div class="stat niche"><span class="stat-label niche-label">互联网创业</span></div>
           </div>
-          <div class="link-line">🔗 youtube.com/@GregIsenberg</div>
+          <div class="link-row">
+            <span class="link-line">🔗 youtube.com/@GregIsenberg</span>
+            <span class="copy" role="button" tabindex="0" data-url="https://www.youtube.com/@GregIsenberg" title="复制频道链接">📋 复制链接</span>
+          </div>
         </div>
         <span class="visit">访问频道 ↗</span>
       </a>
       <a class="card" href="https://www.youtube.com/@eoglobal" target="_blank" rel="noopener" title="点击打开 EO 的 YouTube 频道"
          data-name="eo" data-handle="@eoglobal" data-niche="创业商业">
-        <div class="rank-box">
-          <div class="rank">#17</div>
-          <div class="rank-sub">总榜 #78</div>
+        <div class="ava-wrap">
+          <span class="ava-fb">E</span>
+          <img class="ava-img" src="https://yt3.googleusercontent.com/kaSthcv30zfkvSALhmidJaqCDg9URpGh8OEqbcMTGRdmbSzgVBo56O-acVASzn8Zi6hJIIOP=s176-c-k-c0x00ffffff-no-rj" alt="" loading="lazy" onerror="this.style.display='none'">
+          <span class="rank-chip">#17</span>
         </div>
         <div class="card-body">
           <div class="card-name">EO</div>
-          <div class="card-handle">@eoglobal</div>
+          <div class="card-handle">@eoglobal · 总榜 #78</div>
           <div class="stats">
             <div class="stat"><span class="stat-val">711.0K</span><span class="stat-label">粉丝</span></div>
             <div class="stat"><span class="stat-val">441</span><span class="stat-label">视频</span></div>
             <div class="stat niche"><span class="stat-label niche-label">创业商业</span></div>
           </div>
-          <div class="link-line">🔗 youtube.com/@eoglobal</div>
+          <div class="link-row">
+            <span class="link-line">🔗 youtube.com/@eoglobal</span>
+            <span class="copy" role="button" tabindex="0" data-url="https://www.youtube.com/@eoglobal" title="复制频道链接">📋 复制链接</span>
+          </div>
         </div>
         <span class="visit">访问频道 ↗</span>
       </a>
       <a class="card" href="https://www.youtube.com/@patflynn" target="_blank" rel="noopener" title="点击打开 Pat Flynn 的 YouTube 频道"
          data-name="pat flynn" data-handle="@patflynn" data-niche="网络创业被动收入">
-        <div class="rank-box">
-          <div class="rank">#18</div>
-          <div class="rank-sub">总榜 #91</div>
+        <div class="ava-wrap">
+          <span class="ava-fb">P</span>
+          <img class="ava-img" src="https://yt3.googleusercontent.com/ytc/AIdro_kI_88s7LgRdqWiTXaBKW99bfR0MccsWsuzsOtzmhUr6Lc=s176-c-k-c0x00ffffff-no-rj" alt="" loading="lazy" onerror="this.style.display='none'">
+          <span class="rank-chip">#18</span>
         </div>
         <div class="card-body">
           <div class="card-name">Pat Flynn</div>
-          <div class="card-handle">@patflynn</div>
+          <div class="card-handle">@patflynn · 总榜 #91</div>
           <div class="stats">
             <div class="stat"><span class="stat-val">485.0K</span><span class="stat-label">粉丝</span></div>
             <div class="stat"><span class="stat-val">1K</span><span class="stat-label">视频</span></div>
             <div class="stat niche"><span class="stat-label niche-label">网络创业被动收入</span></div>
           </div>
-          <div class="link-line">🔗 youtube.com/@patflynn</div>
+          <div class="link-row">
+            <span class="link-line">🔗 youtube.com/@patflynn</span>
+            <span class="copy" role="button" tabindex="0" data-url="https://www.youtube.com/@patflynn" title="复制频道链接">📋 复制链接</span>
+          </div>
         </div>
         <span class="visit">访问频道 ↗</span>
       </a>
       <a class="card" href="https://www.youtube.com/@businessmotiversity" target="_blank" rel="noopener" title="点击打开 Business Motiversity 的 YouTube 频道"
          data-name="business motiversity" data-handle="@businessmotiversity" data-niche="创业商业">
-        <div class="rank-box">
-          <div class="rank">#19</div>
-          <div class="rank-sub">总榜 #95</div>
+        <div class="ava-wrap">
+          <span class="ava-fb">B</span>
+          <img class="ava-img" src="https://yt3.googleusercontent.com/6KiL0bvhtQLhVIeiLytVEa-kBiRwjZ1mXpXTIadIoMZeDasqVoyydLCET_RVowiuL-J42H4kFA=s176-c-k-c0x00ffffff-no-rj" alt="" loading="lazy" onerror="this.style.display='none'">
+          <span class="rank-chip">#19</span>
         </div>
         <div class="card-body">
           <div class="card-name">Business Motiversity</div>
-          <div class="card-handle">@businessmotiversity</div>
+          <div class="card-handle">@businessmotiversity · 总榜 #95</div>
           <div class="stats">
             <div class="stat"><span class="stat-val">448.0K</span><span class="stat-label">粉丝</span></div>
             <div class="stat"><span class="stat-val">412</span><span class="stat-label">视频</span></div>
             <div class="stat niche"><span class="stat-label niche-label">创业商业</span></div>
           </div>
-          <div class="link-line">🔗 youtube.com/@businessmotiversity</div>
+          <div class="link-row">
+            <span class="link-line">🔗 youtube.com/@businessmotiversity</span>
+            <span class="copy" role="button" tabindex="0" data-url="https://www.youtube.com/@businessmotiversity" title="复制频道链接">📋 复制链接</span>
+          </div>
         </div>
         <span class="visit">访问频道 ↗</span>
       </a>
       <a class="card" href="https://www.youtube.com/@charliemofficial" target="_blank" rel="noopener" title="点击打开 Charlie Morgan 的 YouTube 频道"
          data-name="charlie morgan" data-handle="@charliemofficial" data-niche="创业商业">
-        <div class="rank-box">
-          <div class="rank">#20</div>
-          <div class="rank-sub">总榜 #99</div>
+        <div class="ava-wrap">
+          <span class="ava-fb">C</span>
+          <img class="ava-img" src="https://yt3.googleusercontent.com/8-WNi4PuGLoBiMBnuofQXg159QyaM4GEpQCnHoOwEwcRxDyk8Mm6TV-OYh88LczAypgZ63nB=s176-c-k-c0x00ffffff-no-rj" alt="" loading="lazy" onerror="this.style.display='none'">
+          <span class="rank-chip">#20</span>
         </div>
         <div class="card-body">
           <div class="card-name">Charlie Morgan</div>
-          <div class="card-handle">@charliemofficial</div>
+          <div class="card-handle">@charliemofficial · 总榜 #99</div>
           <div class="stats">
             <div class="stat"><span class="stat-val">319.0K</span><span class="stat-label">粉丝</span></div>
             <div class="stat"><span class="stat-val">601</span><span class="stat-label">视频</span></div>
             <div class="stat niche"><span class="stat-label niche-label">创业商业</span></div>
           </div>
-          <div class="link-line">🔗 youtube.com/@charliemofficial</div>
+          <div class="link-row">
+            <span class="link-line">🔗 youtube.com/@charliemofficial</span>
+            <span class="copy" role="button" tabindex="0" data-url="https://www.youtube.com/@charliemofficial" title="复制频道链接">📋 复制链接</span>
+          </div>
         </div>
         <span class="visit">访问频道 ↗</span>
       </a>
       <a class="card" href="https://www.youtube.com/@DeanGraziosi" target="_blank" rel="noopener" title="点击打开 Dean Graziosi 的 YouTube 频道"
          data-name="dean graziosi" data-handle="@deangraziosi" data-niche="创业财富教育">
-        <div class="rank-box">
-          <div class="rank">#21</div>
-          <div class="rank-sub">总榜 #100</div>
+        <div class="ava-wrap">
+          <span class="ava-fb">D</span>
+          <img class="ava-img" src="https://yt3.googleusercontent.com/EzI5uh6QCc0VQ-RFlLqOPDdPG906cCZJrMItiJY9dEV9S0viFTzXMuuUQH4A9kSkAcG9EDOLkWI=s176-c-k-c0x00ffffff-no-rj" alt="" loading="lazy" onerror="this.style.display='none'">
+          <span class="rank-chip">#21</span>
         </div>
         <div class="card-body">
           <div class="card-name">Dean Graziosi</div>
-          <div class="card-handle">@DeanGraziosi</div>
+          <div class="card-handle">@DeanGraziosi · 总榜 #100</div>
           <div class="stats">
             <div class="stat"><span class="stat-val">300.0K</span><span class="stat-label">粉丝</span></div>
             <div class="stat"><span class="stat-val">2.1K</span><span class="stat-label">视频</span></div>
             <div class="stat niche"><span class="stat-label niche-label">创业财富教育</span></div>
           </div>
-          <div class="link-line">🔗 youtube.com/@DeanGraziosi</div>
+          <div class="link-row">
+            <span class="link-line">🔗 youtube.com/@DeanGraziosi</span>
+            <span class="copy" role="button" tabindex="0" data-url="https://www.youtube.com/@DeanGraziosi" title="复制频道链接">📋 复制链接</span>
+          </div>
         </div>
         <span class="visit">访问频道 ↗</span>
       </a></div>
@@ -560,487 +667,595 @@
       <div class="grid">
       <a class="card" href="https://www.youtube.com/@MarkTilbury" target="_blank" rel="noopener" title="点击打开 Mark Tilbury 的 YouTube 频道"
          data-name="mark tilbury" data-handle="@marktilbury" data-niche="财富投资教育">
-        <div class="rank-box">
-          <div class="rank">#1</div>
-          <div class="rank-sub">总榜 #3</div>
+        <div class="ava-wrap">
+          <span class="ava-fb">M</span>
+          <img class="ava-img" src="https://yt3.googleusercontent.com/BPc4IMSLYl66XoO5Ueb4N3Tcd1xYLAISjMEHVdJaPV-QeXpeROududxDnsGLqKuQxKpUnXcGZw=s176-c-k-c0x00ffffff-no-rj" alt="" loading="lazy" onerror="this.style.display='none'">
+          <span class="rank-chip">#1</span>
         </div>
         <div class="card-body">
           <div class="card-name">Mark Tilbury</div>
-          <div class="card-handle">@MarkTilbury</div>
+          <div class="card-handle">@MarkTilbury · 总榜 #3</div>
           <div class="stats">
             <div class="stat"><span class="stat-val">9.31M</span><span class="stat-label">粉丝</span></div>
             <div class="stat"><span class="stat-val">383</span><span class="stat-label">视频</span></div>
             <div class="stat niche"><span class="stat-label niche-label">财富投资教育</span></div>
           </div>
-          <div class="link-line">🔗 youtube.com/@MarkTilbury</div>
+          <div class="link-row">
+            <span class="link-line">🔗 youtube.com/@MarkTilbury</span>
+            <span class="copy" role="button" tabindex="0" data-url="https://www.youtube.com/@MarkTilbury" title="复制频道链接">📋 复制链接</span>
+          </div>
         </div>
         <span class="visit">访问频道 ↗</span>
       </a>
       <a class="card" href="https://www.youtube.com/@GrahamStephan" target="_blank" rel="noopener" title="点击打开 Graham Stephan 的 YouTube 频道"
          data-name="graham stephan" data-handle="@grahamstephan" data-niche="个人理财投资">
-        <div class="rank-box">
-          <div class="rank">#2</div>
-          <div class="rank-sub">总榜 #9</div>
+        <div class="ava-wrap">
+          <span class="ava-fb">G</span>
+          <img class="ava-img" src="https://yt3.googleusercontent.com/ytc/AIdro_m4km0pJvdvRxT_gFN6WS16Ggl9D_eX_K8uxCdgTA_hFBo=s176-c-k-c0x00ffffff-no-rj" alt="" loading="lazy" onerror="this.style.display='none'">
+          <span class="rank-chip">#2</span>
         </div>
         <div class="card-body">
           <div class="card-name">Graham Stephan</div>
-          <div class="card-handle">@GrahamStephan</div>
+          <div class="card-handle">@GrahamStephan · 总榜 #9</div>
           <div class="stats">
             <div class="stat"><span class="stat-val">5.18M</span><span class="stat-label">粉丝</span></div>
             <div class="stat"><span class="stat-val">1.7K</span><span class="stat-label">视频</span></div>
             <div class="stat niche"><span class="stat-label niche-label">个人理财投资</span></div>
           </div>
-          <div class="link-line">🔗 youtube.com/@GrahamStephan</div>
+          <div class="link-row">
+            <span class="link-line">🔗 youtube.com/@GrahamStephan</span>
+            <span class="copy" role="button" tabindex="0" data-url="https://www.youtube.com/@GrahamStephan" title="复制频道链接">📋 复制链接</span>
+          </div>
         </div>
         <span class="visit">访问频道 ↗</span>
       </a>
       <a class="card" href="https://www.youtube.com/@coffeezilla" target="_blank" rel="noopener" title="点击打开 Coffeezilla 的 YouTube 频道"
          data-name="coffeezilla" data-handle="@coffeezilla" data-niche="财经调查反诈">
-        <div class="rank-box">
-          <div class="rank">#3</div>
-          <div class="rank-sub">总榜 #13</div>
+        <div class="ava-wrap">
+          <span class="ava-fb">C</span>
+          <img class="ava-img" src="https://yt3.googleusercontent.com/ytc/AIdro_mVUvcD5lwHuz4aiZwH7UCnibCj1u5hquxT8rff1zTGZ6w=s176-c-k-c0x00ffffff-no-rj" alt="" loading="lazy" onerror="this.style.display='none'">
+          <span class="rank-chip">#3</span>
         </div>
         <div class="card-body">
           <div class="card-name">Coffeezilla</div>
-          <div class="card-handle">@coffeezilla</div>
+          <div class="card-handle">@coffeezilla · 总榜 #13</div>
           <div class="stats">
             <div class="stat"><span class="stat-val">4.74M</span><span class="stat-label">粉丝</span></div>
             <div class="stat"><span class="stat-val">533</span><span class="stat-label">视频</span></div>
             <div class="stat niche"><span class="stat-label niche-label">财经调查反诈</span></div>
           </div>
-          <div class="link-line">🔗 youtube.com/@coffeezilla</div>
+          <div class="link-row">
+            <span class="link-line">🔗 youtube.com/@coffeezilla</span>
+            <span class="copy" role="button" tabindex="0" data-url="https://www.youtube.com/@coffeezilla" title="复制频道链接">📋 复制链接</span>
+          </div>
         </div>
         <span class="visit">访问频道 ↗</span>
       </a>
       <a class="card" href="https://www.youtube.com/@TheRamseyShow" target="_blank" rel="noopener" title="点击打开 The Ramsey Show Highlights 的 YouTube 频道"
          data-name="the ramsey show highlights" data-handle="@theramseyshow" data-niche="个人理财">
-        <div class="rank-box">
-          <div class="rank">#4</div>
-          <div class="rank-sub">总榜 #15</div>
+        <div class="ava-wrap">
+          <span class="ava-fb">T</span>
+          <img class="ava-img" src="https://yt3.googleusercontent.com/OjCD_dBR5RnatRJEeprDr4TpSJgLROWVGLirIkvIRnL1EB2G5N7u2N-2DwHeCFmSg40PRGqqJeA=s176-c-k-c0x00ffffff-no-rj" alt="" loading="lazy" onerror="this.style.display='none'">
+          <span class="rank-chip">#4</span>
         </div>
         <div class="card-body">
           <div class="card-name">The Ramsey Show Highlights</div>
-          <div class="card-handle">@TheRamseyShow</div>
+          <div class="card-handle">@TheRamseyShow · 总榜 #15</div>
           <div class="stats">
             <div class="stat"><span class="stat-val">4.60M</span><span class="stat-label">粉丝</span></div>
             <div class="stat"><span class="stat-val">11K</span><span class="stat-label">视频</span></div>
             <div class="stat niche"><span class="stat-label niche-label">个人理财</span></div>
           </div>
-          <div class="link-line">🔗 youtube.com/@TheRamseyShow</div>
+          <div class="link-row">
+            <span class="link-line">🔗 youtube.com/@TheRamseyShow</span>
+            <span class="copy" role="button" tabindex="0" data-url="https://www.youtube.com/@TheRamseyShow" title="复制频道链接">📋 复制链接</span>
+          </div>
         </div>
         <span class="visit">访问频道 ↗</span>
       </a>
       <a class="card" href="https://www.youtube.com/@CalebHammer" target="_blank" rel="noopener" title="点击打开 Caleb Hammer 的 YouTube 频道"
          data-name="caleb hammer" data-handle="@calebhammer" data-niche="个人理财诊断">
-        <div class="rank-box">
-          <div class="rank">#5</div>
-          <div class="rank-sub">总榜 #19</div>
+        <div class="ava-wrap">
+          <span class="ava-fb">C</span>
+          <img class="ava-img" src="https://yt3.googleusercontent.com/gW5N5sL574VGFhCfRXh5Hkmr2B3f6iQZPiIDue7xMZLtBbyCv4oGZzhO6TUeof_V2lssYT06=s176-c-k-c0x00ffffff-no-rj" alt="" loading="lazy" onerror="this.style.display='none'">
+          <span class="rank-chip">#5</span>
         </div>
         <div class="card-body">
           <div class="card-name">Caleb Hammer</div>
-          <div class="card-handle">@CalebHammer</div>
+          <div class="card-handle">@CalebHammer · 总榜 #19</div>
           <div class="stats">
             <div class="stat"><span class="stat-val">4.04M</span><span class="stat-label">粉丝</span></div>
             <div class="stat"><span class="stat-val">5K</span><span class="stat-label">视频</span></div>
             <div class="stat niche"><span class="stat-label niche-label">个人理财诊断</span></div>
           </div>
-          <div class="link-line">🔗 youtube.com/@CalebHammer</div>
+          <div class="link-row">
+            <span class="link-line">🔗 youtube.com/@CalebHammer</span>
+            <span class="copy" role="button" tabindex="0" data-url="https://www.youtube.com/@CalebHammer" title="复制频道链接">📋 复制链接</span>
+          </div>
         </div>
         <span class="visit">访问频道 ↗</span>
       </a>
       <a class="card" href="https://www.youtube.com/@TheRichDadChannel" target="_blank" rel="noopener" title="点击打开 The Rich Dad Channel 的 YouTube 频道"
          data-name="the rich dad channel" data-handle="@therichdadchannel" data-niche="财商教育">
-        <div class="rank-box">
-          <div class="rank">#6</div>
-          <div class="rank-sub">总榜 #20</div>
+        <div class="ava-wrap">
+          <span class="ava-fb">T</span>
+          <img class="ava-img" src="https://yt3.googleusercontent.com/ytc/AIdro_kGdIng9CWC6YjHL0VtEQqJZ3Znlf-HJUv_d4RFlfx3Syw=s176-c-k-c0x00ffffff-no-rj" alt="" loading="lazy" onerror="this.style.display='none'">
+          <span class="rank-chip">#6</span>
         </div>
         <div class="card-body">
           <div class="card-name">The Rich Dad Channel</div>
-          <div class="card-handle">@TheRichDadChannel</div>
+          <div class="card-handle">@TheRichDadChannel · 总榜 #20</div>
           <div class="stats">
             <div class="stat"><span class="stat-val">3.64M</span><span class="stat-label">粉丝</span></div>
             <div class="stat"><span class="stat-val">1.7K</span><span class="stat-label">视频</span></div>
             <div class="stat niche"><span class="stat-label niche-label">财商教育</span></div>
           </div>
-          <div class="link-line">🔗 youtube.com/@TheRichDadChannel</div>
+          <div class="link-row">
+            <span class="link-line">🔗 youtube.com/@TheRichDadChannel</span>
+            <span class="copy" role="button" tabindex="0" data-url="https://www.youtube.com/@TheRichDadChannel" title="复制频道链接">📋 复制链接</span>
+          </div>
         </div>
         <span class="visit">访问频道 ↗</span>
       </a>
       <a class="card" href="https://www.youtube.com/@AndreiJikh" target="_blank" rel="noopener" title="点击打开 Andrei Jikh 的 YouTube 频道"
          data-name="andrei jikh" data-handle="@andreijikh" data-niche="投资理财">
-        <div class="rank-box">
-          <div class="rank">#7</div>
-          <div class="rank-sub">总榜 #22</div>
+        <div class="ava-wrap">
+          <span class="ava-fb">A</span>
+          <img class="ava-img" src="https://yt3.googleusercontent.com/ytc/AIdro_ldXUfcuEwHnjU5vc9I6i-aTCPS0AuLBajd_RoNKhhHGnY=s176-c-k-c0x00ffffff-no-rj" alt="" loading="lazy" onerror="this.style.display='none'">
+          <span class="rank-chip">#7</span>
         </div>
         <div class="card-body">
           <div class="card-name">Andrei Jikh</div>
-          <div class="card-handle">@AndreiJikh</div>
+          <div class="card-handle">@AndreiJikh · 总榜 #22</div>
           <div class="stats">
             <div class="stat"><span class="stat-val">3.40M</span><span class="stat-label">粉丝</span></div>
             <div class="stat"><span class="stat-val">1.4K</span><span class="stat-label">视频</span></div>
             <div class="stat niche"><span class="stat-label niche-label">投资理财</span></div>
           </div>
-          <div class="link-line">🔗 youtube.com/@AndreiJikh</div>
+          <div class="link-row">
+            <span class="link-line">🔗 youtube.com/@AndreiJikh</span>
+            <span class="copy" role="button" tabindex="0" data-url="https://www.youtube.com/@AndreiJikh" title="复制频道链接">📋 复制链接</span>
+          </div>
         </div>
         <span class="visit">访问频道 ↗</span>
       </a>
       <a class="card" href="https://www.youtube.com/@MinorityMindset" target="_blank" rel="noopener" title="点击打开 Minority Mindset 的 YouTube 频道"
          data-name="minority mindset" data-handle="@minoritymindset" data-niche="财商投资">
-        <div class="rank-box">
-          <div class="rank">#8</div>
-          <div class="rank-sub">总榜 #30</div>
+        <div class="ava-wrap">
+          <span class="ava-fb">M</span>
+          <img class="ava-img" src="https://yt3.googleusercontent.com/tSnLGoklYetoFmjku-JIpy-iUqYp1uLlkDURyHVROs3HCuWlSt6BkTy_kL7FO2fxoppNmz13ng=s176-c-k-c0x00ffffff-no-rj" alt="" loading="lazy" onerror="this.style.display='none'">
+          <span class="rank-chip">#8</span>
         </div>
         <div class="card-body">
           <div class="card-name">Minority Mindset</div>
-          <div class="card-handle">@MinorityMindset</div>
+          <div class="card-handle">@MinorityMindset · 总榜 #30</div>
           <div class="stats">
             <div class="stat"><span class="stat-val">2.54M</span><span class="stat-label">粉丝</span></div>
             <div class="stat"><span class="stat-val">2.4K</span><span class="stat-label">视频</span></div>
             <div class="stat niche"><span class="stat-label niche-label">财商投资</span></div>
           </div>
-          <div class="link-line">🔗 youtube.com/@MinorityMindset</div>
+          <div class="link-row">
+            <span class="link-line">🔗 youtube.com/@MinorityMindset</span>
+            <span class="copy" role="button" tabindex="0" data-url="https://www.youtube.com/@MinorityMindset" title="复制频道链接">📋 复制链接</span>
+          </div>
         </div>
         <span class="visit">访问频道 ↗</span>
       </a>
       <a class="card" href="https://www.youtube.com/@nischa" target="_blank" rel="noopener" title="点击打开 Nischa 的 YouTube 频道"
          data-name="nischa" data-handle="@nischa" data-niche="个人理财">
-        <div class="rank-box">
-          <div class="rank">#9</div>
-          <div class="rank-sub">总榜 #34</div>
+        <div class="ava-wrap">
+          <span class="ava-fb">N</span>
+          <img class="ava-img" src="https://yt3.googleusercontent.com/UTzsuVUDKlGFKeO3ffJoqNnbUAEArzvf7bUaPNmNvRaOwSRJ7rLbvlthsI2rkcVEWHx5kkAoZm8=s176-c-k-c0x00ffffff-no-rj" alt="" loading="lazy" onerror="this.style.display='none'">
+          <span class="rank-chip">#9</span>
         </div>
         <div class="card-body">
           <div class="card-name">Nischa</div>
-          <div class="card-handle">@nischa</div>
+          <div class="card-handle">@nischa · 总榜 #34</div>
           <div class="stats">
             <div class="stat"><span class="stat-val">2.27M</span><span class="stat-label">粉丝</span></div>
             <div class="stat"><span class="stat-val">283</span><span class="stat-label">视频</span></div>
             <div class="stat niche"><span class="stat-label niche-label">个人理财</span></div>
           </div>
-          <div class="link-line">🔗 youtube.com/@nischa</div>
+          <div class="link-row">
+            <span class="link-line">🔗 youtube.com/@nischa</span>
+            <span class="copy" role="button" tabindex="0" data-url="https://www.youtube.com/@nischa" title="复制频道链接">📋 复制链接</span>
+          </div>
         </div>
         <span class="visit">访问频道 ↗</span>
       </a>
       <a class="card" href="https://www.youtube.com/@Erika2" target="_blank" rel="noopener" title="点击打开 Erika Kullberg 的 YouTube 频道"
          data-name="erika kullberg" data-handle="@erika2" data-niche="理财法律科普">
-        <div class="rank-box">
-          <div class="rank">#10</div>
-          <div class="rank-sub">总榜 #35</div>
+        <div class="ava-wrap">
+          <span class="ava-fb">E</span>
+          <img class="ava-img" src="https://yt3.googleusercontent.com/ytc/AIdro_n0VDIoiTse8ZCTUKVv-U18jhDquih84ZYgp7TIht6PWg=s176-c-k-c0x00ffffff-no-rj" alt="" loading="lazy" onerror="this.style.display='none'">
+          <span class="rank-chip">#10</span>
         </div>
         <div class="card-body">
           <div class="card-name">Erika Kullberg</div>
-          <div class="card-handle">@Erika2</div>
+          <div class="card-handle">@Erika2 · 总榜 #35</div>
           <div class="stats">
             <div class="stat"><span class="stat-val">2.25M</span><span class="stat-label">粉丝</span></div>
             <div class="stat"><span class="stat-val">354</span><span class="stat-label">视频</span></div>
             <div class="stat niche"><span class="stat-label niche-label">理财法律科普</span></div>
           </div>
-          <div class="link-line">🔗 youtube.com/@Erika2</div>
+          <div class="link-row">
+            <span class="link-line">🔗 youtube.com/@Erika2</span>
+            <span class="copy" role="button" tabindex="0" data-url="https://www.youtube.com/@Erika2" title="复制频道链接">📋 复制链接</span>
+          </div>
         </div>
         <span class="visit">访问频道 ↗</span>
       </a>
       <a class="card" href="https://www.youtube.com/@humphrey" target="_blank" rel="noopener" title="点击打开 Humphrey Yang 的 YouTube 频道"
          data-name="humphrey yang" data-handle="@humphrey" data-niche="个人理财">
-        <div class="rank-box">
-          <div class="rank">#11</div>
-          <div class="rank-sub">总榜 #36</div>
+        <div class="ava-wrap">
+          <span class="ava-fb">H</span>
+          <img class="ava-img" src="https://yt3.googleusercontent.com/G3iRyu9xe7F8ARD1zE5SSdKW2gCLKFwEqtuvyUvAJEvIPXMq11o6DbJPdEyxEAYhZI0JeK8T=s176-c-k-c0x00ffffff-no-rj" alt="" loading="lazy" onerror="this.style.display='none'">
+          <span class="rank-chip">#11</span>
         </div>
         <div class="card-body">
           <div class="card-name">Humphrey Yang</div>
-          <div class="card-handle">@humphrey</div>
+          <div class="card-handle">@humphrey · 总榜 #36</div>
           <div class="stats">
             <div class="stat"><span class="stat-val">2.09M</span><span class="stat-label">粉丝</span></div>
             <div class="stat"><span class="stat-val">1.1K</span><span class="stat-label">视频</span></div>
             <div class="stat niche"><span class="stat-label niche-label">个人理财</span></div>
           </div>
-          <div class="link-line">🔗 youtube.com/@humphrey</div>
+          <div class="link-row">
+            <span class="link-line">🔗 youtube.com/@humphrey</span>
+            <span class="copy" role="button" tabindex="0" data-url="https://www.youtube.com/@humphrey" title="复制频道链接">📋 复制链接</span>
+          </div>
         </div>
         <span class="visit">访问频道 ↗</span>
       </a>
       <a class="card" href="https://www.youtube.com/@Biaheza" target="_blank" rel="noopener" title="点击打开 Biaheza 的 YouTube 频道"
          data-name="biaheza" data-handle="@biaheza" data-niche="投资理财">
-        <div class="rank-box">
-          <div class="rank">#12</div>
-          <div class="rank-sub">总榜 #47</div>
+        <div class="ava-wrap">
+          <span class="ava-fb">B</span>
+          <img class="ava-img" src="https://yt3.googleusercontent.com/mHQEyW9ZIQkUulDu7ewnff4XWSzTww6zAgQWGG-mh_DFm8jtGZs-lcbEpp_qaSKDOtEFdPfo=s176-c-k-c0x00ffffff-no-rj" alt="" loading="lazy" onerror="this.style.display='none'">
+          <span class="rank-chip">#12</span>
         </div>
         <div class="card-body">
           <div class="card-name">Biaheza</div>
-          <div class="card-handle">@Biaheza</div>
+          <div class="card-handle">@Biaheza · 总榜 #47</div>
           <div class="stats">
             <div class="stat"><span class="stat-val">1.57M</span><span class="stat-label">粉丝</span></div>
             <div class="stat"><span class="stat-val">60</span><span class="stat-label">视频</span></div>
             <div class="stat niche"><span class="stat-label niche-label">投资理财</span></div>
           </div>
-          <div class="link-line">🔗 youtube.com/@Biaheza</div>
+          <div class="link-row">
+            <span class="link-line">🔗 youtube.com/@Biaheza</span>
+            <span class="copy" role="button" tabindex="0" data-url="https://www.youtube.com/@Biaheza" title="复制频道链接">📋 复制链接</span>
+          </div>
         </div>
         <span class="visit">访问频道 ↗</span>
       </a>
       <a class="card" href="https://www.youtube.com/@nateobrien" target="_blank" rel="noopener" title="点击打开 Nate O&#x27;Brien 的 YouTube 频道"
          data-name="nate o&#x27;brien" data-handle="@nateobrien" data-niche="投资理财">
-        <div class="rank-box">
-          <div class="rank">#13</div>
-          <div class="rank-sub">总榜 #52</div>
+        <div class="ava-wrap">
+          <span class="ava-fb">N</span>
+          <img class="ava-img" src="https://yt3.googleusercontent.com/ytc/AIdro_mBYiJT291tz86ZN-6UCN1_NciX5rbtJ1YProSDI21KcP4=s176-c-k-c0x00ffffff-no-rj" alt="" loading="lazy" onerror="this.style.display='none'">
+          <span class="rank-chip">#13</span>
         </div>
         <div class="card-body">
           <div class="card-name">Nate O&#x27;Brien</div>
-          <div class="card-handle">@nateobrien</div>
+          <div class="card-handle">@nateobrien · 总榜 #52</div>
           <div class="stats">
             <div class="stat"><span class="stat-val">1.28M</span><span class="stat-label">粉丝</span></div>
             <div class="stat"><span class="stat-val">201</span><span class="stat-label">视频</span></div>
             <div class="stat niche"><span class="stat-label niche-label">投资理财</span></div>
           </div>
-          <div class="link-line">🔗 youtube.com/@nateobrien</div>
+          <div class="link-row">
+            <span class="link-line">🔗 youtube.com/@nateobrien</span>
+            <span class="copy" role="button" tabindex="0" data-url="https://www.youtube.com/@nateobrien" title="复制频道链接">📋 复制链接</span>
+          </div>
         </div>
         <span class="visit">访问频道 ↗</span>
       </a>
       <a class="card" href="https://www.youtube.com/@ThePlainBagel" target="_blank" rel="noopener" title="点击打开 The Plain Bagel 的 YouTube 频道"
          data-name="the plain bagel" data-handle="@theplainbagel" data-niche="投资科普">
-        <div class="rank-box">
-          <div class="rank">#14</div>
-          <div class="rank-sub">总榜 #55</div>
+        <div class="ava-wrap">
+          <span class="ava-fb">T</span>
+          <img class="ava-img" src="https://yt3.googleusercontent.com/ytc/AIdro_lP44aDeBvzShX0gPVRsL9UYY7_VlGf0CG0I9PDaHib0Vw=s176-c-k-c0x00ffffff-no-rj" alt="" loading="lazy" onerror="this.style.display='none'">
+          <span class="rank-chip">#14</span>
         </div>
         <div class="card-body">
           <div class="card-name">The Plain Bagel</div>
-          <div class="card-handle">@ThePlainBagel</div>
+          <div class="card-handle">@ThePlainBagel · 总榜 #55</div>
           <div class="stats">
             <div class="stat"><span class="stat-val">1.22M</span><span class="stat-label">粉丝</span></div>
             <div class="stat"><span class="stat-val">282</span><span class="stat-label">视频</span></div>
             <div class="stat niche"><span class="stat-label niche-label">投资科普</span></div>
           </div>
-          <div class="link-line">🔗 youtube.com/@ThePlainBagel</div>
+          <div class="link-row">
+            <span class="link-line">🔗 youtube.com/@ThePlainBagel</span>
+            <span class="copy" role="button" tabindex="0" data-url="https://www.youtube.com/@ThePlainBagel" title="复制频道链接">📋 复制链接</span>
+          </div>
         </div>
         <span class="visit">访问频道 ↗</span>
       </a>
       <a class="card" href="https://www.youtube.com/@kevinoleary" target="_blank" rel="noopener" title="点击打开 Kevin O&#x27;Leary 的 YouTube 频道"
          data-name="kevin o&#x27;leary" data-handle="@kevinoleary" data-niche="投资商业">
-        <div class="rank-box">
-          <div class="rank">#15</div>
-          <div class="rank-sub">总榜 #56</div>
+        <div class="ava-wrap">
+          <span class="ava-fb">K</span>
+          <img class="ava-img" src="https://yt3.googleusercontent.com/ytc/AIdro_k-WPUCcn4x-psO-NpueQxpjM6LfG8bC4qmPRwLCGP-Cw=s176-c-k-c0x00ffffff-no-rj" alt="" loading="lazy" onerror="this.style.display='none'">
+          <span class="rank-chip">#15</span>
         </div>
         <div class="card-body">
           <div class="card-name">Kevin O&#x27;Leary</div>
-          <div class="card-handle">@kevinoleary</div>
+          <div class="card-handle">@kevinoleary · 总榜 #56</div>
           <div class="stats">
             <div class="stat"><span class="stat-val">1.19M</span><span class="stat-label">粉丝</span></div>
             <div class="stat"><span class="stat-val">2.2K</span><span class="stat-label">视频</span></div>
             <div class="stat niche"><span class="stat-label niche-label">投资商业</span></div>
           </div>
-          <div class="link-line">🔗 youtube.com/@kevinoleary</div>
+          <div class="link-row">
+            <span class="link-line">🔗 youtube.com/@kevinoleary</span>
+            <span class="copy" role="button" tabindex="0" data-url="https://www.youtube.com/@kevinoleary" title="复制频道链接">📋 复制链接</span>
+          </div>
         </div>
         <span class="visit">访问频道 ↗</span>
       </a>
       <a class="card" href="https://www.youtube.com/@wheezywaiter" target="_blank" rel="noopener" title="点击打开 WheezyWaiter 的 YouTube 频道"
          data-name="wheezywaiter" data-handle="@wheezywaiter" data-niche="投资理财">
-        <div class="rank-box">
-          <div class="rank">#16</div>
-          <div class="rank-sub">总榜 #59</div>
+        <div class="ava-wrap">
+          <span class="ava-fb">W</span>
+          <img class="ava-img" src="https://yt3.googleusercontent.com/CQlF37IyawkC2vSvIpg_NLt0eFFzdR4iu2Bg0Eac4uQaWPcA2-_UKXjPcV09Sln86Ja6QegJjp0=s176-c-k-c0x00ffffff-no-rj" alt="" loading="lazy" onerror="this.style.display='none'">
+          <span class="rank-chip">#16</span>
         </div>
         <div class="card-body">
           <div class="card-name">WheezyWaiter</div>
-          <div class="card-handle">@wheezywaiter</div>
+          <div class="card-handle">@wheezywaiter · 总榜 #59</div>
           <div class="stats">
             <div class="stat"><span class="stat-val">1.16M</span><span class="stat-label">粉丝</span></div>
             <div class="stat"><span class="stat-val">1.7K</span><span class="stat-label">视频</span></div>
             <div class="stat niche"><span class="stat-label niche-label">投资理财</span></div>
           </div>
-          <div class="link-line">🔗 youtube.com/@wheezywaiter</div>
+          <div class="link-row">
+            <span class="link-line">🔗 youtube.com/@wheezywaiter</span>
+            <span class="copy" role="button" tabindex="0" data-url="https://www.youtube.com/@wheezywaiter" title="复制频道链接">📋 复制链接</span>
+          </div>
         </div>
         <span class="visit">访问频道 ↗</span>
       </a>
       <a class="card" href="https://www.youtube.com/@ramitsethi" target="_blank" rel="noopener" title="点击打开 I Will Teach You To Be Rich 的 YouTube 频道"
          data-name="i will teach you to be rich" data-handle="@ramitsethi" data-niche="个人理财">
-        <div class="rank-box">
-          <div class="rank">#17</div>
-          <div class="rank-sub">总榜 #60</div>
+        <div class="ava-wrap">
+          <span class="ava-fb">I</span>
+          <img class="ava-img" src="https://yt3.googleusercontent.com/TNDXw7bE4ca7aZCW6O3JyD1cUNdMAZrXbX8AxP8ukSvAld2-a3R-tRKFgDCkx31djchMRffj=s176-c-k-c0x00ffffff-no-rj" alt="" loading="lazy" onerror="this.style.display='none'">
+          <span class="rank-chip">#17</span>
         </div>
         <div class="card-body">
           <div class="card-name">I Will Teach You To Be Rich</div>
-          <div class="card-handle">@ramitsethi</div>
+          <div class="card-handle">@ramitsethi · 总榜 #60</div>
           <div class="stats">
             <div class="stat"><span class="stat-val">1.14M</span><span class="stat-label">粉丝</span></div>
             <div class="stat"><span class="stat-val">1.9K</span><span class="stat-label">视频</span></div>
             <div class="stat niche"><span class="stat-label niche-label">个人理财</span></div>
           </div>
-          <div class="link-line">🔗 youtube.com/@ramitsethi</div>
+          <div class="link-row">
+            <span class="link-line">🔗 youtube.com/@ramitsethi</span>
+            <span class="copy" role="button" tabindex="0" data-url="https://www.youtube.com/@ramitsethi" title="复制频道链接">📋 复制链接</span>
+          </div>
         </div>
         <span class="visit">访问频道 ↗</span>
       </a>
       <a class="card" href="https://www.youtube.com/@VincentChan" target="_blank" rel="noopener" title="点击打开 Vincent Chan 的 YouTube 频道"
          data-name="vincent chan" data-handle="@vincentchan" data-niche="个人理财">
-        <div class="rank-box">
-          <div class="rank">#18</div>
-          <div class="rank-sub">总榜 #68</div>
+        <div class="ava-wrap">
+          <span class="ava-fb">V</span>
+          <img class="ava-img" src="https://yt3.googleusercontent.com/0xC6gHMfwgPUcgYpHrs9AQYCF0KRS6zKWnsIsGiemgBplOVXWi_tmtzgTHtzsdm09hAKE4pyIUo=s176-c-k-c0x00ffffff-no-rj" alt="" loading="lazy" onerror="this.style.display='none'">
+          <span class="rank-chip">#18</span>
         </div>
         <div class="card-body">
           <div class="card-name">Vincent Chan</div>
-          <div class="card-handle">@VincentChan</div>
+          <div class="card-handle">@VincentChan · 总榜 #68</div>
           <div class="stats">
             <div class="stat"><span class="stat-val">990.0K</span><span class="stat-label">粉丝</span></div>
             <div class="stat"><span class="stat-val">375</span><span class="stat-label">视频</span></div>
             <div class="stat niche"><span class="stat-label niche-label">个人理财</span></div>
           </div>
-          <div class="link-line">🔗 youtube.com/@VincentChan</div>
+          <div class="link-row">
+            <span class="link-line">🔗 youtube.com/@VincentChan</span>
+            <span class="copy" role="button" tabindex="0" data-url="https://www.youtube.com/@VincentChan" title="复制频道链接">📋 复制链接</span>
+          </div>
         </div>
         <span class="visit">访问频道 ↗</span>
       </a>
       <a class="card" href="https://www.youtube.com/@FinancialEducation" target="_blank" rel="noopener" title="点击打开 Financial Education 的 YouTube 频道"
          data-name="financial education" data-handle="@financialeducation" data-niche="股票投资">
-        <div class="rank-box">
-          <div class="rank">#19</div>
-          <div class="rank-sub">总榜 #70</div>
+        <div class="ava-wrap">
+          <span class="ava-fb">F</span>
+          <img class="ava-img" src="https://yt3.googleusercontent.com/-WVSshxJrXObjmEVHsy-eTWgfX_oNT1iFyBDiDzgXjJXTrZFas98K9cIogV0r50ILADxiG7wSQ=s176-c-k-c0x00ffffff-no-rj" alt="" loading="lazy" onerror="this.style.display='none'">
+          <span class="rank-chip">#19</span>
         </div>
         <div class="card-body">
           <div class="card-name">Financial Education</div>
-          <div class="card-handle">@FinancialEducation</div>
+          <div class="card-handle">@FinancialEducation · 总榜 #70</div>
           <div class="stats">
             <div class="stat"><span class="stat-val">953.0K</span><span class="stat-label">粉丝</span></div>
             <div class="stat"><span class="stat-val">2.9K</span><span class="stat-label">视频</span></div>
             <div class="stat niche"><span class="stat-label niche-label">股票投资</span></div>
           </div>
-          <div class="link-line">🔗 youtube.com/@FinancialEducation</div>
+          <div class="link-row">
+            <span class="link-line">🔗 youtube.com/@FinancialEducation</span>
+            <span class="copy" role="button" tabindex="0" data-url="https://www.youtube.com/@FinancialEducation" title="复制频道链接">📋 复制链接</span>
+          </div>
         </div>
         <span class="visit">访问频道 ↗</span>
       </a>
       <a class="card" href="https://www.youtube.com/@WallstreetTrapper" target="_blank" rel="noopener" title="点击打开 Wallstreet Trapper 的 YouTube 频道"
          data-name="wallstreet trapper" data-handle="@wallstreettrapper" data-niche="股票投资">
-        <div class="rank-box">
-          <div class="rank">#20</div>
-          <div class="rank-sub">总榜 #75</div>
+        <div class="ava-wrap">
+          <span class="ava-fb">W</span>
+          <img class="ava-img" src="https://yt3.googleusercontent.com/L_9ZrRrpVOt-DV7RanKoHfEgy-mDnXdjeIUHp8WBz4loTBVWK2-OLOsHR_a37y0p9JNTxU4b=s176-c-k-c0x00ffffff-no-rj" alt="" loading="lazy" onerror="this.style.display='none'">
+          <span class="rank-chip">#20</span>
         </div>
         <div class="card-body">
           <div class="card-name">Wallstreet Trapper</div>
-          <div class="card-handle">@WallstreetTrapper</div>
+          <div class="card-handle">@WallstreetTrapper · 总榜 #75</div>
           <div class="stats">
             <div class="stat"><span class="stat-val">788.0K</span><span class="stat-label">粉丝</span></div>
             <div class="stat"><span class="stat-val">1.2K</span><span class="stat-label">视频</span></div>
             <div class="stat niche"><span class="stat-label niche-label">股票投资</span></div>
           </div>
-          <div class="link-line">🔗 youtube.com/@WallstreetTrapper</div>
+          <div class="link-row">
+            <span class="link-line">🔗 youtube.com/@WallstreetTrapper</span>
+            <span class="copy" role="button" tabindex="0" data-url="https://www.youtube.com/@WallstreetTrapper" title="复制频道链接">📋 复制链接</span>
+          </div>
         </div>
         <span class="visit">访问频道 ↗</span>
       </a>
       <a class="card" href="https://www.youtube.com/@CalltoLeap" target="_blank" rel="noopener" title="点击打开 Steve | Call to Leap 的 YouTube 频道"
          data-name="steve | call to leap" data-handle="@calltoleap" data-niche="投资理财">
-        <div class="rank-box">
-          <div class="rank">#21</div>
-          <div class="rank-sub">总榜 #76</div>
+        <div class="ava-wrap">
+          <span class="ava-fb">S</span>
+          <img class="ava-img" src="https://yt3.googleusercontent.com/KWLWCxGXDEPbkmMO08ikaj2sGz1ydTKvV93VaL-jKKct9JaafUbJR8w0JVadNgqxaxBM92Fppw=s176-c-k-c0x00ffffff-no-rj" alt="" loading="lazy" onerror="this.style.display='none'">
+          <span class="rank-chip">#21</span>
         </div>
         <div class="card-body">
           <div class="card-name">Steve | Call to Leap</div>
-          <div class="card-handle">@CalltoLeap</div>
+          <div class="card-handle">@CalltoLeap · 总榜 #76</div>
           <div class="stats">
             <div class="stat"><span class="stat-val">756.0K</span><span class="stat-label">粉丝</span></div>
             <div class="stat"><span class="stat-val">1.4K</span><span class="stat-label">视频</span></div>
             <div class="stat niche"><span class="stat-label niche-label">投资理财</span></div>
           </div>
-          <div class="link-line">🔗 youtube.com/@CalltoLeap</div>
+          <div class="link-row">
+            <span class="link-line">🔗 youtube.com/@CalltoLeap</span>
+            <span class="copy" role="button" tabindex="0" data-url="https://www.youtube.com/@CalltoLeap" title="复制频道链接">📋 复制链接</span>
+          </div>
         </div>
         <span class="visit">访问频道 ↗</span>
       </a>
       <a class="card" href="https://www.youtube.com/@MoneyGuyShow" target="_blank" rel="noopener" title="点击打开 The Money Guy Show 的 YouTube 频道"
          data-name="the money guy show" data-handle="@moneyguyshow" data-niche="个人理财">
-        <div class="rank-box">
-          <div class="rank">#22</div>
-          <div class="rank-sub">总榜 #79</div>
+        <div class="ava-wrap">
+          <span class="ava-fb">T</span>
+          <img class="ava-img" src="https://yt3.googleusercontent.com/lBMDs2uWynRVfdkPeGU4RrZMBpMPiZYvfc3YPt4u5e12BKauK8_2Zu3dncl6ou5KNagDBVjb-w=s176-c-k-c0x00ffffff-no-rj" alt="" loading="lazy" onerror="this.style.display='none'">
+          <span class="rank-chip">#22</span>
         </div>
         <div class="card-body">
           <div class="card-name">The Money Guy Show</div>
-          <div class="card-handle">@MoneyGuyShow</div>
+          <div class="card-handle">@MoneyGuyShow · 总榜 #79</div>
           <div class="stats">
             <div class="stat"><span class="stat-val">708.0K</span><span class="stat-label">粉丝</span></div>
             <div class="stat"><span class="stat-val">5.7K</span><span class="stat-label">视频</span></div>
             <div class="stat niche"><span class="stat-label niche-label">个人理财</span></div>
           </div>
-          <div class="link-line">🔗 youtube.com/@MoneyGuyShow</div>
+          <div class="link-row">
+            <span class="link-line">🔗 youtube.com/@MoneyGuyShow</span>
+            <span class="copy" role="button" tabindex="0" data-url="https://www.youtube.com/@MoneyGuyShow" title="复制频道链接">📋 复制链接</span>
+          </div>
         </div>
         <span class="visit">访问频道 ↗</span>
       </a>
       <a class="card" href="https://www.youtube.com/@BenFelixCSI" target="_blank" rel="noopener" title="点击打开 Ben Felix 的 YouTube 频道"
          data-name="ben felix" data-handle="@benfelixcsi" data-niche="指数投资科普">
-        <div class="rank-box">
-          <div class="rank">#23</div>
-          <div class="rank-sub">总榜 #81</div>
+        <div class="ava-wrap">
+          <span class="ava-fb">B</span>
+          <img class="ava-img" src="https://yt3.googleusercontent.com/Q9La9g5drY7i94tdJrwo3gqaeFGDU7FI1o4-yTgAon1tYJ9Xgka-lREKzQic3UrW-afzm81w=s176-c-k-c0x00ffffff-no-rj" alt="" loading="lazy" onerror="this.style.display='none'">
+          <span class="rank-chip">#23</span>
         </div>
         <div class="card-body">
           <div class="card-name">Ben Felix</div>
-          <div class="card-handle">@BenFelixCSI</div>
+          <div class="card-handle">@BenFelixCSI · 总榜 #81</div>
           <div class="stats">
             <div class="stat"><span class="stat-val">654.0K</span><span class="stat-label">粉丝</span></div>
             <div class="stat"><span class="stat-val">181</span><span class="stat-label">视频</span></div>
             <div class="stat niche"><span class="stat-label niche-label">指数投资科普</span></div>
           </div>
-          <div class="link-line">🔗 youtube.com/@BenFelixCSI</div>
+          <div class="link-row">
+            <span class="link-line">🔗 youtube.com/@BenFelixCSI</span>
+            <span class="copy" role="button" tabindex="0" data-url="https://www.youtube.com/@BenFelixCSI" title="复制频道链接">📋 复制链接</span>
+          </div>
         </div>
         <span class="visit">访问频道 ↗</span>
       </a>
       <a class="card" href="https://www.youtube.com/@JasonGraystone" target="_blank" rel="noopener" title="点击打开 Jason Graystone 的 YouTube 频道"
          data-name="jason graystone" data-handle="@jasongraystone" data-niche="投资理财">
-        <div class="rank-box">
-          <div class="rank">#24</div>
-          <div class="rank-sub">总榜 #87</div>
+        <div class="ava-wrap">
+          <span class="ava-fb">J</span>
+          <img class="ava-img" src="https://yt3.googleusercontent.com/4SzT7UumXP54iq7WGJMPnJdps0nPLBMnJ17D5CXkuaJGij2d7k28b0CsITNTtAf4IPNqXZmRtg=s176-c-k-c0x00ffffff-no-rj" alt="" loading="lazy" onerror="this.style.display='none'">
+          <span class="rank-chip">#24</span>
         </div>
         <div class="card-body">
           <div class="card-name">Jason Graystone</div>
-          <div class="card-handle">@JasonGraystone</div>
+          <div class="card-handle">@JasonGraystone · 总榜 #87</div>
           <div class="stats">
             <div class="stat"><span class="stat-val">600.0K</span><span class="stat-label">粉丝</span></div>
             <div class="stat"><span class="stat-val">1K</span><span class="stat-label">视频</span></div>
             <div class="stat niche"><span class="stat-label niche-label">投资理财</span></div>
           </div>
-          <div class="link-line">🔗 youtube.com/@JasonGraystone</div>
+          <div class="link-row">
+            <span class="link-line">🔗 youtube.com/@JasonGraystone</span>
+            <span class="copy" role="button" tabindex="0" data-url="https://www.youtube.com/@JasonGraystone" title="复制频道链接">📋 复制链接</span>
+          </div>
         </div>
         <span class="visit">访问频道 ↗</span>
       </a>
       <a class="card" href="https://www.youtube.com/@GeorgeGammon" target="_blank" rel="noopener" title="点击打开 George Gammon 的 YouTube 频道"
          data-name="george gammon" data-handle="@georgegammon" data-niche="投资理财">
-        <div class="rank-box">
-          <div class="rank">#25</div>
-          <div class="rank-sub">总榜 #88</div>
+        <div class="ava-wrap">
+          <span class="ava-fb">G</span>
+          <img class="ava-img" src="https://yt3.googleusercontent.com/ytc/AIdro_lh4VN7WaKjftoghaqxNcXOAMgYcv-1ofM0RNHDYI9uaw=s176-c-k-c0x00ffffff-no-rj" alt="" loading="lazy" onerror="this.style.display='none'">
+          <span class="rank-chip">#25</span>
         </div>
         <div class="card-body">
           <div class="card-name">George Gammon</div>
-          <div class="card-handle">@GeorgeGammon</div>
+          <div class="card-handle">@GeorgeGammon · 总榜 #88</div>
           <div class="stats">
             <div class="stat"><span class="stat-val">587.0K</span><span class="stat-label">粉丝</span></div>
             <div class="stat"><span class="stat-val">973</span><span class="stat-label">视频</span></div>
             <div class="stat niche"><span class="stat-label niche-label">投资理财</span></div>
           </div>
-          <div class="link-line">🔗 youtube.com/@GeorgeGammon</div>
+          <div class="link-row">
+            <span class="link-line">🔗 youtube.com/@GeorgeGammon</span>
+            <span class="copy" role="button" tabindex="0" data-url="https://www.youtube.com/@GeorgeGammon" title="复制频道链接">📋 复制链接</span>
+          </div>
         </div>
         <span class="visit">访问频道 ↗</span>
       </a>
       <a class="card" href="https://www.youtube.com/@MotleyFool" target="_blank" rel="noopener" title="点击打开 The Motley Fool 的 YouTube 频道"
          data-name="the motley fool" data-handle="@motleyfool" data-niche="股票投资">
-        <div class="rank-box">
-          <div class="rank">#26</div>
-          <div class="rank-sub">总榜 #93</div>
+        <div class="ava-wrap">
+          <span class="ava-fb">T</span>
+          <img class="ava-img" src="https://yt3.googleusercontent.com/ytc/AIdro_kgeEsYdPj_SHCscmwZJZOKPWd8yARKgftZvLVLvmGUCnE=s176-c-k-c0x00ffffff-no-rj" alt="" loading="lazy" onerror="this.style.display='none'">
+          <span class="rank-chip">#26</span>
         </div>
         <div class="card-body">
           <div class="card-name">The Motley Fool</div>
-          <div class="card-handle">@MotleyFool</div>
+          <div class="card-handle">@MotleyFool · 总榜 #93</div>
           <div class="stats">
             <div class="stat"><span class="stat-val">470.0K</span><span class="stat-label">粉丝</span></div>
             <div class="stat"><span class="stat-val">4.6K</span><span class="stat-label">视频</span></div>
             <div class="stat niche"><span class="stat-label niche-label">股票投资</span></div>
           </div>
-          <div class="link-line">🔗 youtube.com/@MotleyFool</div>
+          <div class="link-row">
+            <span class="link-line">🔗 youtube.com/@MotleyFool</span>
+            <span class="copy" role="button" tabindex="0" data-url="https://www.youtube.com/@MotleyFool" title="复制频道链接">📋 复制链接</span>
+          </div>
         </div>
         <span class="visit">访问频道 ↗</span>
       </a>
       <a class="card" href="https://www.youtube.com/@EverythingMoney" target="_blank" rel="noopener" title="点击打开 Everything Money 的 YouTube 频道"
          data-name="everything money" data-handle="@everythingmoney" data-niche="股票投资">
-        <div class="rank-box">
-          <div class="rank">#27</div>
-          <div class="rank-sub">总榜 #98</div>
+        <div class="ava-wrap">
+          <span class="ava-fb">E</span>
+          <img class="ava-img" src="https://yt3.googleusercontent.com/epbSLPsuUsySttGb1YYeauX1Mfu25b11xyeuUvfw2iTXlwtjPyL7Nt9R2heXZf00VOJSzWwJCw=s176-c-k-c0x00ffffff-no-rj" alt="" loading="lazy" onerror="this.style.display='none'">
+          <span class="rank-chip">#27</span>
         </div>
         <div class="card-body">
           <div class="card-name">Everything Money</div>
-          <div class="card-handle">@EverythingMoney</div>
+          <div class="card-handle">@EverythingMoney · 总榜 #98</div>
           <div class="stats">
             <div class="stat"><span class="stat-val">418.0K</span><span class="stat-label">粉丝</span></div>
             <div class="stat"><span class="stat-val">3.1K</span><span class="stat-label">视频</span></div>
             <div class="stat niche"><span class="stat-label niche-label">股票投资</span></div>
           </div>
-          <div class="link-line">🔗 youtube.com/@EverythingMoney</div>
+          <div class="link-row">
+            <span class="link-line">🔗 youtube.com/@EverythingMoney</span>
+            <span class="copy" role="button" tabindex="0" data-url="https://www.youtube.com/@EverythingMoney" title="复制频道链接">📋 复制链接</span>
+          </div>
         </div>
         <span class="visit">访问频道 ↗</span>
       </a></div>
@@ -1055,199 +1270,243 @@
       <div class="grid">
       <a class="card" href="https://www.youtube.com/@DanLok" target="_blank" rel="noopener" title="点击打开 Dan Lok 的 YouTube 频道"
          data-name="dan lok" data-handle="@danlok" data-niche="销售培训">
-        <div class="rank-box">
-          <div class="rank">#1</div>
-          <div class="rank-sub">总榜 #12</div>
+        <div class="ava-wrap">
+          <span class="ava-fb">D</span>
+          <img class="ava-img" src="https://yt3.googleusercontent.com/orJ-sDH5po1hipYTbvS90fDpP3sqbAn8LFA5E7UeOd23_6UUfAtD0BgQBiJaPpoRfelvCRhPpQ=s176-c-k-c0x00ffffff-no-rj" alt="" loading="lazy" onerror="this.style.display='none'">
+          <span class="rank-chip">#1</span>
         </div>
         <div class="card-body">
           <div class="card-name">Dan Lok</div>
-          <div class="card-handle">@DanLok</div>
+          <div class="card-handle">@DanLok · 总榜 #12</div>
           <div class="stats">
             <div class="stat"><span class="stat-val">4.89M</span><span class="stat-label">粉丝</span></div>
             <div class="stat"><span class="stat-val">2.3K</span><span class="stat-label">视频</span></div>
             <div class="stat niche"><span class="stat-label niche-label">销售培训</span></div>
           </div>
-          <div class="link-line">🔗 youtube.com/@DanLok</div>
+          <div class="link-row">
+            <span class="link-line">🔗 youtube.com/@DanLok</span>
+            <span class="copy" role="button" tabindex="0" data-url="https://www.youtube.com/@DanLok" title="复制频道链接">📋 复制链接</span>
+          </div>
         </div>
         <span class="visit">访问频道 ↗</span>
       </a>
       <a class="card" href="https://www.youtube.com/@GrantCardone" target="_blank" rel="noopener" title="点击打开 Grant Cardone 的 YouTube 频道"
          data-name="grant cardone" data-handle="@grantcardone" data-niche="销售与商业">
-        <div class="rank-box">
-          <div class="rank">#2</div>
-          <div class="rank-sub">总榜 #23</div>
+        <div class="ava-wrap">
+          <span class="ava-fb">G</span>
+          <img class="ava-img" src="https://yt3.googleusercontent.com/uuJDrGhEYCd61l50VatXx5n3RWFVyGEfaBAsMZ3KW4H4rQNkXd79brxcdXfqpIi8_c6V-h1KE5s=s176-c-k-c0x00ffffff-no-rj" alt="" loading="lazy" onerror="this.style.display='none'">
+          <span class="rank-chip">#2</span>
         </div>
         <div class="card-body">
           <div class="card-name">Grant Cardone</div>
-          <div class="card-handle">@GrantCardone</div>
+          <div class="card-handle">@GrantCardone · 总榜 #23</div>
           <div class="stats">
             <div class="stat"><span class="stat-val">3.15M</span><span class="stat-label">粉丝</span></div>
             <div class="stat"><span class="stat-val">6.9K</span><span class="stat-label">视频</span></div>
             <div class="stat niche"><span class="stat-label niche-label">销售与商业</span></div>
           </div>
-          <div class="link-line">🔗 youtube.com/@GrantCardone</div>
+          <div class="link-row">
+            <span class="link-line">🔗 youtube.com/@GrantCardone</span>
+            <span class="copy" role="button" tabindex="0" data-url="https://www.youtube.com/@GrantCardone" title="复制频道链接">📋 复制链接</span>
+          </div>
         </div>
         <span class="visit">访问频道 ↗</span>
       </a>
       <a class="card" href="https://www.youtube.com/@BrianTracyOfficial" target="_blank" rel="noopener" title="点击打开 Brian Tracy 的 YouTube 频道"
          data-name="brian tracy" data-handle="@briantracyofficial" data-niche="销售商业经典">
-        <div class="rank-box">
-          <div class="rank">#3</div>
-          <div class="rank-sub">总榜 #39</div>
+        <div class="ava-wrap">
+          <span class="ava-fb">B</span>
+          <img class="ava-img" src="https://yt3.googleusercontent.com/ytc/AIdro_maH-q7uyydEVwAb4JtJjL5sKFdNqgRd8sixjdo9nu7LW0=s176-c-k-c0x00ffffff-no-rj" alt="" loading="lazy" onerror="this.style.display='none'">
+          <span class="rank-chip">#3</span>
         </div>
         <div class="card-body">
           <div class="card-name">Brian Tracy</div>
-          <div class="card-handle">@BrianTracyOfficial</div>
+          <div class="card-handle">@BrianTracyOfficial · 总榜 #39</div>
           <div class="stats">
             <div class="stat"><span class="stat-val">1.96M</span><span class="stat-label">粉丝</span></div>
             <div class="stat"><span class="stat-val">1.4K</span><span class="stat-label">视频</span></div>
             <div class="stat niche"><span class="stat-label niche-label">销售商业经典</span></div>
           </div>
-          <div class="link-line">🔗 youtube.com/@BrianTracyOfficial</div>
+          <div class="link-row">
+            <span class="link-line">🔗 youtube.com/@BrianTracyOfficial</span>
+            <span class="copy" role="button" tabindex="0" data-url="https://www.youtube.com/@BrianTracyOfficial" title="复制频道链接">📋 复制链接</span>
+          </div>
         </div>
         <span class="visit">访问频道 ↗</span>
       </a>
       <a class="card" href="https://www.youtube.com/@neilpatel" target="_blank" rel="noopener" title="点击打开 Neil Patel 的 YouTube 频道"
          data-name="neil patel" data-handle="@neilpatel" data-niche="数字营销">
-        <div class="rank-box">
-          <div class="rank">#4</div>
-          <div class="rank-sub">总榜 #45</div>
+        <div class="ava-wrap">
+          <span class="ava-fb">N</span>
+          <img class="ava-img" src="https://yt3.googleusercontent.com/4BGzw189O7AoJiYiqwpfwrv0I6gFLXp4oEK1DMjHsR4E1gs0hQs2ieXYNS3dukwsFEWdCYlI=s176-c-k-c0x00ffffff-no-rj" alt="" loading="lazy" onerror="this.style.display='none'">
+          <span class="rank-chip">#4</span>
         </div>
         <div class="card-body">
           <div class="card-name">Neil Patel</div>
-          <div class="card-handle">@neilpatel</div>
+          <div class="card-handle">@neilpatel · 总榜 #45</div>
           <div class="stats">
             <div class="stat"><span class="stat-val">1.60M</span><span class="stat-label">粉丝</span></div>
             <div class="stat"><span class="stat-val">2.6K</span><span class="stat-label">视频</span></div>
             <div class="stat niche"><span class="stat-label niche-label">数字营销</span></div>
           </div>
-          <div class="link-line">🔗 youtube.com/@neilpatel</div>
+          <div class="link-row">
+            <span class="link-line">🔗 youtube.com/@neilpatel</span>
+            <span class="copy" role="button" tabindex="0" data-url="https://www.youtube.com/@neilpatel" title="复制频道链接">📋 复制链接</span>
+          </div>
         </div>
         <span class="visit">访问频道 ↗</span>
       </a>
       <a class="card" href="https://www.youtube.com/@vthembekwayo" target="_blank" rel="noopener" title="点击打开 Vusi Thembekwayo 的 YouTube 频道"
          data-name="vusi thembekwayo" data-handle="@vthembekwayo" data-niche="销售演讲">
-        <div class="rank-box">
-          <div class="rank">#5</div>
-          <div class="rank-sub">总榜 #54</div>
+        <div class="ava-wrap">
+          <span class="ava-fb">V</span>
+          <img class="ava-img" src="https://yt3.googleusercontent.com/u5y57t2T9ZuHLKbq_kgaKE4TC2PtNb1DIOtUbjoQL2qdtD5ZVr1mW3UE30--PprhBTm-gQLD=s176-c-k-c0x00ffffff-no-rj" alt="" loading="lazy" onerror="this.style.display='none'">
+          <span class="rank-chip">#5</span>
         </div>
         <div class="card-body">
           <div class="card-name">Vusi Thembekwayo</div>
-          <div class="card-handle">@vthembekwayo</div>
+          <div class="card-handle">@vthembekwayo · 总榜 #54</div>
           <div class="stats">
             <div class="stat"><span class="stat-val">1.27M</span><span class="stat-label">粉丝</span></div>
             <div class="stat"><span class="stat-val">1.2K</span><span class="stat-label">视频</span></div>
             <div class="stat niche"><span class="stat-label niche-label">销售演讲</span></div>
           </div>
-          <div class="link-line">🔗 youtube.com/@vthembekwayo</div>
+          <div class="link-row">
+            <span class="link-line">🔗 youtube.com/@vthembekwayo</span>
+            <span class="copy" role="button" tabindex="0" data-url="https://www.youtube.com/@vthembekwayo" title="复制频道链接">📋 复制链接</span>
+          </div>
         </div>
         <span class="visit">访问频道 ↗</span>
       </a>
       <a class="card" href="https://www.youtube.com/@thenataliedawson" target="_blank" rel="noopener" title="点击打开 Natalie Dawson 的 YouTube 频道"
          data-name="natalie dawson" data-handle="@thenataliedawson" data-niche="销售创业">
-        <div class="rank-box">
-          <div class="rank">#6</div>
-          <div class="rank-sub">总榜 #63</div>
+        <div class="ava-wrap">
+          <span class="ava-fb">N</span>
+          <img class="ava-img" src="https://yt3.googleusercontent.com/9hNpNiyqQdk2_l-6w989AZO6NmbEnGfSDx3EICwr_rDZH94D5tKW4jtm9SWed6wNLRcLYoNfcQ=s176-c-k-c0x00ffffff-no-rj" alt="" loading="lazy" onerror="this.style.display='none'">
+          <span class="rank-chip">#6</span>
         </div>
         <div class="card-body">
           <div class="card-name">Natalie Dawson</div>
-          <div class="card-handle">@thenataliedawson</div>
+          <div class="card-handle">@thenataliedawson · 总榜 #63</div>
           <div class="stats">
             <div class="stat"><span class="stat-val">1.12M</span><span class="stat-label">粉丝</span></div>
             <div class="stat"><span class="stat-val">1.9K</span><span class="stat-label">视频</span></div>
             <div class="stat niche"><span class="stat-label niche-label">销售创业</span></div>
           </div>
-          <div class="link-line">🔗 youtube.com/@thenataliedawson</div>
+          <div class="link-row">
+            <span class="link-line">🔗 youtube.com/@thenataliedawson</span>
+            <span class="copy" role="button" tabindex="0" data-url="https://www.youtube.com/@thenataliedawson" title="复制频道链接">📋 复制链接</span>
+          </div>
         </div>
         <span class="visit">访问频道 ↗</span>
       </a>
       <a class="card" href="https://www.youtube.com/@AndyElliottOfficial" target="_blank" rel="noopener" title="点击打开 Andy Elliott 的 YouTube 频道"
          data-name="andy elliott" data-handle="@andyelliottofficial" data-niche="销售培训">
-        <div class="rank-box">
-          <div class="rank">#7</div>
-          <div class="rank-sub">总榜 #65</div>
+        <div class="ava-wrap">
+          <span class="ava-fb">A</span>
+          <img class="ava-img" src="https://yt3.googleusercontent.com/icNvBX7chZRWLPNzijLJeulvE4A1gwLD5NXCdqdGbWyCB3h21D-RsTzNzzR-gnxsKdwZMmoW9g=s176-c-k-c0x00ffffff-no-rj" alt="" loading="lazy" onerror="this.style.display='none'">
+          <span class="rank-chip">#7</span>
         </div>
         <div class="card-body">
           <div class="card-name">Andy Elliott</div>
-          <div class="card-handle">@AndyElliottOfficial</div>
+          <div class="card-handle">@AndyElliottOfficial · 总榜 #65</div>
           <div class="stats">
             <div class="stat"><span class="stat-val">1.05M</span><span class="stat-label">粉丝</span></div>
             <div class="stat"><span class="stat-val">5.2K</span><span class="stat-label">视频</span></div>
             <div class="stat niche"><span class="stat-label niche-label">销售培训</span></div>
           </div>
-          <div class="link-line">🔗 youtube.com/@AndyElliottOfficial</div>
+          <div class="link-row">
+            <span class="link-line">🔗 youtube.com/@AndyElliottOfficial</span>
+            <span class="copy" role="button" tabindex="0" data-url="https://www.youtube.com/@AndyElliottOfficial" title="复制频道链接">📋 复制链接</span>
+          </div>
         </div>
         <span class="visit">访问频道 ↗</span>
       </a>
       <a class="card" href="https://www.youtube.com/@wolfofwallst" target="_blank" rel="noopener" title="点击打开 The Wolf of Wall Street 的 YouTube 频道"
          data-name="the wolf of wall street" data-handle="@wolfofwallst" data-niche="销售交易">
-        <div class="rank-box">
-          <div class="rank">#8</div>
-          <div class="rank-sub">总榜 #74</div>
+        <div class="ava-wrap">
+          <span class="ava-fb">T</span>
+          <img class="ava-img" src="https://yt3.googleusercontent.com/ytc/AIdro_kLIQhWPsib7GfCzCGS3w8raoaIgxmbl9p-IZsG5FDAnRg=s176-c-k-c0x00ffffff-no-rj" alt="" loading="lazy" onerror="this.style.display='none'">
+          <span class="rank-chip">#8</span>
         </div>
         <div class="card-body">
           <div class="card-name">The Wolf of Wall Street</div>
-          <div class="card-handle">@wolfofwallst</div>
+          <div class="card-handle">@wolfofwallst · 总榜 #74</div>
           <div class="stats">
             <div class="stat"><span class="stat-val">823.0K</span><span class="stat-label">粉丝</span></div>
             <div class="stat"><span class="stat-val">963</span><span class="stat-label">视频</span></div>
             <div class="stat niche"><span class="stat-label niche-label">销售交易</span></div>
           </div>
-          <div class="link-line">🔗 youtube.com/@wolfofwallst</div>
+          <div class="link-row">
+            <span class="link-line">🔗 youtube.com/@wolfofwallst</span>
+            <span class="copy" role="button" tabindex="0" data-url="https://www.youtube.com/@wolfofwallst" title="复制频道链接">📋 复制链接</span>
+          </div>
         </div>
         <span class="visit">访问频道 ↗</span>
       </a>
       <a class="card" href="https://www.youtube.com/@SabriSubyOfficial" target="_blank" rel="noopener" title="点击打开 Sabri Suby 的 YouTube 频道"
          data-name="sabri suby" data-handle="@sabrisubyofficial" data-niche="数字营销">
-        <div class="rank-box">
-          <div class="rank">#9</div>
-          <div class="rank-sub">总榜 #89</div>
+        <div class="ava-wrap">
+          <span class="ava-fb">S</span>
+          <img class="ava-img" src="https://yt3.googleusercontent.com/jWAjAGz26vYOGqtRMBMXGM00IHg2dL6D3nVjTMCuivSIZauZKSlGrQIayTjhLCXeBvDuwpsKm_c=s176-c-k-c0x00ffffff-no-rj" alt="" loading="lazy" onerror="this.style.display='none'">
+          <span class="rank-chip">#9</span>
         </div>
         <div class="card-body">
           <div class="card-name">Sabri Suby</div>
-          <div class="card-handle">@SabriSubyOfficial</div>
+          <div class="card-handle">@SabriSubyOfficial · 总榜 #89</div>
           <div class="stats">
             <div class="stat"><span class="stat-val">533.0K</span><span class="stat-label">粉丝</span></div>
             <div class="stat"><span class="stat-val">817</span><span class="stat-label">视频</span></div>
             <div class="stat niche"><span class="stat-label niche-label">数字营销</span></div>
           </div>
-          <div class="link-line">🔗 youtube.com/@SabriSubyOfficial</div>
+          <div class="link-row">
+            <span class="link-line">🔗 youtube.com/@SabriSubyOfficial</span>
+            <span class="copy" role="button" tabindex="0" data-url="https://www.youtube.com/@SabriSubyOfficial" title="复制频道链接">📋 复制链接</span>
+          </div>
         </div>
         <span class="visit">访问频道 ↗</span>
       </a>
       <a class="card" href="https://www.youtube.com/@JeremyMiner" target="_blank" rel="noopener" title="点击打开 Jeremy Miner 的 YouTube 频道"
          data-name="jeremy miner" data-handle="@jeremyminer" data-niche="销售培训">
-        <div class="rank-box">
-          <div class="rank">#10</div>
-          <div class="rank-sub">总榜 #92</div>
+        <div class="ava-wrap">
+          <span class="ava-fb">J</span>
+          <img class="ava-img" src="https://yt3.googleusercontent.com/K84NzW1wOzdUap3dlFvcmqffY99hX9DHj4RaLY8lPwceByyk7oyXX1IbKuV4M7vFbBcfX7wNUQ=s176-c-k-c0x00ffffff-no-rj" alt="" loading="lazy" onerror="this.style.display='none'">
+          <span class="rank-chip">#10</span>
         </div>
         <div class="card-body">
           <div class="card-name">Jeremy Miner</div>
-          <div class="card-handle">@JeremyMiner</div>
+          <div class="card-handle">@JeremyMiner · 总榜 #92</div>
           <div class="stats">
             <div class="stat"><span class="stat-val">477.0K</span><span class="stat-label">粉丝</span></div>
             <div class="stat"><span class="stat-val">3.4K</span><span class="stat-label">视频</span></div>
             <div class="stat niche"><span class="stat-label niche-label">销售培训</span></div>
           </div>
-          <div class="link-line">🔗 youtube.com/@JeremyMiner</div>
+          <div class="link-row">
+            <span class="link-line">🔗 youtube.com/@JeremyMiner</span>
+            <span class="copy" role="button" tabindex="0" data-url="https://www.youtube.com/@JeremyMiner" title="复制频道链接">📋 复制链接</span>
+          </div>
         </div>
         <span class="visit">访问频道 ↗</span>
       </a>
       <a class="card" href="https://www.youtube.com/@PatrickDang" target="_blank" rel="noopener" title="点击打开 Patrick Dang 的 YouTube 频道"
          data-name="patrick dang" data-handle="@patrickdang" data-niche="销售培训">
-        <div class="rank-box">
-          <div class="rank">#11</div>
-          <div class="rank-sub">总榜 #96</div>
+        <div class="ava-wrap">
+          <span class="ava-fb">P</span>
+          <img class="ava-img" src="https://yt3.googleusercontent.com/9FGi29r4SoqSGdMewr5xaXlx29XaJP8HE0ec71nE1ySUJ6v6f2pPT33kiO_wm9cvx6MjOkq2iA=s176-c-k-c0x00ffffff-no-rj" alt="" loading="lazy" onerror="this.style.display='none'">
+          <span class="rank-chip">#11</span>
         </div>
         <div class="card-body">
           <div class="card-name">Patrick Dang</div>
-          <div class="card-handle">@PatrickDang</div>
+          <div class="card-handle">@PatrickDang · 总榜 #96</div>
           <div class="stats">
             <div class="stat"><span class="stat-val">425.0K</span><span class="stat-label">粉丝</span></div>
             <div class="stat"><span class="stat-val">676</span><span class="stat-label">视频</span></div>
             <div class="stat niche"><span class="stat-label niche-label">销售培训</span></div>
           </div>
-          <div class="link-line">🔗 youtube.com/@PatrickDang</div>
+          <div class="link-row">
+            <span class="link-line">🔗 youtube.com/@PatrickDang</span>
+            <span class="copy" role="button" tabindex="0" data-url="https://www.youtube.com/@PatrickDang" title="复制频道链接">📋 复制链接</span>
+          </div>
         </div>
         <span class="visit">访问频道 ↗</span>
       </a></div>
@@ -1262,145 +1521,177 @@
       <div class="grid">
       <a class="card" href="https://www.youtube.com/@AliAbdaal" target="_blank" rel="noopener" title="点击打开 Ali Abdaal 的 YouTube 频道"
          data-name="ali abdaal" data-handle="@aliabdaal" data-niche="效率内容创业">
-        <div class="rank-box">
-          <div class="rank">#1</div>
-          <div class="rank-sub">总榜 #4</div>
+        <div class="ava-wrap">
+          <span class="ava-fb">A</span>
+          <img class="ava-img" src="https://yt3.googleusercontent.com/ytc/AIdro_m2xx6mCZwsyjARnkwBKJxEv0FqGxGS2NwWNkjWH__Smw=s176-c-k-c0x00ffffff-no-rj" alt="" loading="lazy" onerror="this.style.display='none'">
+          <span class="rank-chip">#1</span>
         </div>
         <div class="card-body">
           <div class="card-name">Ali Abdaal</div>
-          <div class="card-handle">@AliAbdaal</div>
+          <div class="card-handle">@AliAbdaal · 总榜 #4</div>
           <div class="stats">
             <div class="stat"><span class="stat-val">6.70M</span><span class="stat-label">粉丝</span></div>
             <div class="stat"><span class="stat-val">1.4K</span><span class="stat-label">视频</span></div>
             <div class="stat niche"><span class="stat-label niche-label">效率内容创业</span></div>
           </div>
-          <div class="link-line">🔗 youtube.com/@AliAbdaal</div>
+          <div class="link-row">
+            <span class="link-line">🔗 youtube.com/@AliAbdaal</span>
+            <span class="copy" role="button" tabindex="0" data-url="https://www.youtube.com/@AliAbdaal" title="复制频道链接">📋 复制链接</span>
+          </div>
         </div>
         <span class="visit">访问频道 ↗</span>
       </a>
       <a class="card" href="https://www.youtube.com/@ThinkMediaTV" target="_blank" rel="noopener" title="点击打开 Think Media 的 YouTube 频道"
          data-name="think media" data-handle="@thinkmediatv" data-niche="内容创作YouTube运营">
-        <div class="rank-box">
-          <div class="rank">#2</div>
-          <div class="rank-sub">总榜 #21</div>
+        <div class="ava-wrap">
+          <span class="ava-fb">T</span>
+          <img class="ava-img" src="https://yt3.googleusercontent.com/ytc/AIdro_lIxXpTkkck2o_PPlTttDIoyXZJTAxNbJN28Q4vv9cqb20=s176-c-k-c0x00ffffff-no-rj" alt="" loading="lazy" onerror="this.style.display='none'">
+          <span class="rank-chip">#2</span>
         </div>
         <div class="card-body">
           <div class="card-name">Think Media</div>
-          <div class="card-handle">@ThinkMediaTV</div>
+          <div class="card-handle">@ThinkMediaTV · 总榜 #21</div>
           <div class="stats">
             <div class="stat"><span class="stat-val">3.53M</span><span class="stat-label">粉丝</span></div>
             <div class="stat"><span class="stat-val">3.1K</span><span class="stat-label">视频</span></div>
             <div class="stat niche"><span class="stat-label niche-label">内容创作YouTube运营</span></div>
           </div>
-          <div class="link-line">🔗 youtube.com/@ThinkMediaTV</div>
+          <div class="link-row">
+            <span class="link-line">🔗 youtube.com/@ThinkMediaTV</span>
+            <span class="copy" role="button" tabindex="0" data-url="https://www.youtube.com/@ThinkMediaTV" title="复制频道链接">📋 复制链接</span>
+          </div>
         </div>
         <span class="visit">访问频道 ↗</span>
       </a>
       <a class="card" href="https://www.youtube.com/@vidIQ" target="_blank" rel="noopener" title="点击打开 vidIQ 的 YouTube 频道"
          data-name="vidiq" data-handle="@vidiq" data-niche="YouTube运营">
-        <div class="rank-box">
-          <div class="rank">#3</div>
-          <div class="rank-sub">总榜 #32</div>
+        <div class="ava-wrap">
+          <span class="ava-fb">V</span>
+          <img class="ava-img" src="https://yt3.googleusercontent.com/Y1Ci1OU_KBLwzPzgzrodqUNZ15NiJRml6uvwJiGPPR3P1liqgkWhKdCwS3NyhqgpHVY_k7zSjw=s176-c-k-c0x00ffffff-no-rj" alt="" loading="lazy" onerror="this.style.display='none'">
+          <span class="rank-chip">#3</span>
         </div>
         <div class="card-body">
           <div class="card-name">vidIQ</div>
-          <div class="card-handle">@vidIQ</div>
+          <div class="card-handle">@vidIQ · 总榜 #32</div>
           <div class="stats">
             <div class="stat"><span class="stat-val">2.45M</span><span class="stat-label">粉丝</span></div>
             <div class="stat"><span class="stat-val">2.7K</span><span class="stat-label">视频</span></div>
             <div class="stat niche"><span class="stat-label niche-label">YouTube运营</span></div>
           </div>
-          <div class="link-line">🔗 youtube.com/@vidIQ</div>
+          <div class="link-row">
+            <span class="link-line">🔗 youtube.com/@vidIQ</span>
+            <span class="copy" role="button" tabindex="0" data-url="https://www.youtube.com/@vidIQ" title="复制频道链接">📋 复制链接</span>
+          </div>
         </div>
         <span class="visit">访问频道 ↗</span>
       </a>
       <a class="card" href="https://www.youtube.com/@ColinandSamir" target="_blank" rel="noopener" title="点击打开 Colin and Samir 的 YouTube 频道"
          data-name="colin and samir" data-handle="@colinandsamir" data-niche="创作者经济">
-        <div class="rank-box">
-          <div class="rank">#4</div>
-          <div class="rank-sub">总榜 #44</div>
+        <div class="ava-wrap">
+          <span class="ava-fb">C</span>
+          <img class="ava-img" src="https://yt3.googleusercontent.com/ytc/AIdro_k-3YijnZNqr_9SNBOzN2sFB3xJ6SrHy9q3LJ0b1HApVHI=s176-c-k-c0x00ffffff-no-rj" alt="" loading="lazy" onerror="this.style.display='none'">
+          <span class="rank-chip">#4</span>
         </div>
         <div class="card-body">
           <div class="card-name">Colin and Samir</div>
-          <div class="card-handle">@ColinandSamir</div>
+          <div class="card-handle">@ColinandSamir · 总榜 #44</div>
           <div class="stats">
             <div class="stat"><span class="stat-val">1.63M</span><span class="stat-label">粉丝</span></div>
             <div class="stat"><span class="stat-val">573</span><span class="stat-label">视频</span></div>
             <div class="stat niche"><span class="stat-label niche-label">创作者经济</span></div>
           </div>
-          <div class="link-line">🔗 youtube.com/@ColinandSamir</div>
+          <div class="link-row">
+            <span class="link-line">🔗 youtube.com/@ColinandSamir</span>
+            <span class="copy" role="button" tabindex="0" data-url="https://www.youtube.com/@ColinandSamir" title="复制频道链接">📋 复制链接</span>
+          </div>
         </div>
         <span class="visit">访问频道 ↗</span>
       </a>
       <a class="card" href="https://www.youtube.com/@DanKoeTalks" target="_blank" rel="noopener" title="点击打开 Dan Koe 的 YouTube 频道"
          data-name="dan koe" data-handle="@dankoetalks" data-niche="个人品牌内容创业">
-        <div class="rank-box">
-          <div class="rank">#5</div>
-          <div class="rank-sub">总榜 #51</div>
+        <div class="ava-wrap">
+          <span class="ava-fb">D</span>
+          <img class="ava-img" src="https://yt3.googleusercontent.com/B4XuOHeo6s6XAbi85LUXK70itVCivYf63Bw5u1gHz-HmN2-cmgbVvAM_B8j2SAzxtbeYJT4RfA=s176-c-k-c0x00ffffff-no-rj" alt="" loading="lazy" onerror="this.style.display='none'">
+          <span class="rank-chip">#5</span>
         </div>
         <div class="card-body">
           <div class="card-name">Dan Koe</div>
-          <div class="card-handle">@DanKoeTalks</div>
+          <div class="card-handle">@DanKoeTalks · 总榜 #51</div>
           <div class="stats">
             <div class="stat"><span class="stat-val">1.45M</span><span class="stat-label">粉丝</span></div>
             <div class="stat"><span class="stat-val">260</span><span class="stat-label">视频</span></div>
             <div class="stat niche"><span class="stat-label niche-label">个人品牌内容创业</span></div>
           </div>
-          <div class="link-line">🔗 youtube.com/@DanKoeTalks</div>
+          <div class="link-row">
+            <span class="link-line">🔗 youtube.com/@DanKoeTalks</span>
+            <span class="copy" role="button" tabindex="0" data-url="https://www.youtube.com/@DanKoeTalks" title="复制频道链接">📋 复制链接</span>
+          </div>
         </div>
         <span class="visit">访问频道 ↗</span>
       </a>
       <a class="card" href="https://www.youtube.com/@decodingyt" target="_blank" rel="noopener" title="点击打开 DecodingYT 的 YouTube 频道"
          data-name="decodingyt" data-handle="@decodingyt" data-niche="YouTube运营">
-        <div class="rank-box">
-          <div class="rank">#6</div>
-          <div class="rank-sub">总榜 #57</div>
+        <div class="ava-wrap">
+          <span class="ava-fb">D</span>
+          <img class="ava-img" src="https://yt3.googleusercontent.com/QcI_ynlcYwAPOy60Fp_G-CpchrVxZ8oBGXtNDamzNOuob_sZ9FJtzF1IhYVyK0UaHGjGiso7OQ=s176-c-k-c0x00ffffff-no-rj" alt="" loading="lazy" onerror="this.style.display='none'">
+          <span class="rank-chip">#6</span>
         </div>
         <div class="card-body">
           <div class="card-name">DecodingYT</div>
-          <div class="card-handle">@decodingyt</div>
+          <div class="card-handle">@decodingyt · 总榜 #57</div>
           <div class="stats">
             <div class="stat"><span class="stat-val">1.18M</span><span class="stat-label">粉丝</span></div>
             <div class="stat"><span class="stat-val">66</span><span class="stat-label">视频</span></div>
             <div class="stat niche"><span class="stat-label niche-label">YouTube运营</span></div>
           </div>
-          <div class="link-line">🔗 youtube.com/@decodingyt</div>
+          <div class="link-row">
+            <span class="link-line">🔗 youtube.com/@decodingyt</span>
+            <span class="copy" role="button" tabindex="0" data-url="https://www.youtube.com/@decodingyt" title="复制频道链接">📋 复制链接</span>
+          </div>
         </div>
         <span class="visit">访问频道 ↗</span>
       </a>
       <a class="card" href="https://www.youtube.com/@VanessaLau" target="_blank" rel="noopener" title="点击打开 Vanessa Lau 的 YouTube 频道"
          data-name="vanessa lau" data-handle="@vanessalau" data-niche="YouTube运营">
-        <div class="rank-box">
-          <div class="rank">#7</div>
-          <div class="rank-sub">总榜 #67</div>
+        <div class="ava-wrap">
+          <span class="ava-fb">V</span>
+          <img class="ava-img" src="https://yt3.googleusercontent.com/ZAOh_DTN6dnxaBgdXIXDx6_1P_4aq0DD-wske130-xCOlxuQ7tyqZvxd7ObMTfZg7k1TOmCQ=s176-c-k-c0x00ffffff-no-rj" alt="" loading="lazy" onerror="this.style.display='none'">
+          <span class="rank-chip">#7</span>
         </div>
         <div class="card-body">
           <div class="card-name">Vanessa Lau</div>
-          <div class="card-handle">@VanessaLau</div>
+          <div class="card-handle">@VanessaLau · 总榜 #67</div>
           <div class="stats">
             <div class="stat"><span class="stat-val">1.01M</span><span class="stat-label">粉丝</span></div>
             <div class="stat"><span class="stat-val">603</span><span class="stat-label">视频</span></div>
             <div class="stat niche"><span class="stat-label niche-label">YouTube运营</span></div>
           </div>
-          <div class="link-line">🔗 youtube.com/@VanessaLau</div>
+          <div class="link-row">
+            <span class="link-line">🔗 youtube.com/@VanessaLau</span>
+            <span class="copy" role="button" tabindex="0" data-url="https://www.youtube.com/@VanessaLau" title="复制频道链接">📋 复制链接</span>
+          </div>
         </div>
         <span class="visit">访问频道 ↗</span>
       </a>
       <a class="card" href="https://www.youtube.com/@RobertoBlake" target="_blank" rel="noopener" title="点击打开 Roberto Blake 的 YouTube 频道"
          data-name="roberto blake" data-handle="@robertoblake" data-niche="内容创业">
-        <div class="rank-box">
-          <div class="rank">#8</div>
-          <div class="rank-sub">总榜 #82</div>
+        <div class="ava-wrap">
+          <span class="ava-fb">R</span>
+          <img class="ava-img" src="https://yt3.googleusercontent.com/KSp7aLsaCquXVNVuHnVKw8YC6uBjNdhQl8XmN6bk__QtIVGhft86iFSpOMvb_Yi7EpgmVMPxdQ=s176-c-k-c0x00ffffff-no-rj" alt="" loading="lazy" onerror="this.style.display='none'">
+          <span class="rank-chip">#8</span>
         </div>
         <div class="card-body">
           <div class="card-name">Roberto Blake</div>
-          <div class="card-handle">@RobertoBlake</div>
+          <div class="card-handle">@RobertoBlake · 总榜 #82</div>
           <div class="stats">
             <div class="stat"><span class="stat-val">643.0K</span><span class="stat-label">粉丝</span></div>
             <div class="stat"><span class="stat-val">1.4K</span><span class="stat-label">视频</span></div>
             <div class="stat niche"><span class="stat-label niche-label">内容创业</span></div>
           </div>
-          <div class="link-line">🔗 youtube.com/@RobertoBlake</div>
+          <div class="link-row">
+            <span class="link-line">🔗 youtube.com/@RobertoBlake</span>
+            <span class="copy" role="button" tabindex="0" data-url="https://www.youtube.com/@RobertoBlake" title="复制频道链接">📋 复制链接</span>
+          </div>
         </div>
         <span class="visit">访问频道 ↗</span>
       </a></div>
@@ -1415,199 +1706,243 @@
       <div class="grid">
       <a class="card" href="https://www.youtube.com/@ImanGadzhi" target="_blank" rel="noopener" title="点击打开 Iman Gadzhi 的 YouTube 频道"
          data-name="iman gadzhi" data-handle="@imangadzhi" data-niche="电商社媒营销">
-        <div class="rank-box">
-          <div class="rank">#1</div>
-          <div class="rank-sub">总榜 #7</div>
+        <div class="ava-wrap">
+          <span class="ava-fb">I</span>
+          <img class="ava-img" src="https://yt3.googleusercontent.com/FrBCHiFRihYVpyIETRD73uxdZn4hFJjSpogTuNBeApS1tFkHpHy3LLQzE0D3kTBUfXN6hODXVw=s176-c-k-c0x00ffffff-no-rj" alt="" loading="lazy" onerror="this.style.display='none'">
+          <span class="rank-chip">#1</span>
         </div>
         <div class="card-body">
           <div class="card-name">Iman Gadzhi</div>
-          <div class="card-handle">@ImanGadzhi</div>
+          <div class="card-handle">@ImanGadzhi · 总榜 #7</div>
           <div class="stats">
             <div class="stat"><span class="stat-val">6.26M</span><span class="stat-label">粉丝</span></div>
             <div class="stat"><span class="stat-val">486</span><span class="stat-label">视频</span></div>
             <div class="stat niche"><span class="stat-label niche-label">电商社媒营销</span></div>
           </div>
-          <div class="link-line">🔗 youtube.com/@ImanGadzhi</div>
+          <div class="link-row">
+            <span class="link-line">🔗 youtube.com/@ImanGadzhi</span>
+            <span class="copy" role="button" tabindex="0" data-url="https://www.youtube.com/@ImanGadzhi" title="复制频道链接">📋 复制链接</span>
+          </div>
         </div>
         <span class="visit">访问频道 ↗</span>
       </a>
       <a class="card" href="https://www.youtube.com/@JordanWelch" target="_blank" rel="noopener" title="点击打开 Jordan Welch 的 YouTube 频道"
          data-name="jordan welch" data-handle="@jordanwelch" data-niche="电商独立站">
-        <div class="rank-box">
-          <div class="rank">#2</div>
-          <div class="rank-sub">总榜 #38</div>
+        <div class="ava-wrap">
+          <span class="ava-fb">J</span>
+          <img class="ava-img" src="https://yt3.googleusercontent.com/bfQw3YKMuxGBGnaR0sSFBuZZRWrW2-RXBqShK61zci1QTQU3wMG3mQXXNL9nKsRLMwtS8Jlr80c=s176-c-k-c0x00ffffff-no-rj" alt="" loading="lazy" onerror="this.style.display='none'">
+          <span class="rank-chip">#2</span>
         </div>
         <div class="card-body">
           <div class="card-name">Jordan Welch</div>
-          <div class="card-handle">@JordanWelch</div>
+          <div class="card-handle">@JordanWelch · 总榜 #38</div>
           <div class="stats">
             <div class="stat"><span class="stat-val">2.02M</span><span class="stat-label">粉丝</span></div>
             <div class="stat"><span class="stat-val">310</span><span class="stat-label">视频</span></div>
             <div class="stat niche"><span class="stat-label niche-label">电商独立站</span></div>
           </div>
-          <div class="link-line">🔗 youtube.com/@JordanWelch</div>
+          <div class="link-row">
+            <span class="link-line">🔗 youtube.com/@JordanWelch</span>
+            <span class="copy" role="button" tabindex="0" data-url="https://www.youtube.com/@JordanWelch" title="复制频道链接">📋 复制链接</span>
+          </div>
         </div>
         <span class="visit">访问频道 ↗</span>
       </a>
       <a class="card" href="https://www.youtube.com/@ShaneHummus" target="_blank" rel="noopener" title="点击打开 Shane Hummus 的 YouTube 频道"
          data-name="shane hummus" data-handle="@shanehummus" data-niche="副业搞钱">
-        <div class="rank-box">
-          <div class="rank">#3</div>
-          <div class="rank-sub">总榜 #42</div>
+        <div class="ava-wrap">
+          <span class="ava-fb">S</span>
+          <img class="ava-img" src="https://yt3.googleusercontent.com/Tg3J3l38zTlpSMmFXlEvOThBPyiRo1ipdxRs33bwaihXHrGHFD9tCPiUKR9IZFTh1i323DN5=s176-c-k-c0x00ffffff-no-rj" alt="" loading="lazy" onerror="this.style.display='none'">
+          <span class="rank-chip">#3</span>
         </div>
         <div class="card-body">
           <div class="card-name">Shane Hummus</div>
-          <div class="card-handle">@ShaneHummus</div>
+          <div class="card-handle">@ShaneHummus · 总榜 #42</div>
           <div class="stats">
             <div class="stat"><span class="stat-val">1.73M</span><span class="stat-label">粉丝</span></div>
             <div class="stat"><span class="stat-val">1.2K</span><span class="stat-label">视频</span></div>
             <div class="stat niche"><span class="stat-label niche-label">副业搞钱</span></div>
           </div>
-          <div class="link-line">🔗 youtube.com/@ShaneHummus</div>
+          <div class="link-row">
+            <span class="link-line">🔗 youtube.com/@ShaneHummus</span>
+            <span class="copy" role="button" tabindex="0" data-url="https://www.youtube.com/@ShaneHummus" title="复制频道链接">📋 复制链接</span>
+          </div>
         </div>
         <span class="visit">访问频道 ↗</span>
       </a>
       <a class="card" href="https://www.youtube.com/@Fayefilms" target="_blank" rel="noopener" title="点击打开 fayefilms 的 YouTube 频道"
          data-name="fayefilms" data-handle="@fayefilms" data-niche="副业搞钱">
-        <div class="rank-box">
-          <div class="rank">#4</div>
-          <div class="rank-sub">总榜 #46</div>
+        <div class="ava-wrap">
+          <span class="ava-fb">F</span>
+          <img class="ava-img" src="https://yt3.googleusercontent.com/EVKMz60C3D_LKvV2tDVdzI4DbF4IeNwbarGu8-h2l6oE3NA9SG0lNrHpWFOkMgMcbe8gL83G=s176-c-k-c0x00ffffff-no-rj" alt="" loading="lazy" onerror="this.style.display='none'">
+          <span class="rank-chip">#4</span>
         </div>
         <div class="card-body">
           <div class="card-name">fayefilms</div>
-          <div class="card-handle">@Fayefilms</div>
+          <div class="card-handle">@Fayefilms · 总榜 #46</div>
           <div class="stats">
             <div class="stat"><span class="stat-val">1.58M</span><span class="stat-label">粉丝</span></div>
             <div class="stat"><span class="stat-val">231</span><span class="stat-label">视频</span></div>
             <div class="stat niche"><span class="stat-label niche-label">副业搞钱</span></div>
           </div>
-          <div class="link-line">🔗 youtube.com/@Fayefilms</div>
+          <div class="link-row">
+            <span class="link-line">🔗 youtube.com/@Fayefilms</span>
+            <span class="copy" role="button" tabindex="0" data-url="https://www.youtube.com/@Fayefilms" title="复制频道链接">📋 复制链接</span>
+          </div>
         </div>
         <span class="visit">访问频道 ↗</span>
       </a>
       <a class="card" href="https://www.youtube.com/@WholesaleTed" target="_blank" rel="noopener" title="点击打开 Wholesale Ted 的 YouTube 频道"
          data-name="wholesale ted" data-handle="@wholesaleted" data-niche="电商案例">
-        <div class="rank-box">
-          <div class="rank">#5</div>
-          <div class="rank-sub">总榜 #49</div>
+        <div class="ava-wrap">
+          <span class="ava-fb">W</span>
+          <img class="ava-img" src="https://yt3.googleusercontent.com/3Po51qg8j4fHe0VcBVD39m_aMJOgxh7VVxF4VQXl5_sB5LkBI0fpnt-i_MBoaVrUFTFNoj4gft0=s176-c-k-c0x00ffffff-no-rj" alt="" loading="lazy" onerror="this.style.display='none'">
+          <span class="rank-chip">#5</span>
         </div>
         <div class="card-body">
           <div class="card-name">Wholesale Ted</div>
-          <div class="card-handle">@WholesaleTed</div>
+          <div class="card-handle">@WholesaleTed · 总榜 #49</div>
           <div class="stats">
             <div class="stat"><span class="stat-val">1.48M</span><span class="stat-label">粉丝</span></div>
             <div class="stat"><span class="stat-val">284</span><span class="stat-label">视频</span></div>
             <div class="stat niche"><span class="stat-label niche-label">电商案例</span></div>
           </div>
-          <div class="link-line">🔗 youtube.com/@WholesaleTed</div>
+          <div class="link-row">
+            <span class="link-line">🔗 youtube.com/@WholesaleTed</span>
+            <span class="copy" role="button" tabindex="0" data-url="https://www.youtube.com/@WholesaleTed" title="复制频道链接">📋 复制链接</span>
+          </div>
         </div>
         <span class="visit">访问频道 ↗</span>
       </a>
       <a class="card" href="https://www.youtube.com/@CharlieChang" target="_blank" rel="noopener" title="点击打开 Charlie Chang 的 YouTube 频道"
          data-name="charlie chang" data-handle="@charliechang" data-niche="线上创业">
-        <div class="rank-box">
-          <div class="rank">#6</div>
-          <div class="rank-sub">总榜 #50</div>
+        <div class="ava-wrap">
+          <span class="ava-fb">C</span>
+          <img class="ava-img" src="https://yt3.googleusercontent.com/ytc/AIdro_k2sF5SlCpadrWwaJ_0yxTyO7WM0afGaQhXPWCYm2v-i5Y=s176-c-k-c0x00ffffff-no-rj" alt="" loading="lazy" onerror="this.style.display='none'">
+          <span class="rank-chip">#6</span>
         </div>
         <div class="card-body">
           <div class="card-name">Charlie Chang</div>
-          <div class="card-handle">@CharlieChang</div>
+          <div class="card-handle">@CharlieChang · 总榜 #50</div>
           <div class="stats">
             <div class="stat"><span class="stat-val">1.46M</span><span class="stat-label">粉丝</span></div>
             <div class="stat"><span class="stat-val">1.3K</span><span class="stat-label">视频</span></div>
             <div class="stat niche"><span class="stat-label niche-label">线上创业</span></div>
           </div>
-          <div class="link-line">🔗 youtube.com/@CharlieChang</div>
+          <div class="link-row">
+            <span class="link-line">🔗 youtube.com/@CharlieChang</span>
+            <span class="copy" role="button" tabindex="0" data-url="https://www.youtube.com/@CharlieChang" title="复制频道链接">📋 复制链接</span>
+          </div>
         </div>
         <span class="visit">访问频道 ↗</span>
       </a>
       <a class="card" href="https://www.youtube.com/@GregGottfried" target="_blank" rel="noopener" title="点击打开 Greg Gottfried 的 YouTube 频道"
          data-name="greg gottfried" data-handle="@greggottfried" data-niche="副业搞钱">
-        <div class="rank-box">
-          <div class="rank">#7</div>
-          <div class="rank-sub">总榜 #72</div>
+        <div class="ava-wrap">
+          <span class="ava-fb">G</span>
+          <img class="ava-img" src="https://yt3.googleusercontent.com/ytc/AIdro_mEjWJSpXFOuhe4c6fDf2RmNNtsYyF7Hfe6QlxlcFXep3Y=s176-c-k-c0x00ffffff-no-rj" alt="" loading="lazy" onerror="this.style.display='none'">
+          <span class="rank-chip">#7</span>
         </div>
         <div class="card-body">
           <div class="card-name">Greg Gottfried</div>
-          <div class="card-handle">@GregGottfried</div>
+          <div class="card-handle">@GregGottfried · 总榜 #72</div>
           <div class="stats">
             <div class="stat"><span class="stat-val">904.0K</span><span class="stat-label">粉丝</span></div>
             <div class="stat"><span class="stat-val">265</span><span class="stat-label">视频</span></div>
             <div class="stat niche"><span class="stat-label niche-label">副业搞钱</span></div>
           </div>
-          <div class="link-line">🔗 youtube.com/@GregGottfried</div>
+          <div class="link-row">
+            <span class="link-line">🔗 youtube.com/@GregGottfried</span>
+            <span class="copy" role="button" tabindex="0" data-url="https://www.youtube.com/@GregGottfried" title="复制频道链接">📋 复制链接</span>
+          </div>
         </div>
         <span class="visit">访问频道 ↗</span>
       </a>
       <a class="card" href="https://www.youtube.com/@AcHampton" target="_blank" rel="noopener" title="点击打开 Ac Hampton 的 YouTube 频道"
          data-name="ac hampton" data-handle="@achampton" data-niche="电商独立站">
-        <div class="rank-box">
-          <div class="rank">#8</div>
-          <div class="rank-sub">总榜 #80</div>
+        <div class="ava-wrap">
+          <span class="ava-fb">A</span>
+          <img class="ava-img" src="https://yt3.googleusercontent.com/ytc/AIdro_nG7potBkU2EUSZgIB-qF95N5UnXi33jqqVEtaNPevKPg=s176-c-k-c0x00ffffff-no-rj" alt="" loading="lazy" onerror="this.style.display='none'">
+          <span class="rank-chip">#8</span>
         </div>
         <div class="card-body">
           <div class="card-name">Ac Hampton</div>
-          <div class="card-handle">@AcHampton</div>
+          <div class="card-handle">@AcHampton · 总榜 #80</div>
           <div class="stats">
             <div class="stat"><span class="stat-val">685.0K</span><span class="stat-label">粉丝</span></div>
             <div class="stat"><span class="stat-val">1K</span><span class="stat-label">视频</span></div>
             <div class="stat niche"><span class="stat-label niche-label">电商独立站</span></div>
           </div>
-          <div class="link-line">🔗 youtube.com/@AcHampton</div>
+          <div class="link-row">
+            <span class="link-line">🔗 youtube.com/@AcHampton</span>
+            <span class="copy" role="button" tabindex="0" data-url="https://www.youtube.com/@AcHampton" title="复制频道链接">📋 复制链接</span>
+          </div>
         </div>
         <span class="visit">访问频道 ↗</span>
       </a>
       <a class="card" href="https://www.youtube.com/@TheEcomKing" target="_blank" rel="noopener" title="点击打开 THE ECOM KING 的 YouTube 频道"
          data-name="the ecom king" data-handle="@theecomking" data-niche="电商独立站">
-        <div class="rank-box">
-          <div class="rank">#9</div>
-          <div class="rank-sub">总榜 #84</div>
+        <div class="ava-wrap">
+          <span class="ava-fb">T</span>
+          <img class="ava-img" src="https://yt3.googleusercontent.com/kiqUOuI8Z2s4Fu_OUfGJKGwKTuzbA7b2moQHDVqSErfMgQ5MvsekZ3B33yZOZDSZWjdusi60iII=s176-c-k-c0x00ffffff-no-rj" alt="" loading="lazy" onerror="this.style.display='none'">
+          <span class="rank-chip">#9</span>
         </div>
         <div class="card-body">
           <div class="card-name">THE ECOM KING</div>
-          <div class="card-handle">@TheEcomKing</div>
+          <div class="card-handle">@TheEcomKing · 总榜 #84</div>
           <div class="stats">
             <div class="stat"><span class="stat-val">621.0K</span><span class="stat-label">粉丝</span></div>
             <div class="stat"><span class="stat-val">980</span><span class="stat-label">视频</span></div>
             <div class="stat niche"><span class="stat-label niche-label">电商独立站</span></div>
           </div>
-          <div class="link-line">🔗 youtube.com/@TheEcomKing</div>
+          <div class="link-row">
+            <span class="link-line">🔗 youtube.com/@TheEcomKing</span>
+            <span class="copy" role="button" tabindex="0" data-url="https://www.youtube.com/@TheEcomKing" title="复制频道链接">📋 复制链接</span>
+          </div>
         </div>
         <span class="visit">访问频道 ↗</span>
       </a>
       <a class="card" href="https://www.youtube.com/@FranklinLive" target="_blank" rel="noopener" title="点击打开 Franklin Hatchett 的 YouTube 频道"
          data-name="franklin hatchett" data-handle="@franklinlive" data-niche="副业电商">
-        <div class="rank-box">
-          <div class="rank">#10</div>
-          <div class="rank-sub">总榜 #86</div>
+        <div class="ava-wrap">
+          <span class="ava-fb">F</span>
+          <img class="ava-img" src="https://yt3.googleusercontent.com/ytc/AIdro_kSCkTBwAXcbTWq_4iUyx1KV2rf_qBZeHtkgDC7WTNvEyA=s176-c-k-c0x00ffffff-no-rj" alt="" loading="lazy" onerror="this.style.display='none'">
+          <span class="rank-chip">#10</span>
         </div>
         <div class="card-body">
           <div class="card-name">Franklin Hatchett</div>
-          <div class="card-handle">@FranklinLive</div>
+          <div class="card-handle">@FranklinLive · 总榜 #86</div>
           <div class="stats">
             <div class="stat"><span class="stat-val">604.0K</span><span class="stat-label">粉丝</span></div>
             <div class="stat"><span class="stat-val">599</span><span class="stat-label">视频</span></div>
             <div class="stat niche"><span class="stat-label niche-label">副业电商</span></div>
           </div>
-          <div class="link-line">🔗 youtube.com/@FranklinLive</div>
+          <div class="link-row">
+            <span class="link-line">🔗 youtube.com/@FranklinLive</span>
+            <span class="copy" role="button" tabindex="0" data-url="https://www.youtube.com/@FranklinLive" title="复制频道链接">📋 复制链接</span>
+          </div>
         </div>
         <span class="visit">访问频道 ↗</span>
       </a>
       <a class="card" href="https://www.youtube.com/@mywifequitherjob" target="_blank" rel="noopener" title="点击打开 MyWifeQuitHerJob Ecommerce Channel 的 YouTube 频道"
          data-name="mywifequitherjob ecommerce channel" data-handle="@mywifequitherjob" data-niche="电商独立站">
-        <div class="rank-box">
-          <div class="rank">#11</div>
-          <div class="rank-sub">总榜 #90</div>
+        <div class="ava-wrap">
+          <span class="ava-fb">M</span>
+          <img class="ava-img" src="https://yt3.googleusercontent.com/ytc/AIdro_khkqQ08C10D_K8PAaDZrQjO0CmzLH2tx2X4nKaiz_pUA=s176-c-k-c0x00ffffff-no-rj" alt="" loading="lazy" onerror="this.style.display='none'">
+          <span class="rank-chip">#11</span>
         </div>
         <div class="card-body">
           <div class="card-name">MyWifeQuitHerJob Ecommerce Channel</div>
-          <div class="card-handle">@mywifequitherjob</div>
+          <div class="card-handle">@mywifequitherjob · 总榜 #90</div>
           <div class="stats">
             <div class="stat"><span class="stat-val">530.0K</span><span class="stat-label">粉丝</span></div>
             <div class="stat"><span class="stat-val">1.2K</span><span class="stat-label">视频</span></div>
             <div class="stat niche"><span class="stat-label niche-label">电商独立站</span></div>
           </div>
-          <div class="link-line">🔗 youtube.com/@mywifequitherjob</div>
+          <div class="link-row">
+            <span class="link-line">🔗 youtube.com/@mywifequitherjob</span>
+            <span class="copy" role="button" tabindex="0" data-url="https://www.youtube.com/@mywifequitherjob" title="复制频道链接">📋 复制链接</span>
+          </div>
         </div>
         <span class="visit">访问频道 ↗</span>
       </a></div>
@@ -1622,145 +1957,177 @@
       <div class="grid">
       <a class="card" href="https://www.youtube.com/@MeetKevin" target="_blank" rel="noopener" title="点击打开 Meet Kevin 的 YouTube 频道"
          data-name="meet kevin" data-handle="@meetkevin" data-niche="房地产财经">
-        <div class="rank-box">
-          <div class="rank">#1</div>
-          <div class="rank-sub">总榜 #37</div>
+        <div class="ava-wrap">
+          <span class="ava-fb">M</span>
+          <img class="ava-img" src="https://yt3.googleusercontent.com/vSezmVLCxI0lg3wf6K0-7ulOnHZ5GhG-a4llulOs0lvQf9dJKWR9j6JMWJHLQgu4WTYCKopw=s176-c-k-c0x00ffffff-no-rj" alt="" loading="lazy" onerror="this.style.display='none'">
+          <span class="rank-chip">#1</span>
         </div>
         <div class="card-body">
           <div class="card-name">Meet Kevin</div>
-          <div class="card-handle">@MeetKevin</div>
+          <div class="card-handle">@MeetKevin · 总榜 #37</div>
           <div class="stats">
             <div class="stat"><span class="stat-val">2.05M</span><span class="stat-label">粉丝</span></div>
             <div class="stat"><span class="stat-val">6.7K</span><span class="stat-label">视频</span></div>
             <div class="stat niche"><span class="stat-label niche-label">房地产财经</span></div>
           </div>
-          <div class="link-line">🔗 youtube.com/@MeetKevin</div>
+          <div class="link-row">
+            <span class="link-line">🔗 youtube.com/@MeetKevin</span>
+            <span class="copy" role="button" tabindex="0" data-url="https://www.youtube.com/@MeetKevin" title="复制频道链接">📋 复制链接</span>
+          </div>
         </div>
         <span class="visit">访问频道 ↗</span>
       </a>
       <a class="card" href="https://www.youtube.com/@RyanSerhant" target="_blank" rel="noopener" title="点击打开 Ryan Serhant 的 YouTube 频道"
          data-name="ryan serhant" data-handle="@ryanserhant" data-niche="房地产销售">
-        <div class="rank-box">
-          <div class="rank">#2</div>
-          <div class="rank-sub">总榜 #48</div>
+        <div class="ava-wrap">
+          <span class="ava-fb">R</span>
+          <img class="ava-img" src="https://yt3.googleusercontent.com/EHpZLUgtwh4sxAsANapwteZLc6Bj1nRhrfFjvJTEwdne7Hq65eXfEjWdx9JU-3F-wDPNyGb6=s176-c-k-c0x00ffffff-no-rj" alt="" loading="lazy" onerror="this.style.display='none'">
+          <span class="rank-chip">#2</span>
         </div>
         <div class="card-body">
           <div class="card-name">Ryan Serhant</div>
-          <div class="card-handle">@RyanSerhant</div>
+          <div class="card-handle">@RyanSerhant · 总榜 #48</div>
           <div class="stats">
             <div class="stat"><span class="stat-val">1.49M</span><span class="stat-label">粉丝</span></div>
             <div class="stat"><span class="stat-val">574</span><span class="stat-label">视频</span></div>
             <div class="stat niche"><span class="stat-label niche-label">房地产销售</span></div>
           </div>
-          <div class="link-line">🔗 youtube.com/@RyanSerhant</div>
+          <div class="link-row">
+            <span class="link-line">🔗 youtube.com/@RyanSerhant</span>
+            <span class="copy" role="button" tabindex="0" data-url="https://www.youtube.com/@RyanSerhant" title="复制频道链接">📋 复制链接</span>
+          </div>
         </div>
         <span class="visit">访问频道 ↗</span>
       </a>
       <a class="card" href="https://www.youtube.com/@BiggerPockets" target="_blank" rel="noopener" title="点击打开 BiggerPockets 的 YouTube 频道"
          data-name="biggerpockets" data-handle="@biggerpockets" data-niche="房地产投资">
-        <div class="rank-box">
-          <div class="rank">#3</div>
-          <div class="rank-sub">总榜 #53</div>
+        <div class="ava-wrap">
+          <span class="ava-fb">B</span>
+          <img class="ava-img" src="https://yt3.googleusercontent.com/bfx2CAVBfnpYWn64fC8HrF37G0Kk-QCSbtMPJHeb5sLq9gO3s6k0rwyx5DoXD59U56JXd4Wcpg=s176-c-k-c0x00ffffff-no-rj" alt="" loading="lazy" onerror="this.style.display='none'">
+          <span class="rank-chip">#3</span>
         </div>
         <div class="card-body">
           <div class="card-name">BiggerPockets</div>
-          <div class="card-handle">@BiggerPockets</div>
+          <div class="card-handle">@BiggerPockets · 总榜 #53</div>
           <div class="stats">
             <div class="stat"><span class="stat-val">1.27M</span><span class="stat-label">粉丝</span></div>
             <div class="stat"><span class="stat-val">4.3K</span><span class="stat-label">视频</span></div>
             <div class="stat niche"><span class="stat-label niche-label">房地产投资</span></div>
           </div>
-          <div class="link-line">🔗 youtube.com/@BiggerPockets</div>
+          <div class="link-row">
+            <span class="link-line">🔗 youtube.com/@BiggerPockets</span>
+            <span class="copy" role="button" tabindex="0" data-url="https://www.youtube.com/@BiggerPockets" title="复制频道链接">📋 复制链接</span>
+          </div>
         </div>
         <span class="visit">访问频道 ↗</span>
       </a>
       <a class="card" href="https://www.youtube.com/@karltondennis" target="_blank" rel="noopener" title="点击打开 Karlton Dennis 的 YouTube 频道"
          data-name="karlton dennis" data-handle="@karltondennis" data-niche="房地产投资">
-        <div class="rank-box">
-          <div class="rank">#4</div>
-          <div class="rank-sub">总榜 #61</div>
+        <div class="ava-wrap">
+          <span class="ava-fb">K</span>
+          <img class="ava-img" src="https://yt3.googleusercontent.com/XBQ878OrY2gPg9HO3ABWjt2mAPHi-jn30G11SVhwxxH37_YuZ-EGsE0LfXVzerD-I1hqZEH9_R4=s176-c-k-c0x00ffffff-no-rj" alt="" loading="lazy" onerror="this.style.display='none'">
+          <span class="rank-chip">#4</span>
         </div>
         <div class="card-body">
           <div class="card-name">Karlton Dennis</div>
-          <div class="card-handle">@karltondennis</div>
+          <div class="card-handle">@karltondennis · 总榜 #61</div>
           <div class="stats">
             <div class="stat"><span class="stat-val">1.14M</span><span class="stat-label">粉丝</span></div>
             <div class="stat"><span class="stat-val">2.3K</span><span class="stat-label">视频</span></div>
             <div class="stat niche"><span class="stat-label niche-label">房地产投资</span></div>
           </div>
-          <div class="link-line">🔗 youtube.com/@karltondennis</div>
+          <div class="link-row">
+            <span class="link-line">🔗 youtube.com/@karltondennis</span>
+            <span class="copy" role="button" tabindex="0" data-url="https://www.youtube.com/@karltondennis" title="复制频道链接">📋 复制链接</span>
+          </div>
         </div>
         <span class="visit">访问频道 ↗</span>
       </a>
       <a class="card" href="https://www.youtube.com/@KrisKrohn" target="_blank" rel="noopener" title="点击打开 Kris Krohn 的 YouTube 频道"
          data-name="kris krohn" data-handle="@kriskrohn" data-niche="房地产投资">
-        <div class="rank-box">
-          <div class="rank">#5</div>
-          <div class="rank-sub">总榜 #64</div>
+        <div class="ava-wrap">
+          <span class="ava-fb">K</span>
+          <img class="ava-img" src="https://yt3.googleusercontent.com/VHTiCmeSZLo6LdxpAL6hkwLCgfTmoo0pMJ73n6fZFYPGG2cPsfncR2-fN5y1jfuBJ2voxdXwBA=s176-c-k-c0x00ffffff-no-rj" alt="" loading="lazy" onerror="this.style.display='none'">
+          <span class="rank-chip">#5</span>
         </div>
         <div class="card-body">
           <div class="card-name">Kris Krohn</div>
-          <div class="card-handle">@KrisKrohn</div>
+          <div class="card-handle">@KrisKrohn · 总榜 #64</div>
           <div class="stats">
             <div class="stat"><span class="stat-val">1.12M</span><span class="stat-label">粉丝</span></div>
             <div class="stat"><span class="stat-val">4.9K</span><span class="stat-label">视频</span></div>
             <div class="stat niche"><span class="stat-label niche-label">房地产投资</span></div>
           </div>
-          <div class="link-line">🔗 youtube.com/@KrisKrohn</div>
+          <div class="link-row">
+            <span class="link-line">🔗 youtube.com/@KrisKrohn</span>
+            <span class="copy" role="button" tabindex="0" data-url="https://www.youtube.com/@KrisKrohn" title="复制频道链接">📋 复制链接</span>
+          </div>
         </div>
         <span class="visit">访问频道 ↗</span>
       </a>
       <a class="card" href="https://www.youtube.com/@SamuelLeeds" target="_blank" rel="noopener" title="点击打开 Samuel Leeds 的 YouTube 频道"
          data-name="samuel leeds" data-handle="@samuelleeds" data-niche="房地产创业">
-        <div class="rank-box">
-          <div class="rank">#6</div>
-          <div class="rank-sub">总榜 #83</div>
+        <div class="ava-wrap">
+          <span class="ava-fb">S</span>
+          <img class="ava-img" src="https://yt3.googleusercontent.com/1gE5y7pDhMejpjnz0PdZresUy7Qi1lcKgEbh7XmI7wvoIxWsq3uyqRugwK_vOPI4WUz9x6DIZg=s176-c-k-c0x00ffffff-no-rj" alt="" loading="lazy" onerror="this.style.display='none'">
+          <span class="rank-chip">#6</span>
         </div>
         <div class="card-body">
           <div class="card-name">Samuel Leeds</div>
-          <div class="card-handle">@SamuelLeeds</div>
+          <div class="card-handle">@SamuelLeeds · 总榜 #83</div>
           <div class="stats">
             <div class="stat"><span class="stat-val">639.0K</span><span class="stat-label">粉丝</span></div>
             <div class="stat"><span class="stat-val">3.8K</span><span class="stat-label">视频</span></div>
             <div class="stat niche"><span class="stat-label niche-label">房地产创业</span></div>
           </div>
-          <div class="link-line">🔗 youtube.com/@SamuelLeeds</div>
+          <div class="link-row">
+            <span class="link-line">🔗 youtube.com/@SamuelLeeds</span>
+            <span class="copy" role="button" tabindex="0" data-url="https://www.youtube.com/@SamuelLeeds" title="复制频道链接">📋 复制链接</span>
+          </div>
         </div>
         <span class="visit">访问频道 ↗</span>
       </a>
       <a class="card" href="https://www.youtube.com/@PaceMorby" target="_blank" rel="noopener" title="点击打开 Pace Morby 的 YouTube 频道"
          data-name="pace morby" data-handle="@pacemorby" data-niche="房地产投资">
-        <div class="rank-box">
-          <div class="rank">#7</div>
-          <div class="rank-sub">总榜 #94</div>
+        <div class="ava-wrap">
+          <span class="ava-fb">P</span>
+          <img class="ava-img" src="https://yt3.googleusercontent.com/3qzOM7GeQf9mo8ABLEFn_e3JtZAnpkMqRtoPYiaA5RIzcMC2w66Qnu6cUzlKyGLIFxQKwNaUPw=s176-c-k-c0x00ffffff-no-rj" alt="" loading="lazy" onerror="this.style.display='none'">
+          <span class="rank-chip">#7</span>
         </div>
         <div class="card-body">
           <div class="card-name">Pace Morby</div>
-          <div class="card-handle">@PaceMorby</div>
+          <div class="card-handle">@PaceMorby · 总榜 #94</div>
           <div class="stats">
             <div class="stat"><span class="stat-val">461.0K</span><span class="stat-label">粉丝</span></div>
             <div class="stat"><span class="stat-val">4.3K</span><span class="stat-label">视频</span></div>
             <div class="stat niche"><span class="stat-label niche-label">房地产投资</span></div>
           </div>
-          <div class="link-line">🔗 youtube.com/@PaceMorby</div>
+          <div class="link-row">
+            <span class="link-line">🔗 youtube.com/@PaceMorby</span>
+            <span class="copy" role="button" tabindex="0" data-url="https://www.youtube.com/@PaceMorby" title="复制频道链接">📋 复制链接</span>
+          </div>
         </div>
         <span class="visit">访问频道 ↗</span>
       </a>
       <a class="card" href="https://www.youtube.com/@RyanPineda" target="_blank" rel="noopener" title="点击打开 Ryan Pineda 的 YouTube 频道"
          data-name="ryan pineda" data-handle="@ryanpineda" data-niche="房地产电商">
-        <div class="rank-box">
-          <div class="rank">#8</div>
-          <div class="rank-sub">总榜 #97</div>
+        <div class="ava-wrap">
+          <span class="ava-fb">R</span>
+          <img class="ava-img" src="https://yt3.googleusercontent.com/WL2uO5c4gmD4EQD30yHxrEj8oR7-mMe0b8SIab8ZUC-Omvux7j_E3qrdGphklZtmCDiYPoDpMg=s176-c-k-c0x00ffffff-no-rj" alt="" loading="lazy" onerror="this.style.display='none'">
+          <span class="rank-chip">#8</span>
         </div>
         <div class="card-body">
           <div class="card-name">Ryan Pineda</div>
-          <div class="card-handle">@RyanPineda</div>
+          <div class="card-handle">@RyanPineda · 总榜 #97</div>
           <div class="stats">
             <div class="stat"><span class="stat-val">425.0K</span><span class="stat-label">粉丝</span></div>
             <div class="stat"><span class="stat-val">2K</span><span class="stat-label">视频</span></div>
             <div class="stat niche"><span class="stat-label niche-label">房地产电商</span></div>
           </div>
-          <div class="link-line">🔗 youtube.com/@RyanPineda</div>
+          <div class="link-row">
+            <span class="link-line">🔗 youtube.com/@RyanPineda</span>
+            <span class="copy" role="button" tabindex="0" data-url="https://www.youtube.com/@RyanPineda" title="复制频道链接">📋 复制链接</span>
+          </div>
         </div>
         <span class="visit">访问频道 ↗</span>
       </a></div>
@@ -1775,145 +2142,177 @@
       <div class="grid">
       <a class="card" href="https://www.youtube.com/@melrobbins" target="_blank" rel="noopener" title="点击打开 Mel Robbins 的 YouTube 频道"
          data-name="mel robbins" data-handle="@melrobbins" data-niche="自我提升心态">
-        <div class="rank-box">
-          <div class="rank">#1</div>
-          <div class="rank-sub">总榜 #6</div>
+        <div class="ava-wrap">
+          <span class="ava-fb">M</span>
+          <img class="ava-img" src="https://yt3.googleusercontent.com/0k8TKNmLHIMquCtAvJPHB8u1Uy1vzb89aYghWZY8CRtKOkfMVmTBlUXvW2GoA3nTpVnputYuJw=s176-c-k-c0x00ffffff-no-rj" alt="" loading="lazy" onerror="this.style.display='none'">
+          <span class="rank-chip">#1</span>
         </div>
         <div class="card-body">
           <div class="card-name">Mel Robbins</div>
-          <div class="card-handle">@melrobbins</div>
+          <div class="card-handle">@melrobbins · 总榜 #6</div>
           <div class="stats">
             <div class="stat"><span class="stat-val">6.36M</span><span class="stat-label">粉丝</span></div>
             <div class="stat"><span class="stat-val">1.6K</span><span class="stat-label">视频</span></div>
             <div class="stat niche"><span class="stat-label niche-label">自我提升心态</span></div>
           </div>
-          <div class="link-line">🔗 youtube.com/@melrobbins</div>
+          <div class="link-row">
+            <span class="link-line">🔗 youtube.com/@melrobbins</span>
+            <span class="copy" role="button" tabindex="0" data-url="https://www.youtube.com/@melrobbins" title="复制频道链接">📋 复制链接</span>
+          </div>
         </div>
         <span class="visit">访问频道 ↗</span>
       </a>
       <a class="card" href="https://www.youtube.com/@LewisHowes" target="_blank" rel="noopener" title="点击打开 Lewis Howes 的 YouTube 频道"
          data-name="lewis howes" data-handle="@lewishowes" data-niche="自我提升访谈">
-        <div class="rank-box">
-          <div class="rank">#2</div>
-          <div class="rank-sub">总榜 #10</div>
+        <div class="ava-wrap">
+          <span class="ava-fb">L</span>
+          <img class="ava-img" src="https://yt3.googleusercontent.com/r0Te1zrZNGgavncanlYR4NY15ne1nHiYZgY3aVOtteHQu0ZKBJfTvkSaDNSVVrfD3O8LM42rAw=s176-c-k-c0x00ffffff-no-rj" alt="" loading="lazy" onerror="this.style.display='none'">
+          <span class="rank-chip">#2</span>
         </div>
         <div class="card-body">
           <div class="card-name">Lewis Howes</div>
-          <div class="card-handle">@LewisHowes</div>
+          <div class="card-handle">@LewisHowes · 总榜 #10</div>
           <div class="stats">
             <div class="stat"><span class="stat-val">5.04M</span><span class="stat-label">粉丝</span></div>
             <div class="stat"><span class="stat-val">3.8K</span><span class="stat-label">视频</span></div>
             <div class="stat niche"><span class="stat-label niche-label">自我提升访谈</span></div>
           </div>
-          <div class="link-line">🔗 youtube.com/@LewisHowes</div>
+          <div class="link-row">
+            <span class="link-line">🔗 youtube.com/@LewisHowes</span>
+            <span class="copy" role="button" tabindex="0" data-url="https://www.youtube.com/@LewisHowes" title="复制频道链接">📋 复制链接</span>
+          </div>
         </div>
         <span class="visit">访问频道 ↗</span>
       </a>
       <a class="card" href="https://www.youtube.com/@MattDAvella" target="_blank" rel="noopener" title="点击打开 Matt D&#x27;Avella 的 YouTube 频道"
          data-name="matt d&#x27;avella" data-handle="@mattdavella" data-niche="自我提升极简">
-        <div class="rank-box">
-          <div class="rank">#3</div>
-          <div class="rank-sub">总榜 #18</div>
+        <div class="ava-wrap">
+          <span class="ava-fb">M</span>
+          <img class="ava-img" src="https://yt3.googleusercontent.com/Ldpkcur-En5Qn8rcowaWiU6xbNt_yMrs1mAVcSRBIOdq0tSyTmGGIALRcgfm1a8aGKgYiYDEIQ=s176-c-k-c0x00ffffff-no-rj" alt="" loading="lazy" onerror="this.style.display='none'">
+          <span class="rank-chip">#3</span>
         </div>
         <div class="card-body">
           <div class="card-name">Matt D&#x27;Avella</div>
-          <div class="card-handle">@MattDAvella</div>
+          <div class="card-handle">@MattDAvella · 总榜 #18</div>
           <div class="stats">
             <div class="stat"><span class="stat-val">4.05M</span><span class="stat-label">粉丝</span></div>
             <div class="stat"><span class="stat-val">471</span><span class="stat-label">视频</span></div>
             <div class="stat niche"><span class="stat-label niche-label">自我提升极简</span></div>
           </div>
-          <div class="link-line">🔗 youtube.com/@MattDAvella</div>
+          <div class="link-row">
+            <span class="link-line">🔗 youtube.com/@MattDAvella</span>
+            <span class="copy" role="button" tabindex="0" data-url="https://www.youtube.com/@MattDAvella" title="复制频道链接">📋 复制链接</span>
+          </div>
         </div>
         <span class="visit">访问频道 ↗</span>
       </a>
       <a class="card" href="https://www.youtube.com/@BetterIdeas" target="_blank" rel="noopener" title="点击打开 Better Ideas 的 YouTube 频道"
          data-name="better ideas" data-handle="@betterideas" data-niche="自我提升习惯">
-        <div class="rank-box">
-          <div class="rank">#4</div>
-          <div class="rank-sub">总榜 #25</div>
+        <div class="ava-wrap">
+          <span class="ava-fb">B</span>
+          <img class="ava-img" src="https://yt3.googleusercontent.com/ytc/AIdro_kNzBhztgwPy3i0rF0P7jTRjKtqcIdSZaHgr8lpvUae_g=s176-c-k-c0x00ffffff-no-rj" alt="" loading="lazy" onerror="this.style.display='none'">
+          <span class="rank-chip">#4</span>
         </div>
         <div class="card-body">
           <div class="card-name">Better Ideas</div>
-          <div class="card-handle">@BetterIdeas</div>
+          <div class="card-handle">@BetterIdeas · 总榜 #25</div>
           <div class="stats">
             <div class="stat"><span class="stat-val">3.04M</span><span class="stat-label">粉丝</span></div>
             <div class="stat"><span class="stat-val">131</span><span class="stat-label">视频</span></div>
             <div class="stat niche"><span class="stat-label niche-label">自我提升习惯</span></div>
           </div>
-          <div class="link-line">🔗 youtube.com/@BetterIdeas</div>
+          <div class="link-row">
+            <span class="link-line">🔗 youtube.com/@BetterIdeas</span>
+            <span class="copy" role="button" tabindex="0" data-url="https://www.youtube.com/@BetterIdeas" title="复制频道链接">📋 复制链接</span>
+          </div>
         </div>
         <span class="visit">访问频道 ↗</span>
       </a>
       <a class="card" href="https://www.youtube.com/@ThomasFrank" target="_blank" rel="noopener" title="点击打开 Thomas Frank 的 YouTube 频道"
          data-name="thomas frank" data-handle="@thomasfrank" data-niche="效率生产力">
-        <div class="rank-box">
-          <div class="rank">#5</div>
-          <div class="rank-sub">总榜 #26</div>
+        <div class="ava-wrap">
+          <span class="ava-fb">T</span>
+          <img class="ava-img" src="https://yt3.googleusercontent.com/ytc/AIdro_nIr5PB90HA3Uoa6w6PNkbMDZVVINovFpKb5hbHd7JwG0nP=s176-c-k-c0x00ffffff-no-rj" alt="" loading="lazy" onerror="this.style.display='none'">
+          <span class="rank-chip">#5</span>
         </div>
         <div class="card-body">
           <div class="card-name">Thomas Frank</div>
-          <div class="card-handle">@ThomasFrank</div>
+          <div class="card-handle">@ThomasFrank · 总榜 #26</div>
           <div class="stats">
             <div class="stat"><span class="stat-val">3.01M</span><span class="stat-label">粉丝</span></div>
             <div class="stat"><span class="stat-val">281</span><span class="stat-label">视频</span></div>
             <div class="stat niche"><span class="stat-label niche-label">效率生产力</span></div>
           </div>
-          <div class="link-line">🔗 youtube.com/@ThomasFrank</div>
+          <div class="link-row">
+            <span class="link-line">🔗 youtube.com/@ThomasFrank</span>
+            <span class="copy" role="button" tabindex="0" data-url="https://www.youtube.com/@ThomasFrank" title="复制频道链接">📋 复制链接</span>
+          </div>
         </div>
         <span class="visit">访问频道 ↗</span>
       </a>
       <a class="card" href="https://www.youtube.com/@TonyRobbinsLive" target="_blank" rel="noopener" title="点击打开 Tony Robbins 的 YouTube 频道"
          data-name="tony robbins" data-handle="@tonyrobbinslive" data-niche="自我提升教练">
-        <div class="rank-box">
-          <div class="rank">#6</div>
-          <div class="rank-sub">总榜 #29</div>
+        <div class="ava-wrap">
+          <span class="ava-fb">T</span>
+          <img class="ava-img" src="https://yt3.googleusercontent.com/3Oap1_0uMWUxvH_O3TPmKZHkgQwCv0TuPPzdd8YzWHI-KH1cgyj4NInxLE_tvzlCV5OMw8benQ=s176-c-k-c0x00ffffff-no-rj" alt="" loading="lazy" onerror="this.style.display='none'">
+          <span class="rank-chip">#6</span>
         </div>
         <div class="card-body">
           <div class="card-name">Tony Robbins</div>
-          <div class="card-handle">@TonyRobbinsLive</div>
+          <div class="card-handle">@TonyRobbinsLive · 总榜 #29</div>
           <div class="stats">
             <div class="stat"><span class="stat-val">2.76M</span><span class="stat-label">粉丝</span></div>
             <div class="stat"><span class="stat-val">1K</span><span class="stat-label">视频</span></div>
             <div class="stat niche"><span class="stat-label niche-label">自我提升教练</span></div>
           </div>
-          <div class="link-line">🔗 youtube.com/@TonyRobbinsLive</div>
+          <div class="link-row">
+            <span class="link-line">🔗 youtube.com/@TonyRobbinsLive</span>
+            <span class="copy" role="button" tabindex="0" data-url="https://www.youtube.com/@TonyRobbinsLive" title="复制频道链接">📋 复制链接</span>
+          </div>
         </div>
         <span class="visit">访问频道 ↗</span>
       </a>
       <a class="card" href="https://www.youtube.com/@NathanielDrew" target="_blank" rel="noopener" title="点击打开 Nathaniel Drew 的 YouTube 频道"
          data-name="nathaniel drew" data-handle="@nathanieldrew" data-niche="知识自我提升">
-        <div class="rank-box">
-          <div class="rank">#7</div>
-          <div class="rank-sub">总榜 #40</div>
+        <div class="ava-wrap">
+          <span class="ava-fb">N</span>
+          <img class="ava-img" src="https://yt3.googleusercontent.com/ytc/AIdro_k3dZrYTuTMFvutkuaR77Xz_TqhLy4aUZCDlniAles92gc=s176-c-k-c0x00ffffff-no-rj" alt="" loading="lazy" onerror="this.style.display='none'">
+          <span class="rank-chip">#7</span>
         </div>
         <div class="card-body">
           <div class="card-name">Nathaniel Drew</div>
-          <div class="card-handle">@NathanielDrew</div>
+          <div class="card-handle">@NathanielDrew · 总榜 #40</div>
           <div class="stats">
             <div class="stat"><span class="stat-val">1.78M</span><span class="stat-label">粉丝</span></div>
             <div class="stat"><span class="stat-val">213</span><span class="stat-label">视频</span></div>
             <div class="stat niche"><span class="stat-label niche-label">知识自我提升</span></div>
           </div>
-          <div class="link-line">🔗 youtube.com/@NathanielDrew</div>
+          <div class="link-row">
+            <span class="link-line">🔗 youtube.com/@NathanielDrew</span>
+            <span class="copy" role="button" tabindex="0" data-url="https://www.youtube.com/@NathanielDrew" title="复制频道链接">📋 复制链接</span>
+          </div>
         </div>
         <span class="visit">访问频道 ↗</span>
       </a>
       <a class="card" href="https://www.youtube.com/@BrendonBurchard" target="_blank" rel="noopener" title="点击打开 Brendon Burchard 的 YouTube 频道"
          data-name="brendon burchard" data-handle="@brendonburchard" data-niche="自我提升">
-        <div class="rank-box">
-          <div class="rank">#8</div>
-          <div class="rank-sub">总榜 #66</div>
+        <div class="ava-wrap">
+          <span class="ava-fb">B</span>
+          <img class="ava-img" src="https://yt3.googleusercontent.com/zD6qAhO-HfGyHBJq-4TCj-nRdqvDl1b-igpBfclJLAxlAvHglEFISEzQQ2OZiLVcJeE4UvVULQ=s176-c-k-c0x00ffffff-no-rj" alt="" loading="lazy" onerror="this.style.display='none'">
+          <span class="rank-chip">#8</span>
         </div>
         <div class="card-body">
           <div class="card-name">Brendon Burchard</div>
-          <div class="card-handle">@BrendonBurchard</div>
+          <div class="card-handle">@BrendonBurchard · 总榜 #66</div>
           <div class="stats">
             <div class="stat"><span class="stat-val">1.01M</span><span class="stat-label">粉丝</span></div>
             <div class="stat"><span class="stat-val">863</span><span class="stat-label">视频</span></div>
             <div class="stat niche"><span class="stat-label niche-label">自我提升</span></div>
           </div>
-          <div class="link-line">🔗 youtube.com/@BrendonBurchard</div>
+          <div class="link-row">
+            <span class="link-line">🔗 youtube.com/@BrendonBurchard</span>
+            <span class="copy" role="button" tabindex="0" data-url="https://www.youtube.com/@BrendonBurchard" title="复制频道链接">📋 复制链接</span>
+          </div>
         </div>
         <span class="visit">访问频道 ↗</span>
       </a></div>
@@ -1928,109 +2327,133 @@
       <div class="grid">
       <a class="card" href="https://www.youtube.com/@TheDiaryOfACEO" target="_blank" rel="noopener" title="点击打开 The Diary Of A CEO 的 YouTube 频道"
          data-name="the diary of a ceo" data-handle="@thediaryofaceo" data-niche="创业播客访谈">
-        <div class="rank-box">
-          <div class="rank">#1</div>
-          <div class="rank-sub">总榜 #1</div>
+        <div class="ava-wrap">
+          <span class="ava-fb">T</span>
+          <img class="ava-img" src="https://yt3.googleusercontent.com/JHCZDz37bsTmwoE1o4LEodF5vhsHfk29kCEauDTFr27-7hHXsHHvvWGzcG77v32ERrkpfInkGQ=s176-c-k-c0x00ffffff-no-rj" alt="" loading="lazy" onerror="this.style.display='none'">
+          <span class="rank-chip">#1</span>
         </div>
         <div class="card-body">
           <div class="card-name">The Diary Of A CEO</div>
-          <div class="card-handle">@TheDiaryOfACEO</div>
+          <div class="card-handle">@TheDiaryOfACEO · 总榜 #1</div>
           <div class="stats">
             <div class="stat"><span class="stat-val">20.9M</span><span class="stat-label">粉丝</span></div>
             <div class="stat"><span class="stat-val">943</span><span class="stat-label">视频</span></div>
             <div class="stat niche"><span class="stat-label niche-label">创业播客访谈</span></div>
           </div>
-          <div class="link-line">🔗 youtube.com/@TheDiaryOfACEO</div>
+          <div class="link-row">
+            <span class="link-line">🔗 youtube.com/@TheDiaryOfACEO</span>
+            <span class="copy" role="button" tabindex="0" data-url="https://www.youtube.com/@TheDiaryOfACEO" title="复制频道链接">📋 复制链接</span>
+          </div>
         </div>
         <span class="visit">访问频道 ↗</span>
       </a>
       <a class="card" href="https://www.youtube.com/@JayShettyPodcast." target="_blank" rel="noopener" title="点击打开 Jay Shetty Podcast 的 YouTube 频道"
          data-name="jay shetty podcast" data-handle="@jayshettypodcast." data-niche="创业播客访谈">
-        <div class="rank-box">
-          <div class="rank">#2</div>
-          <div class="rank-sub">总榜 #8</div>
+        <div class="ava-wrap">
+          <span class="ava-fb">J</span>
+          <img class="ava-img" src="https://yt3.googleusercontent.com/FPk4BUkb_OaCmCW7oiBaFWo4e25JqPV5mMWq3GMIGRBKikyGasog1d49He-fu16BlB5oSpXWaA=s176-c-k-c0x00ffffff-no-rj" alt="" loading="lazy" onerror="this.style.display='none'">
+          <span class="rank-chip">#2</span>
         </div>
         <div class="card-body">
           <div class="card-name">Jay Shetty Podcast</div>
-          <div class="card-handle">@JayShettyPodcast.</div>
+          <div class="card-handle">@JayShettyPodcast. · 总榜 #8</div>
           <div class="stats">
             <div class="stat"><span class="stat-val">6.17M</span><span class="stat-label">粉丝</span></div>
             <div class="stat"><span class="stat-val">2.6K</span><span class="stat-label">视频</span></div>
             <div class="stat niche"><span class="stat-label niche-label">创业播客访谈</span></div>
           </div>
-          <div class="link-line">🔗 youtube.com/@JayShettyPodcast.</div>
+          <div class="link-row">
+            <span class="link-line">🔗 youtube.com/@JayShettyPodcast.</span>
+            <span class="copy" role="button" tabindex="0" data-url="https://www.youtube.com/@JayShettyPodcast." title="复制频道链接">📋 复制链接</span>
+          </div>
         </div>
         <span class="visit">访问频道 ↗</span>
       </a>
       <a class="card" href="https://www.youtube.com/@chriswillx" target="_blank" rel="noopener" title="点击打开 Chris Williamson 的 YouTube 频道"
          data-name="chris williamson" data-handle="@chriswillx" data-niche="商业播客访谈">
-        <div class="rank-box">
-          <div class="rank">#3</div>
-          <div class="rank-sub">总榜 #17</div>
+        <div class="ava-wrap">
+          <span class="ava-fb">C</span>
+          <img class="ava-img" src="https://yt3.googleusercontent.com/ytc/AIdro_mmN30Y4ap7dtPfLw8Algolz_LGtHHpTJxa-qAw-MCQpdo=s176-c-k-c0x00ffffff-no-rj" alt="" loading="lazy" onerror="this.style.display='none'">
+          <span class="rank-chip">#3</span>
         </div>
         <div class="card-body">
           <div class="card-name">Chris Williamson</div>
-          <div class="card-handle">@chriswillx</div>
+          <div class="card-handle">@chriswillx · 总榜 #17</div>
           <div class="stats">
             <div class="stat"><span class="stat-val">4.48M</span><span class="stat-label">粉丝</span></div>
             <div class="stat"><span class="stat-val">4.8K</span><span class="stat-label">视频</span></div>
             <div class="stat niche"><span class="stat-label niche-label">商业播客访谈</span></div>
           </div>
-          <div class="link-line">🔗 youtube.com/@chriswillx</div>
+          <div class="link-row">
+            <span class="link-line">🔗 youtube.com/@chriswillx</span>
+            <span class="copy" role="button" tabindex="0" data-url="https://www.youtube.com/@chriswillx" title="复制频道链接">📋 复制链接</span>
+          </div>
         </div>
         <span class="visit">访问频道 ↗</span>
       </a>
       <a class="card" href="https://www.youtube.com/@TheIcedCoffeeHour" target="_blank" rel="noopener" title="点击打开 The Iced Coffee Hour 的 YouTube 频道"
          data-name="the iced coffee hour" data-handle="@theicedcoffeehour" data-niche="创业播客">
-        <div class="rank-box">
-          <div class="rank">#4</div>
-          <div class="rank-sub">总榜 #43</div>
+        <div class="ava-wrap">
+          <span class="ava-fb">T</span>
+          <img class="ava-img" src="https://yt3.googleusercontent.com/rhbLNiiC9lYGE3_rk-ESQfjdfNS5HfdVdg9mD2ZHKssivui7ZTN4nv4sfA2Gc63YbVA4aaAqXg=s176-c-k-c0x00ffffff-no-rj" alt="" loading="lazy" onerror="this.style.display='none'">
+          <span class="rank-chip">#4</span>
         </div>
         <div class="card-body">
           <div class="card-name">The Iced Coffee Hour</div>
-          <div class="card-handle">@TheIcedCoffeeHour</div>
+          <div class="card-handle">@TheIcedCoffeeHour · 总榜 #43</div>
           <div class="stats">
             <div class="stat"><span class="stat-val">1.67M</span><span class="stat-label">粉丝</span></div>
             <div class="stat"><span class="stat-val">2K</span><span class="stat-label">视频</span></div>
             <div class="stat niche"><span class="stat-label niche-label">创业播客</span></div>
           </div>
-          <div class="link-line">🔗 youtube.com/@TheIcedCoffeeHour</div>
+          <div class="link-row">
+            <span class="link-line">🔗 youtube.com/@TheIcedCoffeeHour</span>
+            <span class="copy" role="button" tabindex="0" data-url="https://www.youtube.com/@TheIcedCoffeeHour" title="复制频道链接">📋 复制链接</span>
+          </div>
         </div>
         <span class="visit">访问频道 ↗</span>
       </a>
       <a class="card" href="https://www.youtube.com/@MyFirstMillionPod" target="_blank" rel="noopener" title="点击打开 My First Million 的 YouTube 频道"
          data-name="my first million" data-handle="@myfirstmillionpod" data-niche="创业播客">
-        <div class="rank-box">
-          <div class="rank">#5</div>
-          <div class="rank-sub">总榜 #69</div>
+        <div class="ava-wrap">
+          <span class="ava-fb">M</span>
+          <img class="ava-img" src="https://yt3.googleusercontent.com/BZUEtMBQyhsDlobpQl4esoPOLwz1uh_B8M5QsxWoGAaEpHkTnWhsqH5tukqBXrTEo-50UYwB0A=s176-c-k-c0x00ffffff-no-rj" alt="" loading="lazy" onerror="this.style.display='none'">
+          <span class="rank-chip">#5</span>
         </div>
         <div class="card-body">
           <div class="card-name">My First Million</div>
-          <div class="card-handle">@MyFirstMillionPod</div>
+          <div class="card-handle">@MyFirstMillionPod · 总榜 #69</div>
           <div class="stats">
             <div class="stat"><span class="stat-val">967.0K</span><span class="stat-label">粉丝</span></div>
             <div class="stat"><span class="stat-val">2.1K</span><span class="stat-label">视频</span></div>
             <div class="stat niche"><span class="stat-label niche-label">创业播客</span></div>
           </div>
-          <div class="link-line">🔗 youtube.com/@MyFirstMillionPod</div>
+          <div class="link-row">
+            <span class="link-line">🔗 youtube.com/@MyFirstMillionPod</span>
+            <span class="copy" role="button" tabindex="0" data-url="https://www.youtube.com/@MyFirstMillionPod" title="复制频道链接">📋 复制链接</span>
+          </div>
         </div>
         <span class="visit">访问频道 ↗</span>
       </a>
       <a class="card" href="https://www.youtube.com/@RealSocialProof" target="_blank" rel="noopener" title="点击打开 Social Proof 的 YouTube 频道"
          data-name="social proof" data-handle="@realsocialproof" data-niche="创业播客">
-        <div class="rank-box">
-          <div class="rank">#6</div>
-          <div class="rank-sub">总榜 #85</div>
+        <div class="ava-wrap">
+          <span class="ava-fb">S</span>
+          <img class="ava-img" src="https://yt3.googleusercontent.com/9I_FTYz4Wi-Bii83hN40WFslnm4ttEgKu14poHbX6cBvuY6lsJLD5qEp_sLkwf3QbNWLJDJlMQ=s176-c-k-c0x00ffffff-no-rj" alt="" loading="lazy" onerror="this.style.display='none'">
+          <span class="rank-chip">#6</span>
         </div>
         <div class="card-body">
           <div class="card-name">Social Proof</div>
-          <div class="card-handle">@RealSocialProof</div>
+          <div class="card-handle">@RealSocialProof · 总榜 #85</div>
           <div class="stats">
             <div class="stat"><span class="stat-val">619.0K</span><span class="stat-label">粉丝</span></div>
             <div class="stat"><span class="stat-val">3.5K</span><span class="stat-label">视频</span></div>
             <div class="stat niche"><span class="stat-label niche-label">创业播客</span></div>
           </div>
-          <div class="link-line">🔗 youtube.com/@RealSocialProof</div>
+          <div class="link-row">
+            <span class="link-line">🔗 youtube.com/@RealSocialProof</span>
+            <span class="copy" role="button" tabindex="0" data-url="https://www.youtube.com/@RealSocialProof" title="复制频道链接">📋 复制链接</span>
+          </div>
         </div>
         <span class="visit">访问频道 ↗</span>
       </a></div>
@@ -2040,7 +2463,7 @@
   <footer>
     数据说明：采集于 2026-10-28，粉丝数与视频数取自 YouTube 频道主页官方显示（视频数含长视频与 Shorts）。<br>
     筛选方式：337 个候选频道 → 剔除新闻媒体 / 有声书剪辑号 / 泛励志号 / 企业官号 → 169 个同赛道频道按粉丝排序取前 100。<br>
-    使用说明：点击任意卡片或卡片上的「访问频道」按钮即可打开该博主的 YouTube 频道主页（新标签页）。排名说明：#序号为赛道内按粉丝数排序的名次，其下小字为 100 人总榜名次。赛道定义与 Alex Hormozi（@AlexHormozi，4.59M 粉丝，全榜 #16）重合：面向野心人群的商业、财富、销售与自我提升内容。
+    使用说明：点击卡片或「访问频道」按钮可新标签页打开频道主页；若你的环境直接打开受限，可点卡片右下「📋 复制链接」复制频道网址后粘贴到浏览器打开。头像为各频道 YouTube 官方头像（需联网加载）。排名说明：#序号为赛道内按粉丝数排序的名次，其下小字为 100 人总榜名次。赛道定义与 Alex Hormozi（@AlexHormozi，4.59M 粉丝，全榜 #16）重合：面向野心人群的商业、财富、销售与自我提升内容。
   </footer>
 </div>
 
@@ -2063,6 +2486,36 @@
       sec.style.display = any ? '' : 'none';
     });
     empty.style.display = total ? 'none' : 'block';
+  });
+
+  function fallbackCopy(text) {
+    const ta = document.createElement('textarea');
+    ta.value = text; ta.style.position = 'fixed'; ta.style.opacity = '0';
+    document.body.appendChild(ta); ta.focus(); ta.select();
+    try { document.execCommand('copy'); } catch (e) {}
+    document.body.removeChild(ta);
+  }
+  function copyText(text) {
+    if (navigator.clipboard && window.isSecureContext) {
+      navigator.clipboard.writeText(text).catch(() => fallbackCopy(text));
+    } else { fallbackCopy(text); }
+  }
+  document.querySelectorAll('.copy').forEach(btn => {
+    const done = () => {
+      btn.classList.add('copied');
+      btn.textContent = '✅ 已复制';
+      setTimeout(() => { btn.classList.remove('copied'); btn.textContent = '📋 复制链接'; }, 1800);
+    };
+    btn.addEventListener('click', e => {
+      e.preventDefault(); e.stopPropagation();
+      copyText(btn.dataset.url); done();
+    });
+    btn.addEventListener('keydown', e => {
+      if (e.key === 'Enter' || e.key === ' ') {
+        e.preventDefault(); e.stopPropagation();
+        copyText(btn.dataset.url); done();
+      }
+    });
   });
 
   document.querySelectorAll('.nav-chip').forEach(btn => {
