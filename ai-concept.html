@@ -1,0 +1,301 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>AI 算力芯片产业链 · 思维导图</title>
+<style>
+  * { margin:0; padding:0; box-sizing:border-box; }
+  html,body { height:100%; width:100%; overflow:hidden; background:#0f1220; }
+  body { font-family: -apple-system, BlinkMacSystemFont, "PingFang SC", "Microsoft YaHei", sans-serif; }
+  #bar {
+    position:fixed; top:0; left:0; right:0; z-index:20;
+    display:flex; align-items:center; gap:8px; padding:10px 16px;
+    background:rgba(15,18,32,.85); backdrop-filter:blur(10px);
+    border-bottom:1px solid rgba(255,255,255,.08);
+  }
+  #bar .title { font-size:14px; font-weight:600; color:#e8ebf5; margin-right:12px; white-space:nowrap; }
+  #bar .title span { color:#7d87a8; font-weight:400; font-size:12px; margin-left:8px; }
+  button.btn {
+    background:rgba(255,255,255,.06); color:#c8cfe6; border:1px solid rgba(255,255,255,.1);
+    border-radius:6px; padding:5px 11px; font-size:12px; cursor:pointer; white-space:nowrap;
+    transition:.15s;
+  }
+  button.btn:hover { background:rgba(120,140,255,.18); color:#fff; border-color:rgba(120,140,255,.4); }
+  #search {
+    background:rgba(255,255,255,.06); border:1px solid rgba(255,255,255,.1); color:#e8ebf5;
+    border-radius:6px; padding:5px 10px; font-size:12px; width:180px; outline:none;
+  }
+  #search:focus { border-color:rgba(120,140,255,.5); }
+  #hint { margin-left:auto; font-size:11px; color:#6b748f; white-space:nowrap; }
+  #canvas { position:fixed; inset:0; cursor:grab; }
+  #canvas.drag { cursor:grabbing; }
+  svg { width:100%; height:100%; display:block; }
+  .link { fill:none; stroke:#3a4166; stroke-width:1.6; }
+  .link.lvl1 { stroke:#4a5482; stroke-width:2.2; }
+  rect.box { cursor:pointer; }
+  text { font-size:13px; fill:#d6dcf0; pointer-events:none; dominant-baseline:middle; }
+  text.root { font-size:17px; font-weight:700; fill:#fff; }
+  text.lvl1 { font-size:14px; font-weight:600; fill:#fff; }
+  text.lvl2 { font-size:13px; font-weight:500; }
+  .badge { cursor:pointer; }
+  .badge text { font-size:10px; fill:#9aa4c8; }
+  .hl { stroke:#ffd166 !important; }
+  .hlb { stroke:#ffd166 !important; stroke-width:2.5 !important; }
+  .hlt { fill:#ffd166 !important; font-weight:700 !important; }
+</style>
+</head>
+<body>
+<div id="bar">
+  <div class="title">🧠 AI 算力芯片产业链<span id="cnt"></span></div>
+  <button class="btn" id="expandAll">全部展开</button>
+  <button class="btn" id="collapseAll">只看第一层</button>
+  <button class="btn" id="zoomIn">＋</button>
+  <button class="btn" id="zoomOut">－</button>
+  <button class="btn" id="reset">复位</button>
+  <input id="search" placeholder="🔍 搜索关键词，如 HBM、光刻、电力">
+  <div id="hint">拖拽平移 · 滚轮缩放 · 点击方块折叠/展开</div>
+</div>
+<div id="canvas"><svg id="svg"><g id="scene"></g></svg></div>
+
+<script>
+const DATA = {"text": "AI 算力芯片产业链", "children": [{"text": "🧭 总览：一条链怎么串起来", "children": [{"text": "① 需求端 你想让 AI 帮你干活", "children": [{"text": "应用 / Agent", "children": [{"text": "支付方式：订阅、按 token 计费", "children": []}]}]}, {"text": "② 大模型公司 负责训练模型", "children": [{"text": "训练（一次性，极耗算力）", "children": []}, {"text": "推理（每次问答，长期消耗）", "children": []}]}, {"text": "③ 云厂商 / 算力租赁 负责买算力", "children": [{"text": "决定 Capex（总闸门）", "children": []}, {"text": "自研 ASIC（省下给英伟达的钱）", "children": []}]}, {"text": "④ 服务器整机厂 把算力装进机器", "children": [{"text": "芯片 + 内存 + 电源 + 网卡 + 散热", "children": []}]}, {"text": "⑤ AI 芯片设计 英伟达 / AMD / 华为昇腾", "children": [{"text": "向台积电下单", "children": []}]}, {"text": "⑥ 制造 台积电 / 三星 / 中芯", "children": [{"text": "买设备 → 买材料 → 建厂房", "children": []}]}, {"text": "⑦ 电力 一切的终点", "children": []}]}, {"text": "📡 需求侧：AI 到底在做什么", "children": [{"text": "1.1 AI 概念栈", "children": [{"text": "人工智能 AI", "children": [{"text": "机器学习 ML", "children": [{"text": "深度学习 DL", "children": [{"text": "神经网络 NN", "children": [{"text": "就是海量乘法和加法", "children": []}]}]}]}]}, {"text": "大模型 LLM", "children": [{"text": "参数 = 模型里的\"旋钮刻度\"", "children": [{"text": "70 亿到上万亿个数字", "children": []}]}, {"text": "训练 = 上学（做题调参数）", "children": []}, {"text": "推理 = 上班（每次回答做一遍）", "children": []}, {"text": "Token = 计费单位，也是算力单位", "children": []}, {"text": "上下文窗口 = 短期记忆容量", "children": []}]}]}, {"text": "1.2 模型的三种\"省钱术\"", "children": [{"text": "量化：把数字精度压低，模型变小", "children": []}, {"text": "蒸馏：用大模型教出小模型", "children": []}, {"text": "MoE：只叫醒需要的\"专家\"", "children": []}]}, {"text": "1.3 应用形态", "children": [{"text": "聊天助手：最基础", "children": []}, {"text": "Agent 智能体：自己分解任务、反复调用模型", "children": [{"text": "token 消耗是普通问答的几十倍", "children": []}]}, {"text": "多模态：看图、听声音、看视频", "children": [{"text": "一秒钟视频 = 几十张图片", "children": []}]}, {"text": "端侧 AI：跑在手机、汽车上，不上云", "children": []}]}, {"text": "1.4 商业模式", "children": [{"text": "云厂商 Hyperscaler：微软、亚马逊、谷歌、阿里、腾讯", "children": [{"text": "收算力租金，重资产", "children": []}]}, {"text": "大模型公司：OpenAI、Anthropic、DeepSeek", "children": [{"text": "收订阅费和 API 费，靠融资买卡", "children": []}]}, {"text": "算力租赁 Neocloud：CoreWeave", "children": [{"text": "只卖 GPU，杠杆高", "children": []}]}, {"text": "MaaS：按 token 卖模型能力", "children": []}]}, {"text": "1.5 💥 多空分歧点", "children": [{"text": "看多方", "children": [{"text": "推理需求才刚开始", "children": []}, {"text": "电价、变压器、HBM 全是瓶颈 → 需求是真的", "children": []}, {"text": "大厂现金流充足", "children": []}]}, {"text": "看空方", "children": [{"text": "大模型公司还不赚钱", "children": []}, {"text": "GPU 折旧被低估（3 年落伍，按 5 年折旧）", "children": []}, {"text": "应用端收入跟不上算力投入", "children": []}]}]}]}, {"text": "⚡ 算力：到底在消耗什么", "children": [{"text": "2.1 核心指标", "children": [{"text": "算力 FLOPS：单位时间的计算量", "children": [{"text": "卡脖子的往往不是算力", "children": []}]}, {"text": "内存容量：装得下多大的模型", "children": []}, {"text": "内存带宽：数据搬得有多快", "children": [{"text": "这是真正的瓶颈", "children": []}]}, {"text": "能效比：每瓦电换多少算力", "children": [{"text": "电是有限额的，能效比 = 能装多少算力", "children": []}]}]}, {"text": "2.2 精度（决定\"用什么单位干活\"）", "children": [{"text": "FP32 / FP16：高精度，训练用", "children": []}, {"text": "FP8 / FP4：低精度，推理用", "children": [{"text": "同一块芯片，FP4 算力可以是 FP16 的 4 倍", "children": []}]}, {"text": "INT8：整数，最省", "children": []}]}, {"text": "2.3 两种瓶颈", "children": [{"text": "训练 = 计算瓶颈：堆算力", "children": []}, {"text": "推理 = 访存瓶颈：堆带宽和容量", "children": [{"text": "GPU 大部分时间在\"等数据\"，不是在算", "children": []}]}]}, {"text": "2.4 怎么规模化", "children": [{"text": "集群 Cluster：上万张卡当一台机器用", "children": []}, {"text": "并行计算：GPU = 几千个小工人", "children": []}, {"text": "MFU 利用率：理论算力实际用上的比例", "children": [{"text": "能到 40% 就算不错", "children": []}, {"text": "软件差 = 钱白花", "children": []}]}]}, {"text": "2.5 形态", "children": [{"text": "智算中心 AIDC：专为 AI 建的机房", "children": []}, {"text": "算力租赁：按小时租别人的卡", "children": []}, {"text": "单位成本：元 / 每百万 token", "children": [{"text": "这是行业健康度的核心指标", "children": []}]}]}]}, {"text": "🔲 芯片：硅片上的开关", "children": [{"text": "3.1 物理基础", "children": [{"text": "半导体 硅：导电性可被控制", "children": []}, {"text": "晶体管：最小的开关，代表 0 或 1", "children": [{"text": "一块芯片有几百亿到上千亿个", "children": []}]}, {"text": "集成电路 = 几亿个开关一次性印在硅上", "children": []}]}, {"text": "3.2 晶圆与制程", "children": [{"text": "晶圆 Wafer：12 英寸圆形硅片", "children": [{"text": "像做饼干的整张面皮", "children": []}]}, {"text": "制程 3nm / 5nm / 7nm", "children": [{"text": "数字是营销名，只当\"第几代\"看", "children": []}]}, {"text": "先进制程 vs 成熟制程", "children": [{"text": "先进：AI 芯片、手机 SoC", "children": []}, {"text": "成熟：电源、汽车、工业", "children": []}, {"text": "两条线，别混为一谈", "children": []}]}]}, {"text": "3.3 五种芯片分工", "children": [{"text": "CPU：一个博士，什么都会但慢", "children": []}, {"text": "GPU：几千个小学生，AI 主力", "children": [{"text": "英伟达的根基", "children": []}]}, {"text": "ASIC：专用工具，省电但不变通", "children": [{"text": "谷歌 TPU、亚马逊 Trainium", "children": []}, {"text": "云厂商自研，想摆脱英伟达", "children": []}]}, {"text": "FPGA：乐高，可改接线", "children": []}, {"text": "NPU / TPU / XPU：各种\"专车\"", "children": []}]}, {"text": "3.4 扩大芯片的方法", "children": [{"text": "SoC：把整个系统塞进一颗芯片", "children": []}, {"text": "Chiplet：用小芯片拼大芯片", "children": [{"text": "绕开\"大芯片良率低\"的死结", "children": []}, {"text": "把价值从制造转移到封装", "children": []}]}]}, {"text": "3.5 成本的数学", "children": [{"text": "Die 裸片：芯片的本体", "children": []}, {"text": "面积翻倍 → 成本翻倍，良率更差", "children": []}, {"text": "良率 Yield：合格品的比例", "children": [{"text": "真正的技术壁垒不是\"做出来\"，是\"便宜地做出来\"", "children": []}]}, {"text": "掩膜版：一套上千万美元的\"底片\"", "children": [{"text": "所以流片一次要几千万", "children": []}]}, {"text": "IP 核：买来的电路模块", "children": [{"text": "像买成品橱柜，不用自己做", "children": []}]}]}, {"text": "3.6 四种公司形态", "children": [{"text": "Fabless 无厂设计：英伟达、AMD、寒武纪", "children": []}, {"text": "Foundry 代工：台积电、中芯国际", "children": []}, {"text": "IDM 垂直整合：英特尔、三星", "children": []}, {"text": "OSAT 封测：日月光、长电科技", "children": []}]}]}, {"text": "🏭 制造：怎么造出来", "children": [{"text": "4.1 主流程", "children": [{"text": "清洗 → 涂胶 → 光刻 → 显影 → 刻蚀", "children": []}, {"text": "离子注入 → 薄膜沉积 → 抛光 CMP", "children": []}, {"text": "重复几百轮 → 测试 → 切割", "children": []}]}, {"text": "4.2 核心工序", "children": [{"text": "光刻：用光把图案投影到硅片上", "children": [{"text": "最关键、最贵、最卡脖子", "children": []}]}, {"text": "刻蚀：把画出来的线真正挖掉", "children": [{"text": "光刻只是画线，刻蚀才是凿石头", "children": []}]}, {"text": "薄膜沉积 CVD / PVD / ALD", "children": [{"text": "一层层抹奶油，ALD 一次抹一个原子", "children": []}]}, {"text": "离子注入：给硅\"掺味\"", "children": []}, {"text": "CMP：每层之间磨平，像刷墙打磨", "children": []}]}, {"text": "4.3 光刻机", "children": [{"text": "EUV 极紫外：13.5nm，做 7nm 以下", "children": [{"text": "ASML 独家，一台 1.5-4 亿美元", "children": []}]}, {"text": "DUV 深紫外：193nm，做 7nm 以上", "children": []}, {"text": "没有 EUV = 做不了最先进的 AI 芯片", "children": [{"text": "出口管制的核心", "children": []}]}]}, {"text": "4.4 良率与产能", "children": [{"text": "无尘室：比手术室干净几千倍", "children": []}, {"text": "代工产能：按每月多少片晶圆算", "children": [{"text": "抢不到台积电产能 = 出不了货", "children": []}]}, {"text": "先进制程只有三家能做", "children": [{"text": "台积电占绝对多数", "children": []}, {"text": "全产业链最集中的单点风险", "children": []}]}]}, {"text": "4.5 别忘了这些\"非 AI 但必需\"", "children": [{"text": "功率半导体：管电的开关，不管算数", "children": [{"text": "AI 功率暴涨 → 直接拉动需求", "children": []}]}, {"text": "模拟芯片：水龙头，调节流量", "children": [{"text": "每块 GPU 板上都有电源管理芯片", "children": []}]}]}]}, {"text": "🧩 封装与存储：从配角到主角", "children": [{"text": "5.1 先进封装", "children": [{"text": "封装：给裸片穿衣装手脚", "children": []}, {"text": "先进封装：把芯片和内存拼成一个整体", "children": [{"text": "不是不同房间，是围坐一桌", "children": []}]}, {"text": "CoWoS：台积电的招牌技术", "children": [{"text": "GPU + HBM 装在硅中介层上", "children": []}, {"text": "产能直接决定英伟达出多少货", "children": []}]}, {"text": "硅中介层 2.5D：超精密插线板", "children": []}, {"text": "3D 封装 + TSV 硅通孔：盖楼 + 电梯", "children": [{"text": "HBM 的核心工艺", "children": []}]}]}, {"text": "5.2 HBM 高带宽内存", "children": [{"text": "把 8-12 层 DRAM 叠起来", "children": []}, {"text": "1024 条并排车道 vs 双车道公路", "children": []}, {"text": "用面积和成本换带宽", "children": [{"text": "贵、耗电、难造，但没它 GPU 吃不饱", "children": []}]}, {"text": "代际：HBM3E → HBM4", "children": [{"text": "谁先量产谁拿超额利润", "children": []}]}]}, {"text": "5.3 三种存储分工", "children": [{"text": "SRAM：手边小本子，快但小，在芯片内", "children": []}, {"text": "DRAM：办公桌，内存条，断电就清空", "children": []}, {"text": "NAND：文件柜，SSD，断电不丢", "children": []}, {"text": "存储墙：算力涨得快，内存跟不上", "children": [{"text": "所有技术路线都在拆这堵墙", "children": []}]}, {"text": "存算一体：直接在冰箱里切菜", "children": [{"text": "长期故事，别当短期业绩", "children": []}]}]}, {"text": "5.4 配套环节", "children": [{"text": "ABF 载板：芯片和主板之间的转换头", "children": [{"text": "长期紧缺，容易被忽略", "children": []}]}, {"text": "测试 CP / FT / 老化", "children": [{"text": "AI 芯片测试时间越来越长", "children": []}, {"text": "价值量在提升", "children": []}]}]}]}, {"text": "🛠 设备与材料：卖铲子的人", "children": [{"text": "6.1 设备五巨头", "children": [{"text": "ASML 荷兰：光刻机，EUV 独家", "children": []}, {"text": "应用材料 AMAT：最全面", "children": []}, {"text": "泛林 Lam：刻蚀、沉积", "children": []}, {"text": "东京电子 TEL：涂胶显影", "children": []}, {"text": "KLA：量测检测，近乎垄断", "children": [{"text": "合计约占全球设备市场 70%", "children": []}]}]}, {"text": "6.2 设备之外还有零件", "children": [{"text": "阀门、腔体、射频电源、光学镜头", "children": [{"text": "想造汽车，先有发动机和轮胎的厂", "children": []}, {"text": "比整机更早受益、更隐蔽", "children": []}]}]}, {"text": "6.3 六大材料", "children": [{"text": "硅片：日本信越、SUMCO 主导", "children": []}, {"text": "光刻胶：日本近乎垄断", "children": []}, {"text": "电子特气：用量小但缺了就做不成", "children": []}, {"text": "CMP 抛光液 / 垫", "children": []}, {"text": "靶材：国产化率相对较高", "children": []}, {"text": "封装材料：塑封料、键合丝", "children": []}]}, {"text": "6.4 生意模式差异", "children": [{"text": "设备 = 卖咖啡机（一次性）", "children": []}, {"text": "材料 = 卖咖啡豆（持续消耗）", "children": [{"text": "认证周期长，一旦进去很难被换", "children": []}, {"text": "收入更平滑，周期下行更抗跌", "children": []}]}]}]}, {"text": "🔌 互连：让万卡如一卡", "children": [{"text": "7.1 卡内互连", "children": [{"text": "PCIe：主板标准插座", "children": [{"text": "对 AI 来说太慢了", "children": []}]}, {"text": "NVLink：英伟达私有高铁", "children": [{"text": "核心护城河，竞争对手最难追", "children": []}]}, {"text": "NVSwitch：总机，让任意两卡直连", "children": [{"text": "机柜级方案的核心", "children": []}]}]}, {"text": "7.2 集群网络", "children": [{"text": "InfiniBand：高速专线，训练首选", "children": [{"text": "英伟达收购 Mellanox 后主导", "children": []}]}, {"text": "以太网 + RoCE：国道，更便宜开放", "children": [{"text": "云厂商想用开放标准降成本", "children": []}]}, {"text": "交换机：快递分拣中心", "children": [{"text": "集群越大，用量超线性增长", "children": []}]}, {"text": "网卡 / DPU：前台 + 门卫 + 收发室三合一", "children": [{"text": "一张 GPU 配一张网卡", "children": []}]}]}, {"text": "7.3 铜与光之争（当前最大路线分歧）", "children": [{"text": "光模块：光纤的匝道口", "children": [{"text": "400G → 800G → 1.6T", "children": []}, {"text": "一个集群要用几万到几十万个", "children": []}]}, {"text": "光芯片：灯泡之于灯具", "children": [{"text": "利润大头在这里", "children": []}]}, {"text": "铜连接：短距离更便宜省电", "children": [{"text": "机柜内部大量用铜", "children": []}, {"text": "\"光进铜退\"不是全面的", "children": []}]}, {"text": "CPO 共封装光学：把收费站建在楼门口", "children": [{"text": "省电，但坏了要换整块", "children": []}]}]}, {"text": "7.4 网络的痛点", "children": [{"text": "拓扑 Fat-Tree / Spine-Leaf / 全连接", "children": [{"text": "同样的卡数，网络成本能差一倍", "children": []}]}, {"text": "延迟与拥塞", "children": [{"text": "AI 网络必须\"无损\"", "children": []}, {"text": "丢一个包，整个集群就崩", "children": []}]}]}]}, {"text": "🖥 服务器：算力的容器", "children": [{"text": "8.1 组成", "children": [{"text": "AI 服务器：8 GPU + 2 CPU + 大量内存", "children": [{"text": "一台售价可达 30 万美元以上", "children": []}]}, {"text": "主板 PCB：AI 用的是 20 层以上高层数板", "children": [{"text": "量价齐升", "children": []}]}, {"text": "OAM / HGX 模组：不是散零件，是发动机总成", "children": [{"text": "英伟达靠卖模组掌握定价权", "children": []}, {"text": "服务器厂只赚组装费", "children": []}]}]}, {"text": "8.2 供电（功率暴涨的连锁反应）", "children": [{"text": "服务器电源：单机 3kW → 10kW+", "children": []}, {"text": "供电架构 48V → 800V 高压直流", "children": [{"text": "远距离输电要用高压，机柜内也一样", "children": []}, {"text": "带来新电源、连接器、母排需求", "children": []}]}]}, {"text": "8.3 散热", "children": [{"text": "风冷已压不住", "children": []}, {"text": "液冷：冷板式（敷冰袋）/ 浸没式（泡浴缸）", "children": [{"text": "从可选变必选", "children": []}]}, {"text": "CDU 冷量分配单元：中央空调主机", "children": []}]}, {"text": "8.4 格式与格局", "children": [{"text": "机柜功率密度：普通 5-10kW → AI 100kW+", "children": [{"text": "老机房根本装不了", "children": []}]}, {"text": "ODM 直供：云厂商直接找代工厂定制", "children": [{"text": "压缩了戴尔、联想这类品牌商的空间", "children": []}]}]}]}, {"text": "🏢 数据中心：算力的土地", "children": [{"text": "9.1 基础概念", "children": [{"text": "IDC 数据中心：给服务器住的写字楼", "children": []}, {"text": "智算中心 AIDC：高功率密度 + 液冷 + 高速网络", "children": []}, {"text": "机柜功率密度：判断\"能不能接 AI 单\"的硬指标", "children": []}]}, {"text": "9.2 效率指标", "children": [{"text": "PUE：总电 ÷ IT 用电，越接近 1 越好", "children": [{"text": "政策硬性要求（很多地方 1.25 以下）", "children": []}, {"text": "这是液冷、余热回收的市场来源", "children": []}]}, {"text": "WUE：耗水指标", "children": [{"text": "缺水地区会被限制", "children": []}]}, {"text": "上架率 / 出租率：建得多不等于赚得多", "children": []}]}, {"text": "9.3 电力配套", "children": [{"text": "UPS：充电宝，撑几分钟", "children": []}, {"text": "柴油发电机：撑几小时", "children": [{"text": "被严重低估的环节", "children": []}]}, {"text": "变压器：交期已排到 3-4 年", "children": [{"text": "最紧的物理瓶颈之一", "children": []}]}, {"text": "中压开关柜、母线槽：楼里的血管", "children": []}]}, {"text": "9.4 选址逻辑", "children": [{"text": "电价：占运营成本 30-50%", "children": []}, {"text": "绿电比例", "children": [{"text": "算力往\"电便宜、电多\"的地方西迁", "children": []}]}, {"text": "审批与能耗指标：隐形牌照壁垒", "children": []}, {"text": "余热回收：欧洲推进快，国内试点", "children": []}]}]}, {"text": "⚡ 电力：一切的终点", "children": [{"text": "10.1 为什么是瓶颈", "children": [{"text": "一个 AI 数据中心 = 一座小城市的用电", "children": []}, {"text": "单个训练集群可达 100MW 以上", "children": []}, {"text": "\"AI 的尽头是电力\"已成共识", "children": []}]}, {"text": "10.2 发电方式对比", "children": [{"text": "火电：随时能叫的外卖，稳定但有碳排", "children": []}, {"text": "水电：便宜可调，看地理", "children": []}, {"text": "核电：稳定零碳，但要建 10 年", "children": [{"text": "SMR 小型堆 = 集装箱式，2030 年后的故事", "children": []}]}, {"text": "风光：便宜但看天吃饭", "children": [{"text": "AI 需要 7×24 稳定供电", "children": []}]}]}, {"text": "10.3 最现实的新增电源", "children": [{"text": "燃气轮机：2-3 年就能上", "children": [{"text": "订单已排到 2028 年后", "children": []}]}, {"text": "基荷 vs 调峰", "children": [{"text": "AI 是典型基荷用户，利用率高、付费稳定", "children": []}]}, {"text": "需求响应：训练任务可中断，能当调峰资源", "children": []}]}, {"text": "10.4 输配电瓶颈", "children": [{"text": "电网：美国电网老旧，新线路审批 5-10 年", "children": []}, {"text": "\"并网排队\"：最被低估的瓶颈", "children": [{"text": "机房建好了，电接不上", "children": []}]}, {"text": "变压器：全身的\"关节\"", "children": []}, {"text": "功率半导体：电力链的每个闸门", "children": []}, {"text": "铜：AI 的尽头是铜", "children": [{"text": "一台 AI 机柜用铜是普通机柜的好几倍", "children": []}]}]}]}, {"text": "💻 软件：看不见的护城河", "children": [{"text": "11.1 生态锁定", "children": [{"text": "CUDA：英伟达的 App Store", "children": [{"text": "硬件追到 70% 容易，生态追到 70% 极难", "children": []}]}, {"text": "框架 PyTorch：绝对主流", "children": [{"text": "被原生支持 = 拿到入场券", "children": []}]}, {"text": "编译器：把模型翻译成不同芯片的指令", "children": [{"text": "国产芯片靠它做兼容，但有性能损耗", "children": []}]}]}, {"text": "11.2 性能来自哪里", "children": [{"text": "算子 Kernel：最小的计算动作", "children": [{"text": "新芯片最大工作量是逐个优化算子", "children": []}]}, {"text": "推理引擎 vLLM / TensorRT-LLM：餐厅动线设计", "children": [{"text": "能把芯片性能榨出 2-3 倍", "children": []}]}, {"text": "分布式训练：一万个人合写一本书", "children": [{"text": "决定集群实际利用率", "children": []}]}, {"text": "并行策略：数据 / 张量 / 流水线", "children": [{"text": "技术选择和硬件采购是绑定的", "children": []}]}]}, {"text": "11.3 推理的细节", "children": [{"text": "批处理 Batching：攒够一车人再发车", "children": [{"text": "做得好，单卡服务人数翻几倍", "children": []}]}, {"text": "KV Cache：写文章的草稿", "children": [{"text": "长上下文应用的显存杀手", "children": []}]}, {"text": "模型压缩：让 AI 装进手机和汽车", "children": []}]}, {"text": "11.4 部署形态", "children": [{"text": "MaaS：不自己发电，直接买电", "children": [{"text": "长期毛利率会被压", "children": []}]}, {"text": "私有化部署 / 一体机：自己打井", "children": [{"text": "金融、政务、医疗刚需", "children": []}, {"text": "国产芯片的重要市场", "children": []}]}]}]}, {"text": "🔗 关键依赖：谁离不开谁", "children": [{"text": "HBM → GPU 能跑多大模型", "children": [{"text": "装不下就得切开放别处，速度掉一个数量级", "children": []}]}, {"text": "CoWoS 产能 → 英伟达出货量", "children": [{"text": "芯片造好了，封不上就发不出货", "children": []}]}, {"text": "台积电先进制程 → 全世界", "children": [{"text": "地震、缺水、地缘冲突，任一都能让全球 AI 停摆", "children": []}]}, {"text": "CUDA → 国产芯片替代", "children": [{"text": "性能能追，生态难追", "children": []}]}, {"text": "电力 → 数据中心选址 → 算力上限", "children": [{"text": "没电，一切归零", "children": []}]}, {"text": "变压器 / 燃气轮机 → 数据中心上线时间", "children": [{"text": "交期 3-4 年，有钱也买不到", "children": []}]}, {"text": "光模块 / 交换机 → 集群规模", "children": [{"text": "拓扑选错，网络成本翻倍", "children": []}]}, {"text": "液冷 → 能效比 PUE → 政策审批", "children": [{"text": "不上液冷，指标批不下来", "children": []}]}, {"text": "MoE / 量化 → 推理成本 → 芯片需求形态", "children": [{"text": "软件优化直接改变硬件采购", "children": []}]}, {"text": "应用收入 → 云厂商 Capex → 全链条", "children": [{"text": "最上游的传导源头", "children": []}]}]}, {"text": "⛓ 瓶颈排序：谁卡谁的脖子", "children": [{"text": "第 1 名 HBM：只有 3 家能做，TSV 工艺难", "children": [{"text": "扩产 18-24 个月", "children": []}]}, {"text": "第 2 名 CoWoS 先进封装：台积电独大，良率低", "children": [{"text": "扩产 12-18 个月", "children": []}]}, {"text": "第 3 名 EUV 光刻机：ASML 独家，年产几十台", "children": [{"text": "扩产 24 个月以上", "children": []}]}, {"text": "第 4 名 变压器 / 并网：扩产慢、审批慢", "children": [{"text": "3-4 年", "children": []}]}, {"text": "第 5 名 先进制程产能：台积电排满", "children": [{"text": "24-36 个月", "children": []}]}, {"text": "第 6 名 电力新增发电：燃气轮机订单排到 2028+", "children": [{"text": "2-3 年", "children": []}]}, {"text": "第 7 名 液冷产能：需求突然爆发", "children": [{"text": "6-12 个月", "children": []}]}, {"text": "第 8 名 高端光模块：1.6T 良率爬坡", "children": [{"text": "12 个月", "children": []}]}]}, {"text": "💰 利润流向：谁拿走钱", "children": [{"text": "EDA / IP：85-95%", "children": [{"text": "软件，几乎纯利润", "children": []}]}, {"text": "芯片设计（英伟达）：70-75%", "children": [{"text": "平台垄断", "children": []}]}, {"text": "设备（ASML / AMAT）：45-50%", "children": []}, {"text": "代工（台积电）：50-60%", "children": []}, {"text": "存储（HBM）：30-50%，周期波动大", "children": []}, {"text": "材料：20-35%", "children": []}, {"text": "封测 OSAT：15-25%", "children": []}, {"text": "服务器组装：5-10%", "children": [{"text": "最薄，只赚组装费", "children": []}]}, {"text": "IDC：30-40%，但资本开支巨大", "children": []}, {"text": "电力 / 公用事业：10-20%，但极稳定", "children": []}, {"text": "规律：越靠软件和垄断，毛利越高", "children": [{"text": "越靠组装和搬运，毛利越薄", "children": []}, {"text": "这决定哪些值得长期持有，哪些只能做周期", "children": []}]}]}, {"text": "🧠 三个核心问题", "children": [{"text": "需求是真的吗？", "children": [{"text": "看云厂商 Capex 和应用端收入", "children": []}]}, {"text": "瓶颈在哪？", "children": [{"text": "看扩产周期和交期", "children": []}]}, {"text": "谁拿走利润？", "children": [{"text": "看毛利和集中度", "children": []}]}]}]};
+const TOTAL = 420;
+
+/* ---------- 颜色 ---------- */
+const COLORS = [
+  ["#6366f1","#818cf8"], ["#0ea5e9","#38bdf8"], ["#10b981","#34d399"],
+  ["#f59e0b","#fbbf24"], ["#ef4444","#f87171"], ["#ec4899","#f472b6"],
+  ["#8b5cf6","#a78bfa"], ["#14b8a6","#2dd4bf"], ["#f97316","#fb923c"],
+  ["#84cc16","#a3e635"], ["#64748b","#94a3b8"], ["#e11d48","#fb7185"],
+  ["#0891b2","#22d3ee"], ["#7c3aed","#a78bfa"], ["#059669","#6ee7b7"]
+];
+
+/* ---------- 布局常量 ---------- */
+const H_GAP = 22;      // 节点垂直间距
+const X_GAP = 46;      // 父子水平间距
+const PAD_X = 12, PAD_Y = 7;
+const ROOT_W = 210, L1_W = 190;
+
+/* ---------- 预处理 ---------- */
+function assignDepth(n, d, ci) {
+  n.depth = d;
+  n.colorIdx = ci;
+  n.children.forEach((c, i) => {
+    assignDepth(c, d + 1, d === 1 ? i : ci);
+  });
+}
+DATA.children.forEach((c, i) => assignDepth(c, 1, i));
+DATA.depth = 0; DATA.colorIdx = -1;
+
+const measure = document.createElement("canvas").getContext("2d");
+function textWidth(t, d) {
+  const fonts = [
+    '700 17px -apple-system,"PingFang SC","Microsoft YaHei",sans-serif',
+    '600 14px -apple-system,"PingFang SC","Microsoft YaHei",sans-serif',
+    '13px -apple-system,"PingFang SC","Microsoft YaHei",sans-serif'
+  ];
+  measure.font = fonts[d <= 2 ? d : 2];
+  let s = measure.measureText(t).width;
+  if (d === 0) s = Math.max(s, ROOT_W - PAD_X * 2);
+  else if (d === 1) s = Math.max(s, L1_W - PAD_X * 2);
+  return s + PAD_X * 2;
+}
+function nodeW(n) { if (n._w === undefined) n._w = textWidth(n.text, n.depth); return n._w; }
+
+/* 每个节点：子节点总高度；被折叠时算自身高度 */
+function nodeH(n) { return n.depth === 0 ? 36 : n.depth === 1 ? 30 : 26; }
+function subtreeH(n) {
+  if (!n.expanded || n.children.length === 0) { n._h = nodeH(n); return n._h; }
+  let s = 0;
+  n.children.forEach((c, i) => { s += subtreeH(c) + (i ? H_GAP : 0); });
+  n._h = Math.max(nodeH(n), s);
+  return n._h;
+}
+function layout(n, x, y) {
+  n.x = x; n.y = y;
+  nodeW(n);
+  if (!n.expanded || n.children.length === 0) return;
+  const cx = x + nodeW(n) + X_GAP;
+  let acc = y + (nodeH(n) - subtreeH(n)) / 2;
+  n.children.forEach(c => {
+    const ch = subtreeH(c);
+    layout(c, cx, acc + ch / 2 - nodeH(c) / 2);
+    acc += ch + H_GAP;
+  });
+}
+
+/* ---------- 渲染 ---------- */
+const scene = document.getElementById("scene");
+function esc(s) { return s.replace(/&/g,"&amp;").replace(/</g,"&lt;").replace(/>/g,"&gt;"); }
+
+function draw() {
+  scene.innerHTML = "";
+  subtreeH(DATA);
+  layout(DATA, 20, 0);
+  const NS = "http://www.w3.org/2000/svg";
+  const links = document.createElementNS(NS, "g");
+  const nodes = document.createElementNS(NS, "g");
+  scene.appendChild(links); scene.appendChild(nodes);
+
+  function walk(n) {
+    if (n.children.length && n.expanded) {
+      const x1 = n.x + nodeW(n), y1 = n.y + nodeH(n) / 2;
+      const x2 = n.children[0].x;
+      n.children.forEach(c => {
+        const y2 = c.y + nodeH(c) / 2;
+        const mx = (x1 + x2) / 2;
+        const p = document.createElementNS(NS, "path");
+        p.setAttribute("class", "link" + (n.depth === 0 ? " lvl1" : ""));
+        p.setAttribute("d", `M ${x1} ${y1} C ${mx} ${y1} ${mx} ${y2} ${x2} ${y2}`);
+        links.appendChild(p);
+        walk(c);
+      });
+    }
+    const [c1, c2] = COLORS[n.colorIdx] || ["#6366f1", "#818cf8"];
+    const g = document.createElementNS(NS, "g");
+    const w = nodeW(n), h = nodeH(n);
+    const r = document.createElementNS(NS, "rect");
+    r.setAttribute("class", "box");
+    r.setAttribute("x", n.x); r.setAttribute("y", n.y);
+    r.setAttribute("width", w); r.setAttribute("height", h);
+    r.setAttribute("rx", n.depth === 0 ? 10 : n.depth === 1 ? 8 : 6);
+    if (n.depth === 0) { r.setAttribute("fill", "#1e2340"); r.setAttribute("stroke", "#7d8bff"); r.setAttribute("stroke-width", "2"); }
+    else if (n.depth === 1) { r.setAttribute("fill", c1); r.setAttribute("stroke", c2); r.setAttribute("stroke-width", "1"); r.setAttribute("opacity", ".95"); }
+    else { r.setAttribute("fill", "#1a1f36"); r.setAttribute("stroke", c1); r.setAttribute("stroke-width", "1.4"); r.setAttribute("opacity", ".92"); }
+    g.appendChild(r);
+
+    const t = document.createElementNS(NS, "text");
+    t.setAttribute("x", n.x + w / 2); t.setAttribute("y", n.y + h / 2 + .5);
+    t.setAttribute("text-anchor", "middle");
+    t.setAttribute("class", n.depth === 0 ? "root" : n.depth === 1 ? "lvl1" : "");
+    t.textContent = n.text;
+    g.appendChild(t);
+
+    if (n.children.length) {
+      const bg = document.createElementNS(NS, "g");
+      bg.setAttribute("class", "badge");
+      const cr = document.createElementNS(NS, "circle");
+      cr.setAttribute("cx", n.x + w - 2); cr.setAttribute("cy", n.y + h / 2);
+      cr.setAttribute("r", n.depth === 0 ? 10 : 8.5);
+      cr.setAttribute("fill", n.depth <= 1 ? "#0f1220" : c1);
+      cr.setAttribute("stroke", n.depth <= 1 ? "#7d8bff" : c2);
+      cr.setAttribute("stroke-width", "1.4");
+      bg.appendChild(cr);
+      const bt = document.createElementNS(NS, "text");
+      bt.setAttribute("x", n.x + w - 2); bt.setAttribute("y", n.y + h / 2 + .5);
+      bt.setAttribute("text-anchor", "middle");
+      bt.setAttribute("fill", n.depth <= 1 ? "#9aa8ff" : "#fff");
+      bt.textContent = n.expanded ? "−" : "+";
+      bg.appendChild(bt);
+      bg.addEventListener("click", e => { e.stopPropagation(); n.expanded = !n.expanded; draw(); });
+      g.appendChild(bg);
+    }
+    r.addEventListener("click", () => {
+      if (!n.children.length) return;
+      n.expanded = !n.expanded; draw();
+    });
+    g.dataset.id = n.text;
+    nodes.appendChild(g);
+  }
+  walk(DATA);
+}
+
+/* ---------- 缩放 / 平移 ---------- */
+const svg = document.getElementById("svg");
+let vw = innerWidth, vh = innerHeight;
+let tx = 60, ty = vh / 2, scale = 1;
+
+function apply() {
+  const minY = -600, maxY = 4000;
+  scene.setAttribute("transform", `translate(${tx},${ty}) scale(${scale})`);
+}
+function clampScale(s) { return Math.max(.28, Math.min(2.4, s)); }
+function zoomAt(factor, cx, cy) {
+  const ns = clampScale(scale * factor);
+  const k = ns / scale;
+  tx = cx - (cx - tx) * k;
+  ty = cy - (cy - ty) * k;
+  scale = ns; apply();
+}
+svg.addEventListener("wheel", e => {
+  e.preventDefault();
+  zoomAt(e.deltaY < 0 ? 1.12 : 0.893, e.clientX, e.clientY);
+}, { passive: false });
+
+let dragging = false, sx = 0, sy = 0;
+svg.addEventListener("mousedown", e => { dragging = true; sx = e.clientX; sy = e.clientY; svg.parentElement.classList.add("drag"); });
+window.addEventListener("mousemove", e => {
+  if (!dragging) return;
+  tx += e.clientX - sx; ty += e.clientY - sy;
+  sx = e.clientX; sy = e.clientY; apply();
+});
+window.addEventListener("mouseup", () => { dragging = false; svg.parentElement.classList.remove("drag"); });
+svg.addEventListener("touchstart", e => { if (e.touches.length === 1) { dragging = true; sx = e.touches[0].clientX; sy = e.touches[0].clientY; } }, { passive: true });
+window.addEventListener("touchmove", e => {
+  if (dragging && e.touches.length === 1) {
+    tx += e.touches[0].clientX - sx; ty += e.touches[0].clientY - sy;
+    sx = e.touches[0].clientX; sy = e.touches[0].clientY; apply(); e.preventDefault();
+  }
+}, { passive: false });
+window.addEventListener("touchend", () => dragging = false);
+
+/* ---------- 按钮 ---------- */
+document.getElementById("expandAll").onclick = () => { setAll(DATA, true); draw(); fit(); };
+document.getElementById("collapseAll").onclick = () => { setAll(DATA, false); DATA.children.forEach(c => { c.expanded = true; }); draw(); tx = 60; ty = innerHeight / 2; scale = 1; apply(); };
+document.getElementById("zoomIn").onclick = () => zoomAt(1.25, innerWidth / 2, innerHeight / 2);
+document.getElementById("zoomOut").onclick = () => zoomAt(0.8, innerWidth / 2, innerHeight / 2);
+document.getElementById("reset").onclick = () => { tx = 60; ty = innerHeight / 2; scale = 1; apply(); };
+function setAll(n, v) { n.expanded = v; n.children.forEach(c => setAll(c, v)); }
+
+function fit() {
+  subtreeH(DATA);
+  let maxRight = 0;
+  (function scan(n) { maxRight = Math.max(maxRight, n.x + nodeW(n)); n.children.forEach(scan); })(DATA);
+  const totalH = subtreeH(DATA);
+  const s = Math.min(1.05, (innerWidth - 120) / (maxRight + 40), (innerHeight - 90) / (totalH + 60));
+  scale = clampScale(s);
+  tx = 40; ty = (innerHeight - totalH * scale) / 2;
+  apply();
+}
+
+/* ---------- 搜索 ---------- */
+document.getElementById("search").addEventListener("input", e => {
+  const q = e.target.value.trim().toLowerCase();
+  scene.querySelectorAll("rect,text").forEach(el => el.classList.remove("hl", "hlb", "hlt"));
+  if (!q) return;
+  const hits = [];
+  (function scan(n) {
+    if (n.text.toLowerCase().includes(q)) {
+      hits.push(n);
+      let p = n; const chain = [];
+      while (p) { chain.push(p); p = p.parent; }
+      chain.forEach(x => x.expanded = true);
+    }
+    n.children.forEach(scan);
+  })(DATA);
+  draw();
+  scene.querySelectorAll("g[data-id]").forEach(g => {
+    const t = g.dataset.id.toLowerCase();
+    if (t.includes(q)) {
+      g.querySelector("rect").classList.add("hlb");
+      const tt = g.querySelector("text");
+      if (tt) tt.classList.add("hlt");
+    }
+  });
+});
+
+/* 绑定 parent 链 */
+(function bind(n, p) { n.parent = p; n.children.forEach(c => bind(c, n)); })(DATA, null);
+
+/* ---------- 启动 ---------- */
+document.getElementById("cnt").textContent = TOTAL + " 个概念 · 12 层 + 4 个关系附录";
+setAll(DATA, false);
+DATA.children.forEach(c => c.expanded = true);
+DATA.expanded = true;
+draw();
+apply();
+addEventListener("resize", () => { apply(); });
+</script>
+</body>
+</html>
